@@ -9,16 +9,21 @@ export interface TeamDTO {
   slug: string;
 }
 
-export interface Record {
-  name: string;
-  wins: number;
-  losses: number;
+export interface Records {
+  conference: Record;
+  overall: Record;
 }
 
 export interface StandingDTO {
   team: TeamDTO;
   conferenceRecord: Record;
   overallRecord: Record;
+}
+
+export interface Record {
+  name: string;
+  wins: number;
+  losses: number;
 }
 
 export interface ConferenceDTO {
@@ -46,7 +51,7 @@ export interface GameDTO {
 export interface TeamPage {
   season: number;
   team: TeamDTO;
-  records: Record;
+  records: Records;
   conference: ConferenceDTO;
   games: GameDTO[];
 } 

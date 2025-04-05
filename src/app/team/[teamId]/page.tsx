@@ -79,7 +79,7 @@ export default function TeamPage() {
             <div>
               <h3 className="font-semibold mb-2">Season Record</h3>
               <p>
-                {teamPage.records.wins} - {teamPage.records.losses}
+                {teamPage.records.overall.wins} - {teamPage.records.overall.losses}
               </p>
             </div>
             <div>
@@ -93,6 +93,9 @@ export default function TeamPage() {
                   />
                 )}
                 <p>{teamPage.conference.name}</p>
+                <p>
+                {teamPage.records.conference.wins} - {teamPage.records.conference.losses}
+              </p>
               </div>
             </div>
           </div>
