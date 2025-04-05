@@ -148,6 +148,65 @@ export default function TeamPage() {
           </div>
         </CardContent>
       </Card>
+
+      {/* Conference Standings */}
+      <Card className="mt-6">
+        <CardHeader>
+          <div className="flex items-center gap-2">
+            {teamPage.conference.logoUrl && (
+              <img
+                src={teamPage.conference.logoUrl}
+                alt={teamPage.conference.name}
+                className="w-6 h-6 object-contain"
+              />
+            )}
+            <CardTitle>{teamPage.conference.name} Standings</CardTitle>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b">
+                  <th className="text-left py-2 px-4">Team</th>
+                  <th className="text-center py-2 px-4">Conference</th>
+                  <th className="text-center py-2 px-4">Overall</th>
+                </tr>
+              </thead>
+              <tbody>
+                {teamPage.conference.standings.map((standing) => (
+                  <tr 
+                    key={standing.team.id} 
+                    className={`border-b ${standing.team.id === teamPage.team.id ? 'bg-muted/50' : ''}`}
+                  >
+                    <td className="py-2 px-4">
+                      <Link 
+                        href={`/team/${standing.team.id}`}
+                        className="flex items-center gap-2 hover:underline"
+                      >
+                        {standing.team.logoUrl && (
+                          <img
+                            src={standing.team.logoUrl}
+                            alt={standing.team.name}
+                            className="w-6 h-6 object-contain"
+                          />
+                        )}
+                        <span className="font-semibold">{standing.team.name}</span>
+                      </Link>
+                    </td>
+                    <td className="text-center py-2 px-4">
+                      {standing.conferenceRecord.wins} - {standing.conferenceRecord.losses}
+                    </td>
+                    <td className="text-center py-2 px-4">
+                      {standing.overallRecord.wins} - {standing.overallRecord.losses}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 } 
