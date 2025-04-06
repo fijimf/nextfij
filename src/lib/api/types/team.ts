@@ -42,10 +42,16 @@ export interface GameDTO {
   date: string;
   score: number;
   oppScore: number;
+  wOrL: string;
   spread: number;
+  spreadDescription: string;
+  spreadCovered: boolean;
   overUnder: number;
+  overOrUnder: string;
   moneyLine: number;
+  moneyLinePaid: boolean;
   oppMoneyLine: number;
+  oppMoneyLinePaid: boolean;
 }
 
 export interface TeamPage {
