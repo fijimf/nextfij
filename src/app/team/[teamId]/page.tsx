@@ -55,10 +55,15 @@ export default function TeamPage() {
 
   if (!teamPage) return null;
 
+  // Create a CSS variable for the team's primary color with reduced opacity
+  const primaryColorStyle = {
+    '--team-primary-color': teamPage.team.primaryColor,
+  } as React.CSSProperties;
+
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4" style={primaryColorStyle}>
       {/* Team Header */}
-      <Card className="mb-6">
+      <Card className="mb-6 border-l-4" style={{ borderLeftColor: teamPage.team.primaryColor }}>
         <CardHeader>
           <div className="flex items-center gap-4">
             {teamPage.team.logoUrl && (
@@ -69,30 +74,29 @@ export default function TeamPage() {
               />
             )}
             <div>
-              <CardTitle>{teamPage.team.longName}</CardTitle>
-              <p className="text-muted-foreground">{teamPage.team.nickname}</p>
+              <CardTitle className="text-5xl font-bold">{teamPage.team.longName}</CardTitle>
+              <p className="text-2xl">{teamPage.team.nickname}</p>
             </div>
           </div>
         </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <h3 className="font-semibold mb-2">Season Record</h3>
+        <CardContent className="py-2">
+          <div className="flex flex-wrap gap-6">
+            <div className="flex items-center gap-2">
+              <h3 className="font-semibold">Overall:</h3>
               <p>
                 {teamPage.records.overall.wins} - {teamPage.records.overall.losses}
               </p>
             </div>
-            <div>
-              <h3 className="font-semibold mb-2">Conference</h3>
+            <div className="flex items-center gap-2">
+              <h3 className="font-semibold">{teamPage.conference.name}:</h3>
               <div className="flex items-center gap-2">
                 {teamPage.conference.logoUrl && (
                   <img
                     src={teamPage.conference.logoUrl}
                     alt={teamPage.conference.name}
-                    className="w-6 h-6 object-contain"
+                    className="w-4 h-4 object-contain"
                   />
                 )}
-                <p>{teamPage.conference.name}</p>
                 <p>
                 {teamPage.records.conference.wins} - {teamPage.records.conference.losses}
               </p>
@@ -103,61 +107,105 @@ export default function TeamPage() {
       </Card>
 
       {/* Schedule */}
-      <Card>
-        <CardHeader>
+      <Card className="mb-6">
+        <CardHeader className="border-b" style={{ borderColor: `${teamPage.team.primaryColor}20` }}>
           <CardTitle>Schedule</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="space-y-4">
-            {teamPage.games.map((game) => (
-              <div
-                key={game.id}
-                className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors"
-              >
-                <div className="flex items-center gap-4">
-                  <span className="text-muted-foreground">
-                    {format(new Date(game.date), 'MMM d, yyyy')}
-                  </span>
-                  <span>{game.atVs}</span>
-                  <Link 
-                    href={`/team/${game.opponent.id}`}
-                    className="flex items-center gap-2 hover:underline"
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b" style={{ borderColor: `${teamPage.team.primaryColor}20` }}>
+                  <th className="text-left py-2 px-2">Date</th>
+                  <th className="text-center py-2 px-2">Result</th>
+                  <th className="text-left py-2 px-2">Opponent</th>
+                  <th className="text-left py-2 px-2">Spread</th>
+                  <th className="text-center py-2 px-2">O/U</th>
+                  <th className="text-center py-2 px-2"></th>
+                  <th className="text-center py-2 px-2">ML</th>
+                  <th className="text-center py-2 px-2">Opp ML</th>
+                </tr>
+              </thead>
+              <tbody>
+                {teamPage.games.map((game) => (
+                  <tr 
+                    key={game.id}
+                    className="border-b hover:bg-muted/50 transition-colors"
+                    style={{ borderColor: `${teamPage.team.primaryColor}20` }}
                   >
-                    {game.opponent.logoUrl && (
-                      <img
-                        src={game.opponent.logoUrl}
-                        alt={game.opponent.name}
-                        className="w-8 h-8 object-contain"
-                      />
-                    )}
-                    <span className="font-semibold">{game.opponent.name}</span>
-                  </Link>
-                </div>
-                <div className="text-right">
-                  <div className="font-semibold">
-                    {game.score} - {game.oppScore}
-                  </div>
-                  {game.spread && (
-                    <div className="text-sm text-muted-foreground">
-                      Spread: {game.spread > 0 ? '+' : ''}{game.spread}
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))}
+                    <td className="py-2 px-2 text-muted-foreground">
+                      {format(new Date(game.date), 'MMM d')}
+                    </td>
+                    <td className="py-2 px-2 text-center font-medium">
+                      <span className={game.wOrL === 'W' ? 'text-green-600' : 'text-red-600'}>{game.wOrL}&nbsp;</span>
+                       {game.score} - {game.oppScore}
+                    </td>
+                    <td className="py-2 px-2">
+                      <Link 
+                        href={`/team/${game.opponent.id}`}
+                        className="flex items-center gap-2 hover:underline"
+                      >
+                         <span className="text-muted-foreground text-sm">{game.atVs}</span>
+                        {game.opponent.logoUrl && (
+                          <img
+                            src={game.opponent.logoUrl}
+                            alt={game.opponent.name}
+                            className="w-6 h-6 object-contain"
+                          />
+                        )}
+                        <span className="font-medium">{game.opponent.name}</span>
+                       
+                      </Link>
+                    </td>
+                   
+                    <td className="py-2 px-2 text-left">
+                      {game.spreadDescription && (
+                        <span className={game.spreadCovered ? 'text-green-600' : 'text-red-600'}>
+                         {game.spreadDescription}
+                        </span>
+                      )}
+                    </td>
+                    <td className="py-2 px-2 text-center">
+                      {game.overUnder && (
+                        <span className="text-muted-foreground">{game.overUnder}</span>
+                      )}
+                    </td>
+                    <td className="py-2 px-2 text-center">
+                      {game.overOrUnder && (
+                        <span className="text-muted-foreground">{game.overOrUnder}</span>
+                      )}
+                    </td>
+                    <td className="py-2 px-2 text-center">
+                      {game.moneyLine && (
+                        <span className={game.wOrL === 'W' ? 'text-green-600' : 'text-red-600'}>
+                          {game.moneyLine > 0 ? '+' : ''}{game.moneyLine}
+                        </span>
+                      )}
+                    </td>
+                    <td className="py-2 px-2 text-center">
+                      {game.oppMoneyLine && (
+                        <span className={game.wOrL === 'W' ? 'text-red-600' : 'text-green-600'}>
+                          {game.oppMoneyLine > 0 ? '+' : ''}{game.oppMoneyLine}
+                        </span>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </CardContent>
       </Card>
 
       {/* Conference Standings */}
-      <Card className="mt-6">
-        <CardHeader>
+      <Card>
+        <CardHeader className="border-b" style={{ borderColor: `${teamPage.team.primaryColor}20` }}>
           <div className="flex items-center gap-2">
             {teamPage.conference.logoUrl && (
               <img
                 src={teamPage.conference.logoUrl}
                 alt={teamPage.conference.name}
-                className="w-6 h-6 object-contain"
+                className="w-16 h-16 object-contain"
               />
             )}
             <CardTitle>{teamPage.conference.name} Standings</CardTitle>
@@ -167,7 +215,7 @@ export default function TeamPage() {
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b">
+                <tr className="border-b" style={{ borderColor: `${teamPage.team.primaryColor}20` }}>
                   <th className="text-left py-2 px-4">Team</th>
                   <th className="text-center py-2 px-4">Conference</th>
                   <th className="text-center py-2 px-4">Overall</th>
@@ -178,6 +226,7 @@ export default function TeamPage() {
                   <tr 
                     key={standing.team.id} 
                     className={`border-b ${standing.team.id === teamPage.team.id ? 'bg-muted/50' : ''}`}
+                    style={{ borderColor: `${teamPage.team.primaryColor}20` }}
                   >
                     <td className="py-2 px-4">
                       <Link 
