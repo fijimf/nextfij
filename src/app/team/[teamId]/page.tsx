@@ -120,10 +120,10 @@ export default function TeamPage() {
                   <th className="text-center py-2 px-2">Result</th>
                   <th className="text-left py-2 px-2">Opponent</th>
                   <th className="text-left py-2 px-2">Spread</th>
-                  <th className="text-center py-2 px-2">O/U</th>
+                  <th className="text-right py-2 px-2">O/U</th>
                   <th className="text-center py-2 px-2"></th>
-                  <th className="text-center py-2 px-2">ML</th>
-                  <th className="text-center py-2 px-2">Opp ML</th>
+                  <th className="text-right py-2 px-2">ML</th>
+                  <th className="text-right py-2 px-2">Opp ML</th>
                 </tr>
               </thead>
               <tbody>
@@ -136,7 +136,7 @@ export default function TeamPage() {
                     <td className="py-2 px-2 text-muted-foreground">
                       {format(new Date(game.date), 'MMM d')}
                     </td>
-                    <td className="py-2 px-2 text-center font-medium">
+                    <td className="py-2 px-2 text-center font-bold">
                       <span className={game.wOrL === 'W' ? 'text-green-600' : 'text-red-600'}>{game.wOrL}&nbsp;</span>
                        {game.score} - {game.oppScore}
                     </td>
@@ -160,31 +160,31 @@ export default function TeamPage() {
                    
                     <td className="py-2 px-2 text-left">
                       {game.spreadDescription && (
-                        <span className={game.spreadCovered ? 'text-green-600' : 'text-red-600'}>
+                        <span className='font-semibold text-blue-600' >
                          {game.spreadDescription}
                         </span>
                       )}
                     </td>
-                    <td className="py-2 px-2 text-center">
+                    <td className="py-2 px-2 text-right">
                       {game.overUnder && (
-                        <span className="text-muted-foreground">{game.overUnder}</span>
+                        <span className="font-semibold text-blue-600">{game.overUnder}</span>
                       )}
                     </td>
-                    <td className="py-2 px-2 text-center">
+                    <td className="py-2 px-2 text-left">
                       {game.overOrUnder && (
-                        <span className="text-muted-foreground">{game.overOrUnder}</span>
+                        <span className="font-semibold text-blue-600">{game.overOrUnder}</span>
                       )}
                     </td>
-                    <td className="py-2 px-2 text-center">
+                    <td className="py-2 px-2 text-right">
                       {game.moneyLine && (
-                        <span className={game.wOrL === 'W' ? 'text-green-600' : 'text-red-600'}>
+                        <span className='font-semibold text-blue-600'>
                           {game.moneyLine > 0 ? '+' : ''}{game.moneyLine}
                         </span>
                       )}
                     </td>
-                    <td className="py-2 px-2 text-center">
+                    <td className="py-2 px-2 text-right">
                       {game.oppMoneyLine && (
-                        <span className={game.wOrL === 'W' ? 'text-red-600' : 'text-green-600'}>
+                        <span className='font-semibold text-blue-600'>
                           {game.oppMoneyLine > 0 ? '+' : ''}{game.oppMoneyLine}
                         </span>
                       )}
