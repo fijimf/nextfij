@@ -94,7 +94,7 @@ export default function TeamPage() {
                   <img
                     src={teamPage.conference.logoUrl}
                     alt={teamPage.conference.name}
-                    className="w-4 h-4 object-contain"
+                    className="w-6 h-6 object-contain"
                   />
                 )}
                 <p>
@@ -119,11 +119,11 @@ export default function TeamPage() {
                   <th className="text-left py-2 px-2">Date</th>
                   <th className="text-center py-2 px-2">Result</th>
                   <th className="text-left py-2 px-2">Opponent</th>
-                  <th className="text-left py-2 px-2">Spread</th>
+                  <th className="text-right py-2 px-2 pr-8">Spread</th>
                   <th className="text-right py-2 px-2">O/U</th>
                   <th className="text-center py-2 px-2"></th>
-                  <th className="text-right py-2 px-2">ML</th>
-                  <th className="text-right py-2 px-2">Opp ML</th>
+                  <th className="text-right py-2 px-2 pr-8">ML</th>
+                  <th className="text-right py-2 px-2 pr-8">Opp ML</th>
                 </tr>
               </thead>
               <tbody>
@@ -158,10 +158,19 @@ export default function TeamPage() {
                       </Link>
                     </td>
                    
-                    <td className="py-2 px-2 text-left">
+                    <td className="py-2 px-2 text-right">
                       {game.spreadDescription && (
-                        <span className='font-semibold text-blue-600' >
+                        <span className='font-semibold text-blue-600 flex items-center justify-end gap-1'>
                          {game.spreadDescription}
+                         {game.spreadCovered ? (
+                           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" className="text-green-600">
+                             <polyline points="20 6 9 17 4 12"></polyline>
+                           </svg>
+                         ) : (
+                           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="none" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" className="invisible">
+                             <polyline points="20 6 9 17 4 12"></polyline>
+                           </svg>
+                         )}
                         </span>
                       )}
                     </td>
@@ -177,15 +186,33 @@ export default function TeamPage() {
                     </td>
                     <td className="py-2 px-2 text-right">
                       {game.moneyLine && (
-                        <span className='font-semibold text-blue-600'>
+                        <span className='font-semibold text-blue-600 flex items-center justify-end gap-1'>
                           {game.moneyLine > 0 ? '+' : ''}{game.moneyLine}
+                          {game.wOrL === 'W' ? (
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" className="text-green-600">
+                              <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                          ) : (
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="none" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" className="invisible">
+                              <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                          )}
                         </span>
                       )}
                     </td>
                     <td className="py-2 px-2 text-right">
                       {game.oppMoneyLine && (
-                        <span className='font-semibold text-blue-600'>
+                        <span className='font-semibold text-blue-600 flex items-center justify-end gap-1'>
                           {game.oppMoneyLine > 0 ? '+' : ''}{game.oppMoneyLine}
+                          {game.wOrL === 'L' ? (
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" className="text-green-600">
+                              <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                          ) : (
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="none" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" className="invisible">
+                              <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                          )}
                         </span>
                       )}
                     </td>
