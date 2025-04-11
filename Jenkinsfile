@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKER_IMAGE = 'nextfij'
         DOCKER_TAG = "${env.BUILD_NUMBER}"
-        DOCKER_REGISTRY = 'your-registry-url' // Replace with your Docker registry URL
+        // DOCKER_REGISTRY = 'your-registry-url' // Replace with your Docker registry URL
     }
 
     stages {
