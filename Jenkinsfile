@@ -16,9 +16,10 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                script {
-                    docker.build("${DOCKER_IMAGE}:${DOCKER_TAG}")
-                }
+                sh 'docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} .'
+                // script {
+                //     docker.build("${DOCKER_IMAGE}:${DOCKER_TAG}")
+                // }
             }
         }
 
@@ -44,20 +45,20 @@ pipeline {
             }
         }
 
-        stage('Push Docker Image') {
-            steps {
-                script {
-                    // Login to Docker registry (credentials should be configured in Jenkins)
-                    docker.withRegistry("https://${DOCKER_REGISTRY}", 'docker-credentials') {
-                        docker.image("${DOCKER_IMAGE}:${DOCKER_TAG}").push()
-                        // Also push as latest if this is the main branch
-                        if (env.BRANCH_NAME == 'main') {
-                            docker.image("${DOCKER_IMAGE}:${DOCKER_TAG}").push('latest')
-                        }
-                    }
-                }
-            }
-        }
+        // stage('Push Docker Image') {
+        //     steps {
+        //         script {
+        //             // Login to Docker registry (credentials should be configured in Jenkins)
+        //             docker.withRegistry("https://${DOCKER_REGISTRY}", 'docker-credentials') {
+        //                 docker.image("${DOCKER_IMAGE}:${DOCKER_TAG}").push()
+        //                 // Also push as latest if this is the main branch
+        //                 if (env.BRANCH_NAME == 'main') {
+        //                     docker.image("${DOCKER_IMAGE}:${DOCKER_TAG}").push('latest')
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
     }
 
     post {
