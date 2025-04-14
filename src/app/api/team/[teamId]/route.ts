@@ -5,7 +5,7 @@ export async function GET(
   request: Request,
   { params }: { params: { teamId: string } }
 ) {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const token = cookieStore.get('token')?.value;
   
   if (!token) {
@@ -17,7 +17,7 @@ export async function GET(
 
   const { searchParams } = new URL(request.url);
   const year = searchParams.get('year') || new Date().getFullYear().toString();
-  const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/team/${params.teamId}?year=${year}`;
+  const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/team/${params.teamId}?year=${year}`; 
 
   try {
     const response = await fetch(apiUrl, {
@@ -43,7 +43,7 @@ export async function GET(
 
     const data = await response.json();
     return NextResponse.json(data);
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { message: 'Internal server error' },
       { status: 500 }

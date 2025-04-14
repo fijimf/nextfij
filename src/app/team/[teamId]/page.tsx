@@ -1,6 +1,7 @@
 'use client';
 
 import { useParams, useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { useApiQuery } from '@/lib/api/hooks';
 import type { TeamPage } from '@/lib/api/types/team';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -14,7 +15,6 @@ export default function TeamPage() {
   const params = useParams();
   const router = useRouter();
   const teamId = params.teamId as string;
-  const currentYear = new Date().getFullYear();
 
   const { data: teamPage, isLoading, error } = useApiQuery<TeamPage>(
     ['team', teamId],
@@ -67,10 +67,12 @@ export default function TeamPage() {
         <CardHeader>
           <div className="flex items-center gap-4">
             {teamPage.team.logoUrl && (
-              <img
+              <Image
                 src={teamPage.team.logoUrl}
                 alt={teamPage.team.name}
-                className="w-16 h-16 object-contain"
+                width={64}
+                height={64}
+                className="object-contain"
               />
             )}
             <div>
@@ -91,10 +93,12 @@ export default function TeamPage() {
               <h3 className="font-semibold">{teamPage.conference.name}:</h3>
               <div className="flex items-center gap-2">
                 {teamPage.conference.logoUrl && (
-                  <img
+                  <Image
                     src={teamPage.conference.logoUrl}
                     alt={teamPage.conference.name}
-                    className="w-6 h-6 object-contain"
+                    width={24}
+                    height={24}
+                    className="object-contain"
                   />
                 )}
                 <p>
@@ -147,10 +151,12 @@ export default function TeamPage() {
                       >
                          <span className="text-muted-foreground text-sm">{game.atVs}</span>
                         {game.opponent.logoUrl && (
-                          <img
+                          <Image
                             src={game.opponent.logoUrl}
                             alt={game.opponent.name}
-                            className="w-6 h-6 object-contain"
+                            width={24}
+                            height={24}
+                            className="object-contain"
                           />
                         )}
                         <span className="font-medium">{game.opponent.name}</span>
@@ -229,10 +235,12 @@ export default function TeamPage() {
         <CardHeader className="border-b" style={{ borderColor: `${teamPage.team.primaryColor}20` }}>
           <div className="flex items-center gap-2">
             {teamPage.conference.logoUrl && (
-              <img
+              <Image
                 src={teamPage.conference.logoUrl}
                 alt={teamPage.conference.name}
-                className="w-16 h-16 object-contain"
+                width={64}
+                height={64}
+                className="object-contain"
               />
             )}
             <CardTitle>{teamPage.conference.name} Standings</CardTitle>
@@ -261,10 +269,12 @@ export default function TeamPage() {
                         className="flex items-center gap-2 hover:underline"
                       >
                         {standing.team.logoUrl && (
-                          <img
+                          <Image
                             src={standing.team.logoUrl}
                             alt={standing.team.name}
-                            className="w-6 h-6 object-contain"
+                            width={24}
+                            height={24}
+                            className="object-contain"
                           />
                         )}
                         <span className="font-semibold">{standing.team.name}</span>

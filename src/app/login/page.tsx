@@ -20,7 +20,7 @@ export default function LoginPage() {
     try {
       await login(username, password);
       toast.success('Login successful');
-    } catch (error) {
+    } catch  {
       toast.error('Login failed. Please check your credentials.');
     } finally {
       setIsLoading(false);

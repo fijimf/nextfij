@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { useAuth } from '@/lib/auth/auth-context';
 import { LogoutButton } from '@/components/logout-button';
 
