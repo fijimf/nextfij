@@ -3,7 +3,7 @@ import { cookies } from 'next/headers';
 
 export async function GET(
   request: Request,
-  { params }: { params: { teamId: string } }
+  { params }: { params: Promise<{ teamId: string } >}
 ) {
   const cookieStore = await cookies();
   const token = cookieStore.get('token')?.value;
