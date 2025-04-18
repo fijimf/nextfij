@@ -17,7 +17,8 @@ export async function GET(
 
   const { searchParams } = new URL(request.url);
   const year = searchParams.get('year') || new Date().getFullYear().toString();
-  const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/team/${params.teamId}?year=${year}`; 
+  const { teamId } = await params;
+  const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/team/${teamId}?year=${year}`; 
 
   try {
     const response = await fetch(apiUrl, {
