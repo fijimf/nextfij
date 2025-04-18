@@ -1,5 +1,5 @@
 import { useQuery, useMutation, UseQueryOptions, UseMutationOptions } from '@tanstack/react-query';
-import { apiClient, ApiResponse, ApiError } from './client';
+import { apiClient, ApiError } from './client';
 
 // Generic GET hook
 export function useApiQuery<T>(
@@ -10,7 +10,7 @@ export function useApiQuery<T>(
   return useQuery<T, ApiError>({
     queryKey: key,
     queryFn: async () => {
-      const response = await apiClient.get<ApiResponse<T>>(url);
+      const response = await apiClient.get<T>(url);
       return response.data;
     },
     ...options,
@@ -24,7 +24,7 @@ export function useApiMutation<T, V = unknown>(
 ) {
   return useMutation<T, ApiError, V>({
     mutationFn: async (data) => {
-      const response = await apiClient.post<ApiResponse<T>>(url, data);
+      const response = await apiClient.post<T>(url, data);
       return response.data;
     },
     ...options,
@@ -38,7 +38,7 @@ export function useApiPut<T, V = unknown>(
 ) {
   return useMutation<T, ApiError, V>({
     mutationFn: async (data) => {
-      const response = await apiClient.put<ApiResponse<T>>(url, data);
+      const response = await apiClient.put<T>(url, data);
       return response.data;
     },
     ...options,
@@ -52,7 +52,7 @@ export function useApiDelete<T>(
 ) {
   return useMutation<T, ApiError, void>({
     mutationFn: async () => {
-      const response = await apiClient.delete<ApiResponse<T>>(url);
+      const response = await apiClient.delete<T>(url);
       return response.data;
     },
     ...options,

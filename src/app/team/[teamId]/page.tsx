@@ -20,6 +20,7 @@ export default function TeamPage() {
     ['team', teamId],
     `/team/${teamId}`
   );
+ 
 
   useEffect(() => {
     console.log('Team data:', teamPage);
