@@ -4,6 +4,7 @@ pipeline {
     environment {
         DOCKER_IMAGE = 'nextfij'
         DOCKER_TAG = "${env.BUILD_NUMBER}"
+        IMAGE_VERSION="${env.BRANCH_NAME}"
         // DOCKER_REGISTRY = 'your-registry-url' // Replace with your Docker registry URL
     }
 
@@ -18,7 +19,7 @@ pipeline {
             steps {
                 script {
                     if (env.BRANCH_NAME.startsWith('release')) {
-                        sh 'docker build -t ${DOCKER_IMAGE}:${env.BRANCH_NAME} -t ${DOCKER_IMAGE}:latest .'
+                        sh 'docker build -t ${DOCKER_IMAGE}:${IMAGE_VERSION} -t ${DOCKER_IMAGE}:latest .'
                     } else {
                         sh 'docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} .'                       
                     }
