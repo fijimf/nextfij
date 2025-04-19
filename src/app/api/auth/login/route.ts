@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
   try {
+    console.log('Authenticating...'+request.url);
     const body = await request.json();
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/authenticate`, {
       method: 'POST',
