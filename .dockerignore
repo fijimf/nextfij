@@ -12,10 +12,6 @@ out
 coverage
 .nyc_output
 
-# Environment files
-.env
-.env.*
-!.env.example
 
 # Version control
 .git
