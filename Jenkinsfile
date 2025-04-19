@@ -18,7 +18,7 @@ pipeline {
             steps {
                 script {
                     if (env.BRANCH_NAME.startsWith('release')) {
-                        sh 'docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} -t ${DOCKER_IMAGE}:latest .'
+                        sh 'docker build -t ${DOCKER_IMAGE}:${env.BRANCH_NAME} -t ${DOCKER_IMAGE}:latest .'
                     } else {
                         sh 'npm run build'
                     }
