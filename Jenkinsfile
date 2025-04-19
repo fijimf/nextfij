@@ -20,7 +20,7 @@ pipeline {
                     if (env.BRANCH_NAME.startsWith('release')) {
                         sh 'docker build -t ${DOCKER_IMAGE}:${env.BRANCH_NAME} -t ${DOCKER_IMAGE}:latest .'
                     } else {
-                        sh 'docker build -t ${DOCKER_IMAGE}:${env.BUILD_NUMBER} .'                       
+                        sh 'docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} .'                       
                     }
                 }
             }
@@ -29,7 +29,7 @@ pipeline {
 
     post {
         always {
-            sh 'docker rmi ${DOCKER_IMAGE}:${env.BUILD_NUMBER} || true'
+            sh 'docker rmi ${DOCKER_IMAGE}:${DOCKER_TAG} || true'
         }
         success {
             echo 'Pipeline completed successfully'
