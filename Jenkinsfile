@@ -14,12 +14,17 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Build') {
             steps {
-                sh 'docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} .'
+                script {
+                    if (env.BRANCH_NAME.startsWith('release')) {
+                        sh 'docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} -t ${DOCKER_IMAGE}:latest .'
+                    } else {
+                        sh 'npm run build'
+                    }
+                }
             }
         }
-
     }
 
     post {
