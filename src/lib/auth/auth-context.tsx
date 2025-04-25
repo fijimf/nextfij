@@ -52,13 +52,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       
       // Store token in cookie with secure options
       Cookies.set('token', data.token, { 
-        secure: true, 
-        sameSite: 'strict',
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
         path: '/'
       });
       Cookies.set('username', username, { 
-        secure: true, 
-        sameSite: 'strict',
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
         path: '/'
       });
       

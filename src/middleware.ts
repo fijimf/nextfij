@@ -6,6 +6,9 @@ export function middleware(request: NextRequest) {
   console.log(`[${new Date().toISOString()}] ${request.method} ${request.nextUrl.pathname}`);
   
   const token = request.cookies.get('token');
+  console.log('Token cookie:', token ? '✅ Present' : '❌ Missing');
+  console.log('All cookies:', request.cookies.getAll().map(c => c.name));
+  
   const isLoginPage = request.nextUrl.pathname === '/login';
 
   if (!token && !isLoginPage) {
