@@ -48,21 +48,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
 
       const data = await response.json();
-      console.log('✅ Login successful, setting cookies...');
+      console.log('✅ Login successful');
       
-      // Store token in cookie with secure options
-      Cookies.set('token', data.token, { 
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        path: '/'
-      });
-      Cookies.set('username', username, { 
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        path: '/'
-      });
-      
-      console.log('🍪 Cookies set successfully');
+      // Don't set cookies here anymore as they're set by the backend
       setUser({ username });
       console.log('=== End Login Attempt ===\n');
       router.push('/dashboard');
