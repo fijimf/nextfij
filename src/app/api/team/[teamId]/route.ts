@@ -5,9 +5,10 @@ export async function GET(
   request: Request,
   { params }: { params: Promise<{ teamId: string } >}
 ) {
+  console.log('GET You piece of fucking shit');
   const cookieStore = await cookies();
   const token = cookieStore.get('token')?.value;
-  
+  console.log(token);
   if (!token) {
     return NextResponse.json(
       { message: 'Unauthorized - No token found' },

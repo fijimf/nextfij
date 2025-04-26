@@ -4,6 +4,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { User } from '@/lib/api/types/auth';
 import Cookies from 'js-cookie';
+import { apiClient } from '@/lib/api/client';
 
 interface AuthContextType {
   user: User | null;
@@ -20,38 +21,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
 
   useEffect(() => {
-    console.log('\n=== Auth Context Initial Load ===');
     const token = Cookies.get('token');
-    console.log('🔑 Initial token check:', token ? '✅ Present' : '❌ Missing');
     if (token) {
       setUser({ username: Cookies.get('username') || '' });
     }
     setIsLoading(false);
-    console.log('=== End Auth Context Initial Load ===\n');
   }, []);
 
   const login = async (username: string, password: string) => {
-    console.log('\n=== Login Attempt ===');
     try {
-      console.log('🌐 Making login request...');
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
-      });
+      const response = await apiClient.post('/authenticate', { username, password });
+      const { token } = response.data;
 
-      if (!response.ok) {
-        console.log('❌ Login failed:', response.status);
-        throw new Error('Login failed');
+      if (!token) {
+        throw new Error('No token received from server');
       }
 
-      const data = await response.json();
-      console.log('✅ Login successful, setting cookies...');
-      
-      // Store token in cookie with secure options
-      Cookies.set('token', data.token, { 
+      // Store token and username in cookies
+      Cookies.set('token', token, { 
         secure: true, 
         sameSite: 'strict',
         path: '/'
@@ -62,25 +49,29 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         path: '/'
       });
       
-      console.log('🍪 Cookies set successfully');
       setUser({ username });
-      console.log('=== End Login Attempt ===\n');
       router.push('/dashboard');
     } catch (error) {
-      console.error('❌ Login error:', error);
-      console.log('=== End Login Attempt ===\n');
+      console.error('Login error:', error);
       throw error;
     }
   };
 
-  const logout = () => {
-    console.log('\n=== Logout ===');
-    Cookies.remove('token', { path: '/' });
-    Cookies.remove('username', { path: '/' });
-    console.log('🍪 Cookies removed');
-    setUser(null);
-    console.log('=== End Logout ===\n');
-    router.push('/login');
+  const logout = async () => {
+    try {
+      await apiClient.post('/api/auth/logout');
+      Cookies.remove('token', { path: '/' });
+      Cookies.remove('username', { path: '/' });
+      setUser(null);
+      router.push('/login');
+    } catch (error) {
+      console.error('Logout error:', error);
+      // Still clear local state even if server logout fails
+      Cookies.remove('token', { path: '/' });
+      Cookies.remove('username', { path: '/' });
+      setUser(null);
+      router.push('/login');
+    }
   };
 
   return (

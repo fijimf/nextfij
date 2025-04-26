@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 // Create an axios instance with default config
 export const apiClient = axios.create({
@@ -8,52 +9,56 @@ export const apiClient = axios.create({
   },
 });
 
-// Request interceptor for adding auth token
+// Request interceptor to add auth token
 apiClient.interceptors.request.use(
   (config) => {
-    // You can add auth token here
-    const token = localStorage.getItem('token');
+    console.log('🔵 API Client Request Interceptor');
+    console.log('🔵 Request URL:', config.url);
+    const token = Cookies.get('token');
+    console.log('🔵 Token from cookies:', token ? '✅ Present' : '❌ Missing');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
+      console.log('🔵 Authorization header set:', config.headers.Authorization);
     }
     return config;
   },
   (error) => {
+    console.error('🔴 Request Interceptor Error:', error);
     return Promise.reject(error);
   }
 );
 
 // Response interceptor for handling errors
 apiClient.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    console.log('🟢 API Client Response:', response.status, response.config.url);
+    return response;
+  },
   (error) => {
-    // Handle common error cases
+    console.error('🔴 API Client Error:', error.response?.status, error.config?.url);
     if (error.response) {
-      // The request was made and the server responded with a status code
-      // that falls out of the range of 2xx
       switch (error.response.status) {
         case 401:
-          // Handle unauthorized
+          console.log('🔴 Unauthorized - Clearing token and redirecting');
+          Cookies.remove('token');
+          window.location.href = '/login';
           break;
         case 403:
-          // Handle forbidden
+          console.error('🔴 Forbidden access');
           break;
         case 404:
-          // Handle not found
+          console.error('🔴 Resource not found');
           break;
         case 500:
-          // Handle server error
+          console.error('🔴 Server error');
           break;
         default:
-          // Handle other errors
-          break;
+          console.error('🔴 API error:', error.response.status);
       }
     } else if (error.request) {
-      // The request was made but no response was received
-      console.error('No response received:', error.request);
+      console.error('🔴 No response received:', error.request);
     } else {
-      // Something happened in setting up the request that triggered an Error
-      console.error('Error setting up request:', error.message);
+      console.error('🔴 Error setting up request:', error.message);
     }
     return Promise.reject(error);
   }
