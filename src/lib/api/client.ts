@@ -14,6 +14,8 @@ apiClient.interceptors.request.use(
   (config) => {
     console.log('🔵 API Client Request Interceptor');
     console.log('🔵 Request URL:', config.url);
+    console.log('🔵 Environment:', process.env.NODE_ENV);
+    console.log('🔵 API URL:', process.env.NEXT_PUBLIC_API_URL);
     const token = Cookies.get('token');
     console.log('🔵 Token from cookies:', token ? '✅ Present' : '❌ Missing');
     if (token) {

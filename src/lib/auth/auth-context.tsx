@@ -39,13 +39,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       // Store token and username in cookies
       Cookies.set('token', token, { 
-        secure: true, 
-        sameSite: 'strict',
+        secure: false, //process.env.NODE_ENV === 'production',
+        //TODO: change to strict in production, figure out how to runn https
+        sameSite: 'lax',
         path: '/'
       });
       Cookies.set('username', username, { 
-        secure: true, 
-        sameSite: 'strict',
+        secure: false, //process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
         path: '/'
       });
       
