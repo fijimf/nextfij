@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { apiClient } from '@/lib/api/client';
@@ -111,44 +112,46 @@ export default function TeamsPage() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {filteredTeams.map((team) => (
-          <div 
+          <Link 
             key={team.id} 
-            className="flex items-center p-4 bg-card rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer"
-            onClick={() => {/* Handle team click */}}
+            href={`/team/${team.id}`}
+            className="block"
           >
-            <div className="flex-shrink-0 w-12 h-12 mr-4 bg-muted rounded-full flex items-center justify-center">
-              <Image
-                src={team.logoUrl}
-                alt={`${team.name} ${team.nickname}`}
-                width={32}
-                height={32}
-                className="rounded-full"
-              />
-            </div>
-            <div className="flex-1 min-w-0">
-              <h3 className="text-sm font-medium truncate">{team.name}</h3>
-              <p className="text-xs text-muted-foreground truncate">
-                {team.nickname}
-              </p>
-              <div className="flex items-center gap-2 mt-1">
-                {team.conferenceLogoUrl && (
-                  <Image
-                    src={team.conferenceLogoUrl}
-                    alt={team.conference}
-                    width={16}
-                    height={16}
-                    className="rounded-sm"
-                  />
-                )}
-                <span className="text-xs text-muted-foreground truncate">
-                  {team.conference}
-                </span>
+            <div className="flex items-center p-4 bg-card rounded-lg shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex-shrink-0 w-12 h-12 mr-4 bg-muted rounded-full flex items-center justify-center">
+                <Image
+                  src={team.logoUrl}
+                  alt={`${team.name} ${team.nickname}`}
+                  width={32}
+                  height={32}
+                  className="rounded-full"
+                />
+              </div>
+              <div className="flex-1 min-w-0">
+                <h3 className="text-sm font-medium truncate">{team.name}</h3>
+                <p className="text-xs text-muted-foreground truncate">
+                  {team.nickname}
+                </p>
+                <div className="flex items-center gap-2 mt-1">
+                  {team.conferenceLogoUrl && (
+                    <Image
+                      src={team.conferenceLogoUrl}
+                      alt={team.conference}
+                      width={16}
+                      height={16}
+                      className="rounded-sm"
+                    />
+                  )}
+                  <span className="text-xs text-muted-foreground truncate">
+                    {team.conference}
+                  </span>
+                </div>
+              </div>
+              <div className="ml-4 text-sm font-medium">
+                {team.record.wins}-{team.record.losses}
               </div>
             </div>
-            <div className="ml-4 text-sm font-medium">
-              {team.record.wins}-{team.record.losses}
-            </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>
