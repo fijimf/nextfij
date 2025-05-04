@@ -53,7 +53,7 @@ export default function TeamsPage() {
 
   // Filter teams based on search term and conference
   const filteredTeams = teams.filter(team => {
-    const matchesSearch = team.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = team.name.toLowerCase().includes(searchTerm.toLowerCase()) || team.nickname.toLowerCase().includes(searchTerm.toLowerCase())  ;
     const matchesConference = selectedConference === 'all' || team.conference === selectedConference;
     return matchesSearch && matchesConference;
   });
