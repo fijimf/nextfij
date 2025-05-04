@@ -118,13 +118,13 @@ export default function TeamsPage() {
             className="block"
           >
             <div className="flex items-center p-4 bg-card rounded-lg shadow-sm hover:shadow-md transition-shadow">
-              <div className="flex-shrink-0 w-12 h-12 mr-4 bg-muted rounded-full flex items-center justify-center">
+              <div className="flex-shrink-0 w-12 h-12 mr-4  rounded-full flex items-center justify-center">
                 <Image
                   src={team.logoUrl}
                   alt={`${team.name} ${team.nickname}`}
                   width={32}
                   height={32}
-                  className="rounded-full"
+                  className=""
                 />
               </div>
               <div className="flex-1 min-w-0">
