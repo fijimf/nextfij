@@ -141,7 +141,7 @@ export default function TeamPage() {
                     <td className="py-2 px-2 text-muted-foreground">
                       {format(new Date(game.date), 'MMM d')}
                     </td>
-                    <td className="py-2 px-2 text-center font-bold">
+                    <td className="py-2 px-2 text-center">
                       <span className={game.wOrL === 'W' ? 'text-green-600' : 'text-red-600'}>{game.wOrL}&nbsp;</span>
                        {game.score} - {game.oppScore}
                     </td>
@@ -167,7 +167,7 @@ export default function TeamPage() {
                    
                     <td className="py-2 px-2 text-right">
                       {game.spreadDescription && (
-                        <span className='font-semibold text-blue-600 flex items-center justify-end gap-1'>
+                        <span className='text-blue-600 flex items-center justify-end gap-1'>
                          {game.spreadDescription}
                          {game.spreadCovered ? (
                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" className="text-green-600">
@@ -183,17 +183,17 @@ export default function TeamPage() {
                     </td>
                     <td className="py-2 px-2 text-right">
                       {game.overUnder && (
-                        <span className="font-semibold text-blue-600">{game.overUnder}</span>
+                        <span className="text-blue-600">{game.overUnder}</span>
                       )}
                     </td>
                     <td className="py-2 px-2 text-left">
                       {game.overOrUnder && (
-                        <span className="font-semibold text-blue-600">{game.overOrUnder}</span>
+                        <span className="text-blue-600">{game.overOrUnder}</span>
                       )}
                     </td>
                     <td className="py-2 px-2 text-right">
                       {game.moneyLine && (
-                        <span className='font-semibold text-blue-600 flex items-center justify-end gap-1'>
+                        <span className='text-blue-600 flex items-center justify-end gap-1'>
                           {game.moneyLine > 0 ? '+' : ''}{game.moneyLine}
                           {game.wOrL === 'W' ? (
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" className="text-green-600">
@@ -209,7 +209,7 @@ export default function TeamPage() {
                     </td>
                     <td className="py-2 px-2 text-right">
                       {game.oppMoneyLine && (
-                        <span className='font-semibold text-blue-600 flex items-center justify-end gap-1'>
+                        <span className='text-blue-600 flex items-center justify-end gap-1'>
                           {game.oppMoneyLine > 0 ? '+' : ''}{game.oppMoneyLine}
                           {game.wOrL === 'L' ? (
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" className="text-green-600">

@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -9,7 +10,7 @@ export default function Home() {
         <div className="mb-8 flex justify-center">
           <Image
             src="/tedmorgan2.jpg"
-            alt="Ted Morgan"
+            alt="Fridge Rules"
             width={300}
             height={300}
             className="rounded-full object-cover"
@@ -31,12 +32,15 @@ export default function Home() {
           <Card>
             <CardHeader>
               <CardTitle>Teams</CardTitle>
-              <CardDescription>Built with the latest design principles</CardDescription>
+              <CardDescription>Team schedules, records, and more.</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-muted-foreground">
-                Experience a beautiful and responsive design that works across all devices.
-              </p>
+              
+              <Link href="/teams">
+                <Button variant="outline" className="w-full">
+                  View Teams
+                </Button>
+              </Link>
             </CardContent>
           </Card>
 
