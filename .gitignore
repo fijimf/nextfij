@@ -45,3 +45,4 @@ next-env.d.ts
 .idea/nextfij.iml
 .idea/vcs.xml
 .idea/inspectionProfiles/Project_Default.xml
+docker-compose.yml
