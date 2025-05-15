@@ -12,7 +12,7 @@ import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
-import Cookies from 'js-cookie';
+import { apiClient } from '@/lib/api/client';
 
 interface ScheduleStatus {
   numberOfTeams: number;
@@ -45,16 +45,8 @@ export default function AdminPage() {
   const fetchScheduleStatus = async () => {
     setStatusLoading(true);
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/schedule/admin/status`, {
-        headers: {
-          'Authorization': `Bearer ${Cookies.get('token')}`,
-        },
-      });
-      
-      if (!response.ok) throw new Error('Failed to fetch status');
-      
-      const data = await response.json();
-      setScheduleStatus(data);
+      const response = await apiClient.get('/schedule/admin/status');
+      setScheduleStatus(response.data);
     } catch (error) {
       toast.error('Failed to fetch schedule status');
     } finally {
@@ -67,21 +59,9 @@ export default function AdminPage() {
       toast.error('Please select both season year and model');
       return;
     }
-
     setLoading(true);
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/schedule/admin/runModel?seasonYear=${seasonYear}&model=${selectedModel}`,
-        {
-          headers: {
-            'Authorization': `Bearer ${Cookies.get('token')}`,
-          },
-        }
-      );
-      
-      if (!response.ok) throw new Error('Failed to run model');
-      
-      const data = await response.json();
+      await apiClient.get(`/schedule/admin/runModel?seasonYear=${seasonYear}&model=${selectedModel}`);
       toast.success('Model run successfully');
     } catch (error) {
       toast.error('Failed to run model');
@@ -93,16 +73,8 @@ export default function AdminPage() {
   const handleLoadTeams = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/schedule/admin/loadTeams`, {
-        headers: {
-          'Authorization': `Bearer ${Cookies.get('token')}`,
-        },
-      });
-      
-      if (!response.ok) throw new Error('Failed to load teams');
-      
-      const data = await response.json();
-      toast.success(`Loaded ${data.length} teams`);
+      const response = await apiClient.get('/schedule/admin/loadTeams');
+      toast.success(`Loaded ${response.data.length} teams`);
     } catch (error) {
       toast.error('Failed to load teams');
     } finally {
@@ -115,22 +87,10 @@ export default function AdminPage() {
       toast.error('Please enter a season year');
       return;
     }
-
     setLoading(true);
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/schedule/admin/loadSeason?seasonYear=${seasonYear}`,
-        {
-          headers: {
-            'Authorization': `Bearer ${Cookies.get('token')}`,
-          },
-        }
-      );
-      
-      if (!response.ok) throw new Error('Failed to load season');
-      
-      const data = await response.json();
-      setScheduleStatus(data);
+      const response = await apiClient.get(`/schedule/admin/loadSeason?seasonYear=${seasonYear}`);
+      setScheduleStatus(response.data);
       toast.success('Season loaded successfully');
     } catch (error) {
       toast.error('Failed to load season');
@@ -144,23 +104,11 @@ export default function AdminPage() {
       toast.error('Please select both season year and date');
       return;
     }
-
     setLoading(true);
     try {
       const formattedDate = format(selectedDate, 'yyyy-MM-dd');
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/schedule/admin/loadGames?seasonYear=${seasonYear}&date=${formattedDate}`,
-        {
-          headers: {
-            'Authorization': `Bearer ${Cookies.get('token')}`,
-          },
-        }
-      );
-      
-      if (!response.ok) throw new Error('Failed to load games');
-      
-      const data = await response.json();
-      toast.success(`Loaded ${data.length} games`);
+      const response = await apiClient.get(`/schedule/admin/loadGames?seasonYear=${seasonYear}&date=${formattedDate}`);
+      toast.success(`Loaded ${response.data.length} games`);
     } catch (error) {
       toast.error('Failed to load games');
     } finally {
@@ -171,16 +119,8 @@ export default function AdminPage() {
   const handleLoadConferences = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/schedule/admin/loadConferences`, {
-        headers: {
-          'Authorization': `Bearer ${Cookies.get('token')}`,
-        },
-      });
-      
-      if (!response.ok) throw new Error('Failed to load conferences');
-      
-      const data = await response.json();
-      toast.success(`Loaded ${data.length} conferences`);
+      const response = await apiClient.get('/schedule/admin/loadConferences');
+      toast.success(`Loaded ${response.data.length} conferences`);
     } catch (error) {
       toast.error('Failed to load conferences');
     } finally {
