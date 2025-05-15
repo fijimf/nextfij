@@ -158,6 +158,21 @@ export default function AdminPage() {
     }
   };
 
+  const handleDropSeason = async (seasonYear: number) => {
+    setLoading(true);
+    try {
+      // Assuming a POST request to an endpoint that handles dropping a specific season.
+      // This endpoint '/schedule/admin/dropSeason' needs to be implemented on the backend.
+      await apiClient.post(`/schedule/admin/dropSeason?seasonYear=${seasonYear}`);
+      toast.success(`Season ${seasonYear} dropped successfully`);
+      fetchScheduleStatus(); // Refresh status after dropping a season
+    } catch (error) {
+      toast.error(`Failed to drop season ${seasonYear}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="container mx-auto p-6">
       <h1 className="text-3xl font-bold mb-8">Schedule Admin Control Panel</h1>
@@ -261,14 +276,6 @@ export default function AdminPage() {
                 </CardHeader>
                 <CardContent className="space-y-2">
                   <div className="flex justify-between items-center">
-                    <p className="text-sm text-muted-foreground">Teams</p>
-                    <p className="font-medium">{season.numberOfTeams}</p>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <p className="text-sm text-muted-foreground">Conferences</p>
-                    <p className="font-medium">{season.numberOfConferences}</p>
-                  </div>
-                  <div className="flex justify-between items-center">
                     <p className="text-sm text-muted-foreground">Games</p>
                     <p className="font-medium">{season.numberOfGames}</p>
                   </div>
@@ -277,6 +284,24 @@ export default function AdminPage() {
                     <p className="font-medium">{new Date(season.lastCompleteGameDate).toLocaleDateString()}</p>
                   </div>
                 </CardContent>
+                <CardFooter className="pt-4 flex gap-2">
+                  <Button 
+                    onClick={fetchScheduleStatus} 
+                    disabled={loading || statusLoading}
+                    variant="outline"
+                    size="sm"
+                  >
+                    Refresh Games
+                  </Button>
+                  <Button 
+                    onClick={() => handleDropSeason(season.year)} 
+                    disabled={loading || statusLoading}
+                    variant="destructive"
+                    size="sm"
+                  >
+                    Drop Season
+                  </Button>
+                </CardFooter>
               </Card>
             ))}
           </>
