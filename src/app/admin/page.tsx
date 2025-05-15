@@ -171,18 +171,12 @@ export default function AdminPage() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-base font-medium">Teams</CardTitle>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="h-6 w-6"
-                  onClick={fetchScheduleStatus}
-                  disabled={statusLoading}
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" /><path d="M21 3v5h-5" /><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" /><path d="M3 21v-5h5" /></svg>
-                </Button>
               </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{scheduleStatus.numberOfTeams}</div>
+              <CardContent className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <p className="text-sm text-muted-foreground">Number of Teams</p>
+                    <p className="font-medium">{scheduleStatus.numberOfTeams}</p>
+                  </div>
               </CardContent>
               <CardFooter className="pt-4 flex gap-2">
               
@@ -208,18 +202,13 @@ export default function AdminPage() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-base font-medium">Conferences</CardTitle>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="h-6 w-6"
-                  onClick={fetchScheduleStatus}
-                  disabled={statusLoading}
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" /><path d="M21 3v5h-5" /><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" /><path d="M3 21v-5h5" /></svg>
-                </Button>
               </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{scheduleStatus.numberOfConferences}</div>
+              <CardContent className="space-y-2">
+              <div className="flex justify-between items-center">
+                <p className="text-sm text-muted-foreground">Number of Conferences</p>
+                <p className="font-medium">{scheduleStatus.numberOfConferences}</p>
+              </div>
+            
               </CardContent>
               <CardFooter className="pt-4 flex gap-2">
                 <Button
@@ -246,15 +235,6 @@ export default function AdminPage() {
               <Card key={season.year}>
                 <CardHeader className="flex flex-row items-center justify-between pb-2">
                   <CardTitle className="text-base font-medium">Season {season.year}</CardTitle>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    className="h-6 w-6"
-                    onClick={fetchScheduleStatus}
-                    disabled={statusLoading}
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" /><path d="M21 3v5h-5" /><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" /><path d="M3 21v-5h5" /></svg>
-                  </Button>
                 </CardHeader>
                 <CardContent className="space-y-2">
                   <div className="flex justify-between items-center">
