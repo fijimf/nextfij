@@ -191,8 +191,9 @@ export default function AdminPage() {
                 <Button
                   onClick={handleDropTeams}
                   disabled={loading || statusLoading}
-                  variant="destructive"
+                  variant="outline"
                   size="sm"
+                  className="text-destructive border-destructive hover:bg-destructive/10"
                 >
                   Drop Teams
                 </Button>
@@ -222,8 +223,9 @@ export default function AdminPage() {
                 <Button
                   onClick={handleDropConferences}
                   disabled={loading || statusLoading}
-                  variant="destructive"
+                  variant="outline"
                   size="sm"
+                  className="text-destructive border-destructive hover:bg-destructive/10"
                 >
                   Drop Conferences
                 </Button>
@@ -258,8 +260,9 @@ export default function AdminPage() {
                   <Button 
                     onClick={() => handleDropSeason(season.year)} 
                     disabled={loading || statusLoading}
-                    variant="destructive"
+                    variant="outline"
                     size="sm"
+                    className="text-destructive border-destructive hover:bg-destructive/10"
                   >
                     Drop Season
                   </Button>
