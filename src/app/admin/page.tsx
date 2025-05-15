@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { format } from "date-fns";
@@ -32,7 +31,6 @@ interface SeasonStatus {
 
 export default function AdminPage() {
   const [seasonYear, setSeasonYear] = useState<string>('');
-  const [selectedModel, setSelectedModel] = useState<string>('');
   const [selectedDate, setSelectedDate] = useState<Date>();
   const [loading, setLoading] = useState<boolean>(false);
   const [scheduleStatus, setScheduleStatus] = useState<ScheduleStatus | null>(null);
@@ -51,22 +49,6 @@ export default function AdminPage() {
       toast.error('Failed to fetch schedule status');
     } finally {
       setStatusLoading(false);
-    }
-  };
-
-  const handleRunModel = async () => {
-    if (!seasonYear || !selectedModel) {
-      toast.error('Please select both season year and model');
-      return;
-    }
-    setLoading(true);
-    try {
-      await apiClient.get(`/schedule/admin/runModel?seasonYear=${seasonYear}&model=${selectedModel}`);
-      toast.success('Model run successfully');
-    } catch (error) {
-      toast.error('Failed to run model');
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -315,103 +297,28 @@ export default function AdminPage() {
 
         <Card className="lg:col-span-1">
           <CardHeader>
-            <CardTitle>Run Model</CardTitle>
+            <CardTitle>Add Season</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               <div>
-                <Label htmlFor="seasonYear">Season Year</Label>
+                <Label htmlFor="seasonYearLoad">Season Year</Label>
                 <Input
-                  id="seasonYear"
+                  id="seasonYearLoad"
                   type="number"
                   value={seasonYear}
                   onChange={(e) => setSeasonYear(e.target.value)}
-                  placeholder="Enter season year"
+                  placeholder="Enter season year (e.g., 2023)"
                 />
               </div>
-              <div>
-                <Label htmlFor="model">Model</Label>
-                <Select value={selectedModel} onValueChange={setSelectedModel}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a model" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="model1">Model 1</SelectItem>
-                    <SelectItem value="model2">Model 2</SelectItem>
-                    <SelectItem value="model3">Model 3</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <Button
-                onClick={handleRunModel}
-                disabled={loading}
-                className="w-full"
-              >
-                Run Model
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="lg:col-span-1">
-          <CardHeader>
-            <CardTitle>Load Data</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div>
-                <Label>Date</Label>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      className={cn(
-                        "w-full justify-start text-left font-normal",
-                        !selectedDate && "text-muted-foreground"
-                      )}
-                    >
-                      <CalendarIcon className="mr-2 h-4 w-4" />
-                      {selectedDate ? format(selectedDate, "PPP") : "Pick a date"}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0">
-                    <Calendar
-                      mode="single"
-                      selected={selectedDate}
-                      onSelect={setSelectedDate}
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
-              </div>
+            
               <div className="grid grid-cols-2 gap-2">
                 <Button
                   onClick={handleLoadTeams}
                   disabled={loading}
                   variant="outline"
                 >
-                  Load Teams
-                </Button>
-                <Button
-                  onClick={handleLoadConferences}
-                  disabled={loading}
-                  variant="outline"
-                >
-                  Load Conferences
-                </Button>
-                <Button
-                  onClick={handleLoadSeason}
-                  disabled={loading}
-                  variant="outline"
-                >
-                  Load Season
-                </Button>
-                <Button
-                  onClick={handleLoadGames}
-                  disabled={loading}
-                  variant="outline"
-                >
-                  Load Games
+                  Add Season
                 </Button>
               </div>
             </div>
