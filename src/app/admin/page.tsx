@@ -189,7 +189,7 @@ export default function AdminPage() {
                 </Button>
                 <Button
                   onClick={handleDropTeams}
-                  disabled={loading || statusLoading}
+                  disabled={loading || statusLoading || scheduleStatus.seasons.length > 0}
                   variant="outline"
                   size="sm"
                   className="text-destructive border-destructive hover:bg-destructive/10"
@@ -221,7 +221,7 @@ export default function AdminPage() {
                 </Button>
                 <Button
                   onClick={handleDropConferences}
-                  disabled={loading || statusLoading}
+                  disabled={loading || statusLoading || scheduleStatus.seasons.length > 0}
                   variant="outline"
                   size="sm"
                   className="text-destructive border-destructive hover:bg-destructive/10"
