@@ -284,7 +284,7 @@ export default function AdminPage() {
           <CardContent>
             <div className="space-y-4">
               <div>
-                <Label htmlFor="seasonYearLoad">Season Year</Label>
+                <Label htmlFor="seasonYearLoad" className="mb-2">Season Year</Label>
                 <Input
                   id="seasonYearLoad"
                   type="number"
