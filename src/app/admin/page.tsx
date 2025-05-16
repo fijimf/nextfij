@@ -26,7 +26,6 @@ interface SeasonStatus {
 
 export default function AdminPage() {
   const [seasonYear, setSeasonYear] = useState<string>('');
-  const [selectedDate, setSelectedDate] = useState<Date>();
   const [loadingTeams, setLoadingTeams] = useState<boolean>(false);
   const [loadingConferences, setLoadingConferences] = useState<boolean>(false);
   const [loadingSeason, setLoadingSeason] = useState<boolean>(false);
@@ -45,6 +44,7 @@ export default function AdminPage() {
       setScheduleStatus(response.data);
     } catch (error) {
       toast.error('Failed to fetch schedule status');
+      console.error(error);
     } finally {
       setStatusLoading(false);
     }
@@ -57,6 +57,7 @@ export default function AdminPage() {
       toast.success(`Loaded ${response.data.length} teams`);
     } catch (error) {
       toast.error('Failed to load teams');
+      console.error(error);
     } finally {
       setLoadingTeams(false);
     }
@@ -74,6 +75,7 @@ export default function AdminPage() {
       toast.success('Season loaded successfully');
     } catch (error) {
       toast.error('Failed to load season');
+      console.error(error);
     } finally {
       setLoadingSeason(false);
     }
@@ -90,6 +92,7 @@ export default function AdminPage() {
       toast.success(`Loaded ${response.data.length} games`);
     } catch (error) {
       toast.error('Failed to load games');
+      console.error(error);
     } finally {
       setLoadingGames(false);
     }
@@ -102,6 +105,7 @@ export default function AdminPage() {
       toast.success(`Loaded ${response.data.length} conferences`);
     } catch (error) {
       toast.error('Failed to load conferences');
+      console.error(error);
     } finally {
       setLoadingConferences(false);
     }
@@ -115,6 +119,7 @@ export default function AdminPage() {
       fetchScheduleStatus();
     } catch (error) {
       toast.error('Failed to drop teams');
+      console.error(error);
     } finally {
       setLoadingTeams(false);
     }
@@ -128,6 +133,7 @@ export default function AdminPage() {
       fetchScheduleStatus();
     } catch (error) {
       toast.error('Failed to drop conferences');
+      console.error(error);
     } finally {
       setLoadingConferences(false);
     }
@@ -141,6 +147,7 @@ export default function AdminPage() {
       fetchScheduleStatus();
     } catch (error) {
       toast.error(`Failed to drop season ${seasonYear}`);
+      console.error(error);
     } finally {
       setLoadingGames(false);
     }
