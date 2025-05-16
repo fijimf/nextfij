@@ -5,11 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { apiClient } from '@/lib/api/client';
 
@@ -32,7 +27,10 @@ interface SeasonStatus {
 export default function AdminPage() {
   const [seasonYear, setSeasonYear] = useState<string>('');
   const [selectedDate, setSelectedDate] = useState<Date>();
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loadingTeams, setLoadingTeams] = useState<boolean>(false);
+  const [loadingConferences, setLoadingConferences] = useState<boolean>(false);
+  const [loadingSeason, setLoadingSeason] = useState<boolean>(false);
+  const [loadingGames, setLoadingGames] = useState<boolean>(false);
   const [scheduleStatus, setScheduleStatus] = useState<ScheduleStatus | null>(null);
   const [statusLoading, setStatusLoading] = useState<boolean>(true);
 
@@ -53,14 +51,14 @@ export default function AdminPage() {
   };
 
   const handleLoadTeams = async () => {
-    setLoading(true);
+    setLoadingTeams(true);
     try {
       const response = await apiClient.get('/schedule/admin/loadTeams');
       toast.success(`Loaded ${response.data.length} teams`);
     } catch (error) {
       toast.error('Failed to load teams');
     } finally {
-      setLoading(false);
+      setLoadingTeams(false);
     }
   };
 
@@ -69,7 +67,7 @@ export default function AdminPage() {
       toast.error('Please enter a season year');
       return;
     }
-    setLoading(true);
+    setLoadingSeason(true);
     try {
       const response = await apiClient.get(`/schedule/admin/loadSeason?seasonYear=${seasonYear}`);
       setScheduleStatus(response.data);
@@ -77,7 +75,7 @@ export default function AdminPage() {
     } catch (error) {
       toast.error('Failed to load season');
     } finally {
-      setLoading(false);
+      setLoadingSeason(false);
     }
   };
 
@@ -86,71 +84,65 @@ export default function AdminPage() {
       toast.error('Please select both season year');
       return;
     }
-    setLoading(true);
+    setLoadingGames(true);
     try {
       const response = await apiClient.get(`/schedule/admin/loadGames?seasonYear=${seasonYear}`);
       toast.success(`Loaded ${response.data.length} games`);
     } catch (error) {
       toast.error('Failed to load games');
     } finally {
-      setLoading(false);
+      setLoadingGames(false);
     }
   };
 
   const handleLoadConferences = async () => {
-    setLoading(true);
+    setLoadingConferences(true);
     try {
       const response = await apiClient.get('/schedule/admin/loadConferences');
       toast.success(`Loaded ${response.data.length} conferences`);
     } catch (error) {
       toast.error('Failed to load conferences');
     } finally {
-      setLoading(false);
+      setLoadingConferences(false);
     }
   };
 
   const handleDropTeams = async () => {
-    setLoading(true);
+    setLoadingTeams(true);
     try {
-      // Assuming a POST request to an endpoint that handles dropping all teams.
-      // This endpoint '/schedule/admin/dropTeams' needs to be implemented on the backend.
       await apiClient.post('/schedule/admin/dropTeams');
       toast.success('All teams dropped successfully');
-      fetchScheduleStatus(); // Refresh status after dropping teams
+      fetchScheduleStatus();
     } catch (error) {
       toast.error('Failed to drop teams');
     } finally {
-      setLoading(false);
+      setLoadingTeams(false);
     }
   };
 
   const handleDropConferences = async () => {
-    setLoading(true);
+    setLoadingConferences(true);
     try {
-      // Assuming a POST request to an endpoint that handles dropping all conferences.
-      // This endpoint '/schedule/admin/dropConferences' needs to be implemented on the backend.
       await apiClient.post('/schedule/admin/dropConferences');
       toast.success('All conferences dropped successfully');
-      fetchScheduleStatus(); // Refresh status after dropping conferences
+      fetchScheduleStatus();
     } catch (error) {
       toast.error('Failed to drop conferences');
     } finally {
-      setLoading(false);
+      setLoadingConferences(false);
     }
   };
 
   const handleDropSeason = async (seasonYear: number) => {
-    setLoading(true);
+    setLoadingGames(true);
     try {
-      // Assuming a POST request to an endpoint that handles dropping a specific season.
-      // This endpoint '/schedule/admin/dropSeason' needs to be implemented on the backend.
       await apiClient.post(`/schedule/admin/dropSeason?seasonYear=${seasonYear}`);
       toast.success(`Season ${seasonYear} dropped successfully`);
-      fetchScheduleStatus(); // Refresh status after dropping a season
+      fetchScheduleStatus();
     } catch (error) {
       toast.error(`Failed to drop season ${seasonYear}`);
     } finally {
-      setLoading(false);
+      setLoadingGames(false);
     }
   };
 
@@ -162,7 +154,7 @@ export default function AdminPage() {
         {statusLoading ? (
           <Card className="md:col-span-2 lg:col-span-3">
             <CardContent className="flex items-center justify-center p-6">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+              <div className="h-4 w-4 animate-spin rounded-full border-b-2 border-primary"></div>
             </CardContent>
           </Card>
         ) : scheduleStatus ? (
@@ -178,23 +170,36 @@ export default function AdminPage() {
                   </div>
               </CardContent>
               <CardFooter className="pt-4 flex gap-2">
-              
                 <Button
                   onClick={handleLoadTeams}
-                  disabled={loading || statusLoading}
+                  disabled={loadingTeams || statusLoading}
                   variant="outline"
                   size="sm"
                 >
-                  Refresh Teams
+                  {loadingTeams ? (
+                    <>
+                      <div className="mr-2 h-4 w-4 animate-spin rounded-full border-b-2 border-primary"></div>
+                      Loading...
+                    </>
+                  ) : (
+                    'Refresh Teams'
+                  )}
                 </Button>
                 <Button
                   onClick={handleDropTeams}
-                  disabled={loading || statusLoading || scheduleStatus.seasons.length > 0}
+                  disabled={loadingTeams || statusLoading || scheduleStatus.seasons.length > 0}
                   variant="outline"
                   size="sm"
                   className="text-destructive border-destructive hover:bg-destructive/10"
                 >
-                  Drop Teams
+                  {loadingTeams ? (
+                    <>
+                      <div className="mr-2 h-4 w-4 animate-spin rounded-full border-b-2 border-primary"></div>
+                      Dropping...
+                    </>
+                  ) : (
+                    'Drop Teams'
+                  )}
                 </Button>
               </CardFooter>
             </Card>
@@ -208,27 +213,39 @@ export default function AdminPage() {
                 <p className="text-sm text-muted-foreground">Number of Conferences</p>
                 <p className="font-medium">{scheduleStatus.numberOfConferences}</p>
               </div>
-            
               </CardContent>
               <CardFooter className="pt-4 flex gap-2">
                 <Button
                   onClick={handleLoadConferences}
-                  disabled={loading || statusLoading}
+                  disabled={loadingConferences || statusLoading}
                   variant="outline"
                   size="sm"
                 >
-                  Refresh Conferences
+                  {loadingConferences ? (
+                    <>
+                      <div className="mr-2 h-4 w-4 animate-spin rounded-full border-b-2 border-primary"></div>
+                      Loading...
+                    </>
+                  ) : (
+                    'Refresh Conferences'
+                  )}
                 </Button>
                 <Button
                   onClick={handleDropConferences}
-                  disabled={loading || statusLoading || scheduleStatus.seasons.length > 0}
+                  disabled={loadingConferences || statusLoading || scheduleStatus.seasons.length > 0}
                   variant="outline"
                   size="sm"
                   className="text-destructive border-destructive hover:bg-destructive/10"
                 >
-                  Drop Conferences
+                  {loadingConferences ? (
+                    <>
+                      <div className="mr-2 h-4 w-4 animate-spin rounded-full border-b-2 border-primary"></div>
+                      Dropping...
+                    </>
+                  ) : (
+                    'Drop Conferences'
+                  )}
                 </Button>
-
               </CardFooter>
             </Card>
 
@@ -250,20 +267,34 @@ export default function AdminPage() {
                 <CardFooter className="pt-4 flex gap-2">
                   <Button 
                     onClick={() => handleLoadGames(season.year)} 
-                    disabled={loading || statusLoading}
+                    disabled={loadingGames || statusLoading}
                     variant="outline"
                     size="sm"
                   >
-                    Refresh Games
+                    {loadingGames ? (
+                      <>
+                        <div className="mr-2 h-4 w-4 animate-spin rounded-full border-b-2 border-primary"></div>
+                        Loading...
+                      </>
+                    ) : (
+                      'Refresh Games'
+                    )}
                   </Button>
                   <Button 
                     onClick={() => handleDropSeason(season.year)} 
-                    disabled={loading || statusLoading}
+                    disabled={loadingGames || statusLoading}
                     variant="outline"
                     size="sm"
                     className="text-destructive border-destructive hover:bg-destructive/10"
                   >
-                    Drop Season
+                    {loadingGames ? (
+                      <>
+                        <div className="mr-2 h-4 w-4 animate-spin rounded-full border-b-2 border-primary"></div>
+                        Dropping...
+                      </>
+                    ) : (
+                      'Drop Season'
+                    )}
                   </Button>
                 </CardFooter>
               </Card>
@@ -297,13 +328,13 @@ export default function AdminPage() {
               <div className="grid grid-cols-2 gap-2">
                 <Button
                   onClick={handleLoadSeason}
-                  disabled={loading}
+                  disabled={loadingSeason}
                   variant="outline"
                   className="w-full"
                 >
-                  {loading ? (
+                  {loadingSeason ? (
                     <>
-                      <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent"></div>
+                      <div className="mr-2 h-4 w-4 animate-spin rounded-full border-b-2 border-primary"></div>
                       Adding Season...
                     </>
                   ) : (
