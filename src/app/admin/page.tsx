@@ -81,15 +81,14 @@ export default function AdminPage() {
     }
   };
 
-  const handleLoadGames = async () => {
-    if (!seasonYear || !selectedDate) {
-      toast.error('Please select both season year and date');
+  const handleLoadGames = async (seasonYear: number) => {
+    if (!seasonYear ) {
+      toast.error('Please select both season year');
       return;
     }
     setLoading(true);
     try {
-      const formattedDate = format(selectedDate, 'yyyy-MM-dd');
-      const response = await apiClient.get(`/schedule/admin/loadGames?seasonYear=${seasonYear}&date=${formattedDate}`);
+      const response = await apiClient.get(`/schedule/admin/loadGames?seasonYear=${seasonYear}`);
       toast.success(`Loaded ${response.data.length} games`);
     } catch (error) {
       toast.error('Failed to load games');
@@ -181,7 +180,7 @@ export default function AdminPage() {
               <CardFooter className="pt-4 flex gap-2">
               
                 <Button
-                  onClick={fetchScheduleStatus}
+                  onClick={handleLoadTeams}
                   disabled={loading || statusLoading}
                   variant="outline"
                   size="sm"
@@ -213,7 +212,7 @@ export default function AdminPage() {
               </CardContent>
               <CardFooter className="pt-4 flex gap-2">
                 <Button
-                  onClick={fetchScheduleStatus}
+                  onClick={handleLoadConferences}
                   disabled={loading || statusLoading}
                   variant="outline"
                   size="sm"
@@ -250,7 +249,7 @@ export default function AdminPage() {
                 </CardContent>
                 <CardFooter className="pt-4 flex gap-2">
                   <Button 
-                    onClick={fetchScheduleStatus} 
+                    onClick={() => handleLoadGames(season.year)} 
                     disabled={loading || statusLoading}
                     variant="outline"
                     size="sm"
@@ -297,7 +296,7 @@ export default function AdminPage() {
             
               <div className="grid grid-cols-2 gap-2">
                 <Button
-                  onClick={handleLoadTeams}
+                  onClick={handleLoadSeason}
                   disabled={loading}
                   variant="outline"
                 >
