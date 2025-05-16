@@ -299,8 +299,16 @@ export default function AdminPage() {
                   onClick={handleLoadSeason}
                   disabled={loading}
                   variant="outline"
+                  className="w-full"
                 >
-                  Add Season
+                  {loading ? (
+                    <>
+                      <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent"></div>
+                      Adding Season...
+                    </>
+                  ) : (
+                    'Add Season'
+                  )}
                 </Button>
               </div>
             </div>
