@@ -67,7 +67,7 @@ export default function StatSummaryPage({ params }: { params: { statName: string
     // Clear any existing SVG
     d3.select('#stat-graph').selectAll('*').remove();
 
-    const margin = { top: 20, right: 30, bottom: 30, left: 40 };
+    const margin = { top: 20, right: 30, bottom: 80, left: 40 };
     const width = 800 - margin.left - margin.right;
     const height = 400 - margin.top - margin.bottom;
 
@@ -118,6 +118,33 @@ export default function StatSummaryPage({ params }: { params: { statName: string
       .attr('stroke-width', 2)
       .attr('d', line);
 
+    // Add min/max lines
+    const minLine = d3.line<typeof data[0]>()
+      .x(d => x(d.date))
+      .y(d => y(d.minimum));
+
+    const maxLine = d3.line<typeof data[0]>()
+      .x(d => x(d.date))
+      .y(d => y(d.maximum));
+
+    // Add min line
+    svg.append('path')
+      .datum(data)
+      .attr('fill', 'none')
+      .attr('stroke', '#d946ef')
+      .attr('stroke-width', 1.5)
+      .attr('stroke-dasharray', '4,4')
+      .attr('d', minLine);
+
+    // Add max line
+    svg.append('path')
+      .datum(data)
+      .attr('fill', 'none')
+      .attr('stroke', '#d946ef')
+      .attr('stroke-width', 1.5)
+      .attr('stroke-dasharray', '4,4')
+      .attr('d', maxLine);
+
     // Add area for quartiles
     const area = d3.area<typeof data[0]>()
       .x(d => x(d.date))
@@ -129,6 +156,59 @@ export default function StatSummaryPage({ params }: { params: { statName: string
       .attr('fill', '#2563eb')
       .attr('fill-opacity', 0.1)
       .attr('d', area);
+
+    // Add legend
+    const legend = svg.append('g')
+      .attr('transform', `translate(0,${height + 30})`);
+
+    // Mean line legend
+    legend.append('line')
+      .attr('x1', 0)
+      .attr('y1', 0)
+      .attr('x2', 20)
+      .attr('y2', 0)
+      .attr('stroke', '#2563eb')
+      .attr('stroke-width', 2);
+
+    legend.append('text')
+      .attr('x', 30)
+      .attr('y', 4)
+      .attr('fill', 'currentColor')
+      .text('Mean')
+      .attr('font-size', '10px');
+
+    // Min/Max lines legend
+    legend.append('line')
+      .attr('x1', 100)
+      .attr('y1', 0)
+      .attr('x2', 120)
+      .attr('y2', 0)
+      .attr('stroke', '#d946ef')
+      .attr('stroke-width', 1.5)
+      .attr('stroke-dasharray', '4,4');
+
+    legend.append('text')
+      .attr('x', 130)
+      .attr('y', 4)
+      .attr('fill', 'currentColor')
+      .text('Min/Max')
+      .attr('font-size', '10px');
+
+    // Quartile area legend
+    legend.append('rect')
+      .attr('x', 200)
+      .attr('y', -8)
+      .attr('width', 20)
+      .attr('height', 16)
+      .attr('fill', '#2563eb')
+      .attr('fill-opacity', 0.1);
+
+    legend.append('text')
+      .attr('x', 230)
+      .attr('y', 4)
+      .attr('fill', 'currentColor')
+      .text('Quartile Range')
+      .attr('font-size', '10px');
 
   }, [statSummary]);
 
