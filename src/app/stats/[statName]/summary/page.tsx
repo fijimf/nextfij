@@ -167,14 +167,14 @@ export default function StatSummaryPage({ params }: { params: { statName: string
         </CardContent>
       </Card>
 
-      <div className="grid grid-cols-12 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Team List Panel */}
-        <Card className="col-span-3">
+        <Card className="lg:col-span-3 order-2 lg:order-1">
           <CardHeader>
             <CardTitle>Team Rankings</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2">
+            <div className="space-y-4 max-h-[400px] lg:max-h-[600px] overflow-y-auto pr-2">
               {statSummary.statistics.map((stat) => (
                 <div key={stat.team.id} className="flex justify-between items-center">
                   <div className="flex items-center gap-2">
@@ -194,7 +194,7 @@ export default function StatSummaryPage({ params }: { params: { statName: string
         </Card>
 
         {/* Graph Panel */}
-        <Card className="col-span-9">
+        <Card className="lg:col-span-9 order-1 lg:order-2">
           <CardHeader>
             <CardTitle>Season Trend</CardTitle>
           </CardHeader>
