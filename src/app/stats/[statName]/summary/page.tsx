@@ -77,7 +77,7 @@ export default function StatSummaryPage({ params }: { params: { statName: string
       .attr('width', '100%')
       .attr('height', '100%')
       .attr('viewBox', `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
-      .attr('preserveAspectRatio', 'xMidYMid meet')
+      .attr('preserveAspectRatio', 'xMinYMin meet')
       .append('g')
       .attr('transform', `translate(${margin.left},${margin.top})`);
 
