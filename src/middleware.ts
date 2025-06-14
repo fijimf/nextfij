@@ -1,10 +1,12 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { isTokenExpired } from './lib/auth/token';
 
 export function middleware(request: NextRequest) {
   console.log('\n🟡 Middleware Processing:', request.method, request.nextUrl.pathname);
   
   const token = request.cookies.get('token');
+  
   const isLoginPage = request.nextUrl.pathname === '/login';
   const isApiRoute = request.nextUrl.pathname.startsWith('/api');
 
@@ -24,7 +26,13 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
 
-  console.log('🟡 Token present, allowing access');
+  // Check if token is expired
+  if (isTokenExpired(token.value)) {
+    console.log('🟡 Token expired, redirecting to login');
+    return NextResponse.redirect(new URL('/login', request.url));
+  }
+
+  console.log('🟡 Token present and valid, allowing access');
   return NextResponse.next();
 }
 
