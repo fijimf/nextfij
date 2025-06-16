@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { 
   CalendarIcon, 
   UsersIcon, 
@@ -15,53 +15,100 @@ import {
   PlusIcon
 } from '@heroicons/react/24/outline';
 
+interface TeamStatus {
+  numberOfTeams: number;
+  teamStatus: string;
+}
+
+interface ConferenceStatus {
+  numberOfConferences: number;
+  conferenceStatus: string;
+}
+
+interface Season {
+  year: number;
+  numberOfTeams: number;
+  numberOfConferences: number;
+  numberOfGames: number;
+  firstGameDate: string;
+  lastGameDate: string;
+  lastCompleteGameDate: string;
+  lastUpdated: string;
+}
+
+interface ScheduleData {
+  teamStatus: TeamStatus;
+  conferenceStatus: ConferenceStatus;
+  seasons: Season[];
+}
+
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState('schedule');
-  const [teamsCount, setTeamsCount] = useState(0);
-  const [conferencesCount, setConferencesCount] = useState(0);
-  const [seasons, setSeasons] = useState([
-    { year: 2024, teams: 130, conferences: 10, games: 780, lastUpdated: '2024-03-14 15:30:00' },
-    { year: 2023, teams: 130, conferences: 10, games: 780, lastUpdated: '2023-12-01 14:20:00' },
-  ]);
+  const [scheduleData, setScheduleData] = useState<ScheduleData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [newSeasonYear, setNewSeasonYear] = useState('');
 
-  const handleLoadTeams = () => {
+  useEffect(() => {
+    fetchScheduleData();
+  }, []);
+
+  const fetchScheduleData = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch('http://localhost:8080/api/admin/schedule/', {
+        headers: {
+          'Authorization': `Bearer ${document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1] || ''}`
+        }
+      });
+      if (!response.ok) {
+        throw new Error('Failed to fetch schedule data');
+      }
+      const data = await response.json();
+      setScheduleData(data);
+      setError(null);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleLoadTeams = async () => {
     // TODO: Implement team loading logic
-    setTeamsCount(prev => prev === 0 ? 130 : prev);
+    await fetchScheduleData();
   };
 
-  const handleDropTeams = () => {
+  const handleDropTeams = async () => {
     // TODO: Implement team dropping logic
-    setTeamsCount(0);
+    await fetchScheduleData();
   };
 
-  const handleLoadConferences = () => {
+  const handleLoadConferences = async () => {
     // TODO: Implement conference loading logic
-    setConferencesCount(prev => prev === 0 ? 10 : prev);
+    await fetchScheduleData();
   };
 
-  const handleDropConferences = () => {
+  const handleDropConferences = async () => {
     // TODO: Implement conference dropping logic
-    setConferencesCount(0);
+    await fetchScheduleData();
   };
 
-  const handleCreateSeason = () => {
+  const handleCreateSeason = async () => {
     if (newSeasonYear) {
-      const newSeason = {
-        year: parseInt(newSeasonYear),
-        teams: 0,
-        conferences: 0,
-        games: 0,
-        lastUpdated: new Date().toISOString().slice(0, 19).replace('T', ' ')
-      };
-      setSeasons(prev => [newSeason, ...prev]);
+      // TODO: Implement season creation logic
+      await fetchScheduleData();
       setNewSeasonYear('');
     }
   };
 
-  const handleSeasonAction = (action: 'reload' | 'refresh' | 'drop', year: number) => {
+  const handleSeasonAction = async (action: 'reload' | 'refresh' | 'drop', year: number) => {
     // TODO: Implement season action logic
-    console.log(`Season ${year} ${action} action triggered`);
+    await fetchScheduleData();
+  };
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleString();
   };
 
   const stats = [
@@ -76,26 +123,46 @@ export default function AdminPage() {
       case 'schedule':
         return (
           <div className="space-y-6">
+            {error && (
+              <div className="rounded-md bg-red-50 p-4">
+                <div className="flex">
+                  <div className="ml-3">
+                    <h3 className="text-sm font-medium text-red-800">Error</h3>
+                    <div className="mt-2 text-sm text-red-700">
+                      <p>{error}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Teams Section */}
             <div className="rounded-lg bg-white p-6 shadow">
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="text-lg font-medium text-gray-900">Teams</h2>
                   <p className="mt-1 text-sm text-gray-500">
-                    {teamsCount} teams loaded
+                    {scheduleData?.teamStatus.numberOfTeams || 0} teams loaded
                   </p>
+                  {scheduleData?.teamStatus.teamStatus && (
+                    <p className="mt-1 text-sm text-amber-600">
+                      {scheduleData.teamStatus.teamStatus}
+                    </p>
+                  )}
                 </div>
                 <div className="flex space-x-3">
                   <button
                     onClick={handleLoadTeams}
-                    className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500"
+                    disabled={loading}
+                    className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 disabled:opacity-50"
                   >
                     <ArrowPathIcon className="mr-2 h-4 w-4" />
-                    {teamsCount === 0 ? 'Load' : 'Reload'}
+                    {scheduleData?.teamStatus.numberOfTeams === 0 ? 'Load' : 'Reload'}
                   </button>
                   <button
                     onClick={handleDropTeams}
-                    className="inline-flex items-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500"
+                    disabled={loading}
+                    className="inline-flex items-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 disabled:opacity-50"
                   >
                     <TrashIcon className="mr-2 h-4 w-4" />
                     Drop
@@ -110,20 +177,27 @@ export default function AdminPage() {
                 <div>
                   <h2 className="text-lg font-medium text-gray-900">Conferences</h2>
                   <p className="mt-1 text-sm text-gray-500">
-                    {conferencesCount} conferences loaded
+                    {scheduleData?.conferenceStatus.numberOfConferences || 0} conferences loaded
                   </p>
+                  {scheduleData?.conferenceStatus.conferenceStatus && (
+                    <p className="mt-1 text-sm text-amber-600">
+                      {scheduleData.conferenceStatus.conferenceStatus}
+                    </p>
+                  )}
                 </div>
                 <div className="flex space-x-3">
                   <button
                     onClick={handleLoadConferences}
-                    className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500"
+                    disabled={loading}
+                    className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 disabled:opacity-50"
                   >
                     <ArrowPathIcon className="mr-2 h-4 w-4" />
-                    {conferencesCount === 0 ? 'Load' : 'Reload'}
+                    {scheduleData?.conferenceStatus.numberOfConferences === 0 ? 'Load' : 'Reload'}
                   </button>
                   <button
                     onClick={handleDropConferences}
-                    className="inline-flex items-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500"
+                    disabled={loading}
+                    className="inline-flex items-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 disabled:opacity-50"
                   >
                     <TrashIcon className="mr-2 h-4 w-4" />
                     Drop
@@ -146,7 +220,8 @@ export default function AdminPage() {
                   />
                   <button
                     onClick={handleCreateSeason}
-                    className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500"
+                    disabled={loading}
+                    className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 disabled:opacity-50"
                   >
                     <PlusIcon className="mr-2 h-4 w-4" />
                     Create New Season
@@ -165,6 +240,8 @@ export default function AdminPage() {
                             <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Teams</th>
                             <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Conferences</th>
                             <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Games</th>
+                            <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">First Game</th>
+                            <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Last Game</th>
                             <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Last Updated</th>
                             <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-0">
                               <span className="sr-only">Actions</span>
@@ -172,32 +249,37 @@ export default function AdminPage() {
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-200">
-                          {seasons.map((season) => (
+                          {scheduleData?.seasons.map((season) => (
                             <tr key={season.year}>
                               <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">{season.year}</td>
-                              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{season.teams}</td>
-                              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{season.conferences}</td>
-                              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{season.games}</td>
-                              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{season.lastUpdated}</td>
+                              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{season.numberOfTeams}</td>
+                              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{season.numberOfConferences}</td>
+                              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{season.numberOfGames}</td>
+                              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{season.firstGameDate}</td>
+                              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{season.lastGameDate}</td>
+                              <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{formatDate(season.lastUpdated)}</td>
                               <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
                                 <div className="flex justify-end space-x-2">
                                   <button
                                     onClick={() => handleSeasonAction('reload', season.year)}
-                                    className="inline-flex items-center rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500"
+                                    disabled={loading}
+                                    className="inline-flex items-center rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 disabled:opacity-50"
                                   >
                                     <ArrowPathIcon className="mr-1 h-4 w-4" />
                                     Reload
                                   </button>
                                   <button
                                     onClick={() => handleSeasonAction('refresh', season.year)}
-                                    className="inline-flex items-center rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500"
+                                    disabled={loading}
+                                    className="inline-flex items-center rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 disabled:opacity-50"
                                   >
                                     <ArrowPathIcon className="mr-1 h-4 w-4" />
                                     Refresh
                                   </button>
                                   <button
                                     onClick={() => handleSeasonAction('drop', season.year)}
-                                    className="inline-flex items-center rounded-md bg-red-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-red-500"
+                                    disabled={loading}
+                                    className="inline-flex items-center rounded-md bg-red-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-red-500 disabled:opacity-50"
                                   >
                                     <TrashIcon className="mr-1 h-4 w-4" />
                                     Drop
