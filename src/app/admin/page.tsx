@@ -57,7 +57,8 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(true);
   const [newSeasonYear, setNewSeasonYear] = useState('');
   const [showDropConfirmation, setShowDropConfirmation] = useState(false);
-  const [dropConfirmationType, setDropConfirmationType] = useState<'teams' | 'conferences'>('teams');
+  const [dropConfirmationType, setDropConfirmationType] = useState<'teams' | 'conferences' | 'season'>('teams');
+  const [dropSeasonYear, setDropSeasonYear] = useState<number | null>(null);
   const [toasts, setToasts] = useState<Toast[]>([]);
 
   useEffect(() => {
@@ -254,25 +255,130 @@ export default function AdminPage() {
     }
   };
 
-  const handleDropFromConfirmation = async () => {
-    if (dropConfirmationType === 'teams') {
-      await handleDropTeams();
-    } else {
-      await handleDropConferences();
-    }
-  };
-
   const handleCreateSeason = async () => {
     if (newSeasonYear) {
-      // TODO: Implement season creation logic
-      await fetchScheduleData();
-      setNewSeasonYear('');
+      try {
+        setLoading(true);
+        const response = await fetch(`http://localhost:8080/api/admin/schedule/season/new?seasonYear=${newSeasonYear}`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1] || ''}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        if (!response.ok) {
+          const contentType = response.headers.get('content-type');
+          if (contentType && contentType.includes('application/json')) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || `Server error (${response.status})`);
+          } else {
+            const errorText = await response.text();
+            throw new Error(`Server error (${response.status}): ${errorText || response.statusText}`);
+          }
+        }
+        
+        const scheduleData: ScheduleData = await response.json();
+        setScheduleData(scheduleData);
+        
+        addToast('success', `Successfully created season ${newSeasonYear}`);
+        setNewSeasonYear('');
+      } catch (err) {
+        const errorMessage = err instanceof Error ? err.message : 'Failed to create season';
+        addToast('error', errorMessage);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
   const handleSeasonAction = async (action: 'reload' | 'refresh' | 'drop', year: number) => {
-    // TODO: Implement season action logic
-    await fetchScheduleData();
+    if (action === 'drop') {
+      setDropConfirmationType('season');
+      setDropSeasonYear(year);
+      setShowDropConfirmation(true);
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const response = await fetch(`http://localhost:8080/api/admin/schedule/season/refresh/${year}`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1] || ''}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (!response.ok) {
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Server error (${response.status})`);
+        } else {
+          const errorText = await response.text();
+          throw new Error(`Server error (${response.status}): ${errorText || response.statusText}`);
+        }
+      }
+      
+      const scheduleData: ScheduleData = await response.json();
+      setScheduleData(scheduleData);
+      
+      addToast('success', `Successfully refreshed season ${year}`);
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : `Failed to refresh season ${year}`;
+      addToast('error', errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDropSeason = async () => {
+    if (!dropSeasonYear) return;
+    
+    try {
+      setLoading(true);
+      const response = await fetch(`http://localhost:8080/api/admin/schedule/season/drop/${dropSeasonYear}`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1] || ''}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (!response.ok) {
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Server error (${response.status})`);
+        } else {
+          const errorText = await response.text();
+          throw new Error(`Server error (${response.status}): ${errorText || response.statusText}`);
+        }
+      }
+      
+      const scheduleData: ScheduleData = await response.json();
+      setScheduleData(scheduleData);
+      
+      addToast('success', `Successfully dropped season ${dropSeasonYear}`);
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : `Failed to drop season ${dropSeasonYear}`;
+      addToast('error', errorMessage);
+    } finally {
+      setLoading(false);
+      setShowDropConfirmation(false);
+      setDropSeasonYear(null);
+    }
+  };
+
+  const handleDropFromConfirmation = async () => {
+    if (dropConfirmationType === 'teams') {
+      await handleDropTeams();
+    } else if (dropConfirmationType === 'conferences') {
+      await handleDropConferences();
+    } else if (dropConfirmationType === 'season') {
+      await handleDropSeason();
+    }
   };
 
   const formatDate = (dateString: string) => {
@@ -379,11 +485,11 @@ export default function AdminPage() {
                       <ExclamationTriangleIcon className="h-6 w-6 text-red-600" />
                     </div>
                     <h3 className="text-lg font-medium text-gray-900 mt-4">
-                      Confirm Drop {dropConfirmationType === 'teams' ? 'Teams' : 'Conferences'}
+                      Confirm Drop {dropConfirmationType === 'teams' ? 'Teams' : dropConfirmationType === 'conferences' ? 'Conferences' : `Season ${dropSeasonYear}`}
                     </h3>
                     <div className="mt-2 px-7 py-3">
                       <p className="text-sm text-gray-500">
-                        Are you sure you want to drop all {dropConfirmationType}? This action cannot be undone.
+                        Are you sure you want to drop all {dropConfirmationType === 'teams' ? 'teams' : dropConfirmationType === 'conferences' ? 'conferences' : `season ${dropSeasonYear}`}? This action cannot be undone.
                       </p>
                     </div>
                     <div className="items-center px-4 py-3">
