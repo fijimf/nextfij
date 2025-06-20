@@ -12,7 +12,10 @@ import {
   PresentationChartLineIcon,
   ArrowPathIcon,
   TrashIcon,
-  PlusIcon
+  PlusIcon,
+  XMarkIcon,
+  CheckCircleIcon,
+  ExclamationTriangleIcon
 } from '@heroicons/react/24/outline';
 
 interface TeamStatus {
@@ -42,16 +45,36 @@ interface ScheduleData {
   seasons: Season[];
 }
 
+interface Toast {
+  id: string;
+  type: 'success' | 'error';
+  message: string;
+}
+
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState('schedule');
   const [scheduleData, setScheduleData] = useState<ScheduleData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [newSeasonYear, setNewSeasonYear] = useState('');
+  const [showDropConfirmation, setShowDropConfirmation] = useState(false);
+  const [dropConfirmationType, setDropConfirmationType] = useState<'teams' | 'conferences'>('teams');
+  const [toasts, setToasts] = useState<Toast[]>([]);
 
   useEffect(() => {
     fetchScheduleData();
   }, []);
+
+  const addToast = (type: 'success' | 'error', message: string) => {
+    const id = Date.now().toString();
+    setToasts(prev => [...prev, { id, type, message }]);
+    setTimeout(() => {
+      setToasts(prev => prev.filter(toast => toast.id !== id));
+    }, 5000);
+  };
+
+  const removeToast = (id: string) => {
+    setToasts(prev => prev.filter(toast => toast.id !== id));
+  };
 
   const fetchScheduleData = async () => {
     try {
@@ -66,32 +89,177 @@ export default function AdminPage() {
       }
       const data = await response.json();
       setScheduleData(data);
-      setError(null);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
+      addToast('error', err instanceof Error ? err.message : 'An error occurred');
     } finally {
       setLoading(false);
     }
   };
 
   const handleLoadTeams = async () => {
-    // TODO: Implement team loading logic
-    await fetchScheduleData();
+    try {
+      setLoading(true);
+      const response = await fetch('http://localhost:8080/api/admin/schedule/team/load', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1] || ''}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (!response.ok) {
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Server error (${response.status})`);
+        } else {
+          const errorText = await response.text();
+          throw new Error(`Server error (${response.status}): ${errorText || response.statusText}`);
+        }
+      }
+      
+      const teamStatus: TeamStatus = await response.json();
+      
+      // Update the schedule data with the new team status
+      setScheduleData(prev => prev ? {
+        ...prev,
+        teamStatus: teamStatus
+      } : null);
+      
+      addToast('success', `Successfully loaded ${teamStatus.numberOfTeams} teams`);
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to load teams';
+      addToast('error', errorMessage);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleDropTeams = async () => {
-    // TODO: Implement team dropping logic
-    await fetchScheduleData();
+    try {
+      setLoading(true);
+      const response = await fetch('http://localhost:8080/api/admin/schedule/team/drop', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1] || ''}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (!response.ok) {
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Server error (${response.status})`);
+        } else {
+          const errorText = await response.text();
+          throw new Error(`Server error (${response.status}): ${errorText || response.statusText}`);
+        }
+      }
+      
+      const teamStatus: TeamStatus = await response.json();
+      
+      // Update the schedule data with the new team status
+      setScheduleData(prev => prev ? {
+        ...prev,
+        teamStatus: teamStatus
+      } : null);
+      
+      addToast('success', 'Teams dropped successfully');
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to drop teams';
+      addToast('error', errorMessage);
+    } finally {
+      setLoading(false);
+      setShowDropConfirmation(false);
+    }
   };
 
   const handleLoadConferences = async () => {
-    // TODO: Implement conference loading logic
-    await fetchScheduleData();
+    try {
+      setLoading(true);
+      const response = await fetch('http://localhost:8080/api/admin/schedule/conference/load', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1] || ''}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (!response.ok) {
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Server error (${response.status})`);
+        } else {
+          const errorText = await response.text();
+          throw new Error(`Server error (${response.status}): ${errorText || response.statusText}`);
+        }
+      }
+      
+      const conferenceStatus: ConferenceStatus = await response.json();
+      
+      // Update the schedule data with the new conference status
+      setScheduleData(prev => prev ? {
+        ...prev,
+        conferenceStatus: conferenceStatus
+      } : null);
+      
+      addToast('success', `Successfully loaded ${conferenceStatus.numberOfConferences} conferences`);
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to load conferences';
+      addToast('error', errorMessage);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleDropConferences = async () => {
-    // TODO: Implement conference dropping logic
-    await fetchScheduleData();
+    try {
+      setLoading(true);
+      const response = await fetch('http://localhost:8080/api/admin/schedule/conference/drop', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1] || ''}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (!response.ok) {
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Server error (${response.status})`);
+        } else {
+          const errorText = await response.text();
+          throw new Error(`Server error (${response.status}): ${errorText || response.statusText}`);
+        }
+      }
+      
+      const conferenceStatus: ConferenceStatus = await response.json();
+      
+      // Update the schedule data with the new conference status
+      setScheduleData(prev => prev ? {
+        ...prev,
+        conferenceStatus: conferenceStatus
+      } : null);
+      
+      addToast('success', 'Conferences dropped successfully');
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to drop conferences';
+      addToast('error', errorMessage);
+    } finally {
+      setLoading(false);
+      setShowDropConfirmation(false);
+    }
+  };
+
+  const handleDropFromConfirmation = async () => {
+    if (dropConfirmationType === 'teams') {
+      await handleDropTeams();
+    } else {
+      await handleDropConferences();
+    }
   };
 
   const handleCreateSeason = async () => {
@@ -123,18 +291,46 @@ export default function AdminPage() {
       case 'schedule':
         return (
           <div className="space-y-6">
-            {error && (
-              <div className="rounded-md bg-red-50 p-4">
-                <div className="flex">
+            {/* Toast Notifications */}
+            <div className="fixed top-4 right-4 z-50 space-y-2">
+              {toasts.map((toast) => (
+                <div
+                  key={toast.id}
+                  className={`flex items-center p-4 rounded-md shadow-lg max-w-sm ${
+                    toast.type === 'success' 
+                      ? 'bg-green-50 border border-green-200' 
+                      : 'bg-red-50 border border-red-200'
+                  }`}
+                >
+                  <div className="flex-shrink-0">
+                    {toast.type === 'success' ? (
+                      <CheckCircleIcon className="h-5 w-5 text-green-400" />
+                    ) : (
+                      <ExclamationTriangleIcon className="h-5 w-5 text-red-400" />
+                    )}
+                  </div>
                   <div className="ml-3">
-                    <h3 className="text-sm font-medium text-red-800">Error</h3>
-                    <div className="mt-2 text-sm text-red-700">
-                      <p>{error}</p>
-                    </div>
+                    <p className={`text-sm font-medium ${
+                      toast.type === 'success' ? 'text-green-800' : 'text-red-800'
+                    }`}>
+                      {toast.message}
+                    </p>
+                  </div>
+                  <div className="ml-auto pl-3">
+                    <button
+                      onClick={() => removeToast(toast.id)}
+                      className={`inline-flex rounded-md p-1.5 ${
+                        toast.type === 'success' 
+                          ? 'bg-green-50 text-green-500 hover:bg-green-100' 
+                          : 'bg-red-50 text-red-500 hover:bg-red-100'
+                      }`}
+                    >
+                      <XMarkIcon className="h-4 w-4" />
+                    </button>
                   </div>
                 </div>
-              </div>
-            )}
+              ))}
+            </div>
 
             {/* Teams Section */}
             <div className="rounded-lg bg-white p-6 shadow">
@@ -160,7 +356,10 @@ export default function AdminPage() {
                     {scheduleData?.teamStatus.numberOfTeams === 0 ? 'Load' : 'Reload'}
                   </button>
                   <button
-                    onClick={handleDropTeams}
+                    onClick={() => {
+                      setDropConfirmationType('teams');
+                      setShowDropConfirmation(true);
+                    }}
                     disabled={loading}
                     className="inline-flex items-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 disabled:opacity-50"
                   >
@@ -170,6 +369,43 @@ export default function AdminPage() {
                 </div>
               </div>
             </div>
+
+            {/* Drop Confirmation Modal */}
+            {showDropConfirmation && (
+              <div className="fixed inset-0 overflow-y-auto h-full w-full z-50">
+                <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+                  <div className="mt-3 text-center">
+                    <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100">
+                      <ExclamationTriangleIcon className="h-6 w-6 text-red-600" />
+                    </div>
+                    <h3 className="text-lg font-medium text-gray-900 mt-4">
+                      Confirm Drop {dropConfirmationType === 'teams' ? 'Teams' : 'Conferences'}
+                    </h3>
+                    <div className="mt-2 px-7 py-3">
+                      <p className="text-sm text-gray-500">
+                        Are you sure you want to drop all {dropConfirmationType}? This action cannot be undone.
+                      </p>
+                    </div>
+                    <div className="items-center px-4 py-3">
+                      <button
+                        onClick={handleDropFromConfirmation}
+                        disabled={loading}
+                        className="px-4 py-2 bg-red-600 text-white text-base font-medium rounded-md w-24 mr-2 hover:bg-red-700 disabled:opacity-50"
+                      >
+                        {loading ? 'Dropping...' : 'Drop'}
+                      </button>
+                      <button
+                        onClick={() => setShowDropConfirmation(false)}
+                        disabled={loading}
+                        className="px-4 py-2 bg-gray-300 text-gray-700 text-base font-medium rounded-md w-24 hover:bg-gray-400 disabled:opacity-50"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Conferences Section */}
             <div className="rounded-lg bg-white p-6 shadow">
@@ -195,7 +431,10 @@ export default function AdminPage() {
                     {scheduleData?.conferenceStatus.numberOfConferences === 0 ? 'Load' : 'Reload'}
                   </button>
                   <button
-                    onClick={handleDropConferences}
+                    onClick={() => {
+                      setDropConfirmationType('conferences');
+                      setShowDropConfirmation(true);
+                    }}
                     disabled={loading}
                     className="inline-flex items-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 disabled:opacity-50"
                   >
