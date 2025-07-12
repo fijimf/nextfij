@@ -45,6 +45,27 @@ interface ScheduleData {
   seasons: Season[];
 }
 
+interface SeasonStat {
+  year: number;
+  numDates: number;
+  numStats: number;
+  lastDate: string;
+}
+
+interface TeamStat {
+  key: string;
+  seasons: SeasonStat[];
+}
+
+interface Model {
+  key: string;
+  teamStats: TeamStat[];
+}
+
+interface StatsData {
+  models: Model[];
+}
+
 interface Toast {
   id: string;
   type: 'success' | 'error';
@@ -54,15 +75,19 @@ interface Toast {
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState('schedule');
   const [scheduleData, setScheduleData] = useState<ScheduleData | null>(null);
+  const [statsData, setStatsData] = useState<StatsData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [statsLoading, setStatsLoading] = useState(false);
   const [newSeasonYear, setNewSeasonYear] = useState('');
   const [showDropConfirmation, setShowDropConfirmation] = useState(false);
   const [dropConfirmationType, setDropConfirmationType] = useState<'teams' | 'conferences' | 'season'>('teams');
   const [dropSeasonYear, setDropSeasonYear] = useState<number | null>(null);
   const [toasts, setToasts] = useState<Toast[]>([]);
+  const [selectedSeasons, setSelectedSeasons] = useState<Record<string, number>>({});
 
   useEffect(() => {
     fetchScheduleData();
+    fetchStatsData();
   }, []);
 
   const addToast = (type: 'success' | 'error', message: string) => {
@@ -94,6 +119,36 @@ export default function AdminPage() {
       addToast('error', err instanceof Error ? err.message : 'An error occurred');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchStatsData = async () => {
+    try {
+      setStatsLoading(true);
+      const response = await fetch('http://localhost:8080/api/admin/stats/', {
+        headers: {
+          'Authorization': `Bearer ${document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1] || ''}`
+        }
+      });
+      
+      if (!response.ok) {
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Server error (${response.status})`);
+        } else {
+          const errorText = await response.text();
+          throw new Error(`Server error (${response.status}): ${errorText || response.statusText}`);
+        }
+      }
+      
+      const data = await response.json();
+      setStatsData(data);
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to fetch statistics';
+      addToast('error', errorMessage);
+    } finally {
+      setStatsLoading(false);
     }
   };
 
@@ -371,6 +426,46 @@ export default function AdminPage() {
     }
   };
 
+  const handleRunModel = async (modelKey: string) => {
+    const selectedSeason = selectedSeasons[modelKey];
+    if (!selectedSeason) {
+      addToast('error', 'Please select a season to run the model');
+      return;
+    }
+
+    try {
+      setStatsLoading(true);
+      const response = await fetch(`http://localhost:8080/api/admin/stats/${modelKey}/run?season=${selectedSeason}`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1] || ''}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (!response.ok) {
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Server error (${response.status})`);
+        } else {
+          const errorText = await response.text();
+          throw new Error(`Server error (${response.status}): ${errorText || response.statusText}`);
+        }
+      }
+      
+      const statsData: StatsData = await response.json();
+      setStatsData(statsData);
+      
+      addToast('success', `Successfully ran ${modelKey} for season ${selectedSeason}`);
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : `Failed to run ${modelKey}`;
+      addToast('error', errorMessage);
+    } finally {
+      setStatsLoading(false);
+    }
+  };
+
   const handleDropFromConfirmation = async () => {
     if (dropConfirmationType === 'teams') {
       await handleDropTeams();
@@ -382,7 +477,7 @@ export default function AdminPage() {
   };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleString();
+    return new Date(dateString).toLocaleDateString();
   };
 
   const stats = [
@@ -644,21 +739,115 @@ export default function AdminPage() {
         );
       case 'statistics':
         return (
-          <div className="rounded-lg bg-white p-6 shadow">
-            <h2 className="text-lg font-medium text-gray-900">Statistics & Analytics</h2>
-            <p className="mt-2 text-sm text-gray-500">
-              View detailed analytics, performance metrics, and system statistics.
-            </p>
-            <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <div className="rounded-lg border p-4">
-                <h3 className="text-sm font-medium text-gray-900">Performance Metrics</h3>
-                <p className="mt-1 text-sm text-gray-500">View system performance and resource utilization</p>
-              </div>
-              <div className="rounded-lg border p-4">
-                <h3 className="text-sm font-medium text-gray-900">Usage Analytics</h3>
-                <p className="mt-1 text-sm text-gray-500">Track user engagement and system usage patterns</p>
-              </div>
+          <div className="space-y-6">
+            {/* Toast Notifications */}
+            <div className="fixed top-4 right-4 z-50 space-y-2">
+              {toasts.map((toast) => (
+                <div
+                  key={toast.id}
+                  className={`flex items-center p-4 rounded-md shadow-lg max-w-sm ${
+                    toast.type === 'success' 
+                      ? 'bg-green-50 border border-green-200' 
+                      : 'bg-red-50 border border-red-200'
+                  }`}
+                >
+                  <div className="flex-shrink-0">
+                    {toast.type === 'success' ? (
+                      <CheckCircleIcon className="h-5 w-5 text-green-400" />
+                    ) : (
+                      <ExclamationTriangleIcon className="h-5 w-5 text-red-400" />
+                    )}
+                  </div>
+                  <div className="ml-3">
+                    <p className={`text-sm font-medium ${
+                      toast.type === 'success' ? 'text-green-800' : 'text-red-800'
+                    }`}>
+                      {toast.message}
+                    </p>
+                  </div>
+                  <div className="ml-auto pl-3">
+                    <button
+                      onClick={() => removeToast(toast.id)}
+                      className={`inline-flex rounded-md p-1.5 ${
+                        toast.type === 'success' 
+                          ? 'bg-green-50 text-green-500 hover:bg-green-100' 
+                          : 'bg-red-50 text-red-500 hover:bg-red-100'
+                      }`}
+                    >
+                      <XMarkIcon className="h-4 w-4" />
+                    </button>
+                  </div>
+                </div>
+              ))}
             </div>
+
+            {statsLoading && (
+              <div className="flex justify-center">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+              </div>
+            )}
+
+            {statsData?.models.map((model) => (
+              <div key={model.key} className="rounded-lg bg-white p-6 shadow">
+                <div className="mb-4">
+                  <h2 className="text-lg font-medium text-gray-900">{model.key}</h2>
+                  <div className="mt-3 flex items-center space-x-4">
+                    <button
+                      onClick={() => handleRunModel(model.key)}
+                      disabled={statsLoading}
+                      className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 disabled:opacity-50"
+                    >
+                      <ArrowPathIcon className="mr-2 h-4 w-4" />
+                      Run
+                    </button>
+                    <select
+                      value={selectedSeasons[model.key] || ''}
+                      onChange={(e) => setSelectedSeasons(prev => ({
+                        ...prev,
+                        [model.key]: parseInt(e.target.value)
+                      }))}
+                      className="block rounded-md border-0 py-2 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    >
+                      <option value="">Select Season</option>
+                      {scheduleData?.seasons.map((season) => (
+                        <option key={season.year} value={season.year}>
+                          {season.year}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
+                <div className="mt-6">
+                  <h3 className="text-md font-medium text-gray-900 mb-3">Calculated Statistics</h3>
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    {model.teamStats.map((stat) => (
+                      <div key={stat.key} className="rounded-lg border p-4">
+                        <h4 className="text-sm font-medium text-gray-900 mb-2">{stat.key}</h4>
+                        {stat.seasons.length > 0 ? (
+                          <div className="space-y-2">
+                            {stat.seasons.map((season) => (
+                              <div key={season.year} className="text-sm text-gray-600">
+                                <div className="flex justify-between">
+                                  <span>Year {season.year}:</span>
+                                  <span>{season.numStats.toLocaleString()} stats</span>
+                                </div>
+                                <div className="flex justify-between text-xs text-gray-500">
+                                  <span>{season.numDates} dates</span>
+                                  <span>Last: {formatDate(season.lastDate)}</span>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <p className="text-sm text-gray-500">No data available</p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         );
       case 'models':
