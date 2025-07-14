@@ -4,8 +4,11 @@ export interface AuthRequest {
 }
 
 export interface AuthResponse {
-  token: string;
-  // Add any other fields from the API response if needed
+  result: string;
+  message: string;
+  data: {
+    token: string;
+  } | null;
 }
 
 export interface User {

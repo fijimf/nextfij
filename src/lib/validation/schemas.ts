@@ -7,10 +7,11 @@ export const loginRequestSchema = z.object({
 });
 
 export const loginResponseSchema = z.object({
-  token: z.string(),
-  user: z.object({
-    username: z.string(),
-  }).optional(),
+  result: z.string(),
+  message: z.string(),
+  data: z.object({
+    token: z.string(),
+  }).nullable(),
 });
 
 // Team schemas
@@ -102,7 +103,15 @@ export const apiErrorSchema = z.object({
   errors: z.record(z.array(z.string())).optional(),
 });
 
-// Generic API response schema
+// Server's standard response schema
+export const serverResponseSchema = <T extends z.ZodType>(dataSchema: T) =>
+  z.object({
+    result: z.string(),
+    message: z.string(),
+    data: dataSchema.nullable(),
+  });
+
+// Generic API response schema (for Axios responses)
 export const apiResponseSchema = <T extends z.ZodType>(dataSchema: T) =>
   z.object({
     data: dataSchema,

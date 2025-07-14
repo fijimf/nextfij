@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { User } from '@/lib/api/types/auth';
 import Cookies from 'js-cookie';
 import { apiClient } from '@/lib/api/client';
+import { validateApiResponse } from '@/lib/validation/validator';
+import { loginResponseSchema } from '@/lib/validation/schemas';
 
 interface AuthContextType {
   user: User | null;
@@ -30,8 +32,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const login = async (username: string, password: string) => {
     try {
-      const response = await apiClient.post('/api/authenticate', { username, password });
-      const { token } = response.data;
+      const response = await apiClient.post('/authenticate', { username, password });
+      
+      // Validate the response format
+      const validatedData = validateApiResponse(loginResponseSchema, response.data, '/authenticate');
+      
+      // Check if authentication was successful
+      if (validatedData.result !== 'success') {
+        throw new Error(validatedData.message || 'Authentication failed');
+      }
+      
+      // Extract token from the nested data object
+      const token = validatedData.data?.token;
 
       if (!token) {
         throw new Error('No token received from server');
@@ -60,7 +72,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const logout = async () => {
     try {
-      await apiClient.post('/api/auth/logout');
+      await apiClient.post('/auth/logout');
       Cookies.remove('token', { path: '/' });
       Cookies.remove('username', { path: '/' });
       setUser(null);

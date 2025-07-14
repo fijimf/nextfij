@@ -6,7 +6,6 @@ import { useApiQuery } from '@/lib/api/hooks';
 import type { TeamPage } from '@/lib/api/types/team';
 import { teamPageSchema } from '@/lib/validation/schemas';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { TeamPageSkeleton } from '@/components/ui/loading-states';
 import { format } from 'date-fns';

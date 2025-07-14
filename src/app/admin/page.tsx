@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { apiClient } from '@/lib/api/client';
 import { 
   CalendarIcon, 
   UsersIcon, 
@@ -105,16 +106,8 @@ export default function AdminPage() {
   const fetchScheduleData = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:8080/api/admin/schedule/', {
-        headers: {
-          'Authorization': `Bearer ${document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1] || ''}`
-        }
-      });
-      if (!response.ok) {
-        throw new Error('Failed to fetch schedule data');
-      }
-      const data = await response.json();
-      setScheduleData(data);
+      const response = await apiClient.get('/admin/schedule/');
+      setScheduleData(response.data);
     } catch (err) {
       addToast('error', err instanceof Error ? err.message : 'An error occurred');
     } finally {
@@ -125,25 +118,8 @@ export default function AdminPage() {
   const fetchStatsData = async () => {
     try {
       setStatsLoading(true);
-      const response = await fetch('http://localhost:8080/api/admin/stats/', {
-        headers: {
-          'Authorization': `Bearer ${document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1] || ''}`
-        }
-      });
-      
-      if (!response.ok) {
-        const contentType = response.headers.get('content-type');
-        if (contentType && contentType.includes('application/json')) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || `Server error (${response.status})`);
-        } else {
-          const errorText = await response.text();
-          throw new Error(`Server error (${response.status}): ${errorText || response.statusText}`);
-        }
-      }
-      
-      const data = await response.json();
-      setStatsData(data);
+      const response = await apiClient.get('/admin/stats/');
+      setStatsData(response.data);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to fetch statistics';
       addToast('error', errorMessage);
@@ -155,26 +131,8 @@ export default function AdminPage() {
   const handleLoadTeams = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:8080/api/admin/schedule/team/load', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1] || ''}`,
-          'Content-Type': 'application/json'
-        }
-      });
-      
-      if (!response.ok) {
-        const contentType = response.headers.get('content-type');
-        if (contentType && contentType.includes('application/json')) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || `Server error (${response.status})`);
-        } else {
-          const errorText = await response.text();
-          throw new Error(`Server error (${response.status}): ${errorText || response.statusText}`);
-        }
-      }
-      
-      const teamStatus: TeamStatus = await response.json();
+      const response = await apiClient.post('/admin/schedule/team/load');
+      const teamStatus: TeamStatus = response.data;
       
       // Update the schedule data with the new team status
       setScheduleData(prev => prev ? {
@@ -194,26 +152,8 @@ export default function AdminPage() {
   const handleDropTeams = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:8080/api/admin/schedule/team/drop', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1] || ''}`,
-          'Content-Type': 'application/json'
-        }
-      });
-      
-      if (!response.ok) {
-        const contentType = response.headers.get('content-type');
-        if (contentType && contentType.includes('application/json')) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || `Server error (${response.status})`);
-        } else {
-          const errorText = await response.text();
-          throw new Error(`Server error (${response.status}): ${errorText || response.statusText}`);
-        }
-      }
-      
-      const teamStatus: TeamStatus = await response.json();
+      const response = await apiClient.post('/admin/schedule/team/drop');
+      const teamStatus: TeamStatus = response.data;
       
       // Update the schedule data with the new team status
       setScheduleData(prev => prev ? {
@@ -234,26 +174,8 @@ export default function AdminPage() {
   const handleLoadConferences = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:8080/api/admin/schedule/conference/load', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1] || ''}`,
-          'Content-Type': 'application/json'
-        }
-      });
-      
-      if (!response.ok) {
-        const contentType = response.headers.get('content-type');
-        if (contentType && contentType.includes('application/json')) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || `Server error (${response.status})`);
-        } else {
-          const errorText = await response.text();
-          throw new Error(`Server error (${response.status}): ${errorText || response.statusText}`);
-        }
-      }
-      
-      const conferenceStatus: ConferenceStatus = await response.json();
+      const response = await apiClient.post('/admin/schedule/conference/load');
+      const conferenceStatus: ConferenceStatus = response.data;
       
       // Update the schedule data with the new conference status
       setScheduleData(prev => prev ? {
@@ -273,26 +195,8 @@ export default function AdminPage() {
   const handleDropConferences = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:8080/api/admin/schedule/conference/drop', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1] || ''}`,
-          'Content-Type': 'application/json'
-        }
-      });
-      
-      if (!response.ok) {
-        const contentType = response.headers.get('content-type');
-        if (contentType && contentType.includes('application/json')) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || `Server error (${response.status})`);
-        } else {
-          const errorText = await response.text();
-          throw new Error(`Server error (${response.status}): ${errorText || response.statusText}`);
-        }
-      }
-      
-      const conferenceStatus: ConferenceStatus = await response.json();
+      const response = await apiClient.post('/admin/schedule/conference/drop');
+      const conferenceStatus: ConferenceStatus = response.data;
       
       // Update the schedule data with the new conference status
       setScheduleData(prev => prev ? {
@@ -314,26 +218,9 @@ export default function AdminPage() {
     if (newSeasonYear) {
       try {
         setLoading(true);
-        const response = await fetch(`http://localhost:8080/api/admin/schedule/season/new?seasonYear=${newSeasonYear}`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1] || ''}`,
-            'Content-Type': 'application/json'
-          }
-        });
+        const response = await apiClient.post(`/admin/schedule/season/new?seasonYear=${newSeasonYear}`);
         
-        if (!response.ok) {
-          const contentType = response.headers.get('content-type');
-          if (contentType && contentType.includes('application/json')) {
-            const errorData = await response.json();
-            throw new Error(errorData.error || `Server error (${response.status})`);
-          } else {
-            const errorText = await response.text();
-            throw new Error(`Server error (${response.status}): ${errorText || response.statusText}`);
-          }
-        }
-        
-        const scheduleData: ScheduleData = await response.json();
+        const scheduleData: ScheduleData = response.data;
         setScheduleData(scheduleData);
         
         addToast('success', `Successfully created season ${newSeasonYear}`);
@@ -357,26 +244,9 @@ export default function AdminPage() {
 
     try {
       setLoading(true);
-      const response = await fetch(`http://localhost:8080/api/admin/schedule/season/refresh/${year}`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1] || ''}`,
-          'Content-Type': 'application/json'
-        }
-      });
+      const response = await apiClient.post(`/admin/schedule/season/refresh/${year}`);
       
-      if (!response.ok) {
-        const contentType = response.headers.get('content-type');
-        if (contentType && contentType.includes('application/json')) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || `Server error (${response.status})`);
-        } else {
-          const errorText = await response.text();
-          throw new Error(`Server error (${response.status}): ${errorText || response.statusText}`);
-        }
-      }
-      
-      const scheduleData: ScheduleData = await response.json();
+      const scheduleData: ScheduleData = response.data;
       setScheduleData(scheduleData);
       
       addToast('success', `Successfully refreshed season ${year}`);
@@ -393,26 +263,9 @@ export default function AdminPage() {
     
     try {
       setLoading(true);
-      const response = await fetch(`http://localhost:8080/api/admin/schedule/season/drop/${dropSeasonYear}`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1] || ''}`,
-          'Content-Type': 'application/json'
-        }
-      });
+      const response = await apiClient.post(`/admin/schedule/season/drop/${dropSeasonYear}`);
       
-      if (!response.ok) {
-        const contentType = response.headers.get('content-type');
-        if (contentType && contentType.includes('application/json')) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || `Server error (${response.status})`);
-        } else {
-          const errorText = await response.text();
-          throw new Error(`Server error (${response.status}): ${errorText || response.statusText}`);
-        }
-      }
-      
-      const scheduleData: ScheduleData = await response.json();
+      const scheduleData: ScheduleData = response.data;
       setScheduleData(scheduleData);
       
       addToast('success', `Successfully dropped season ${dropSeasonYear}`);
@@ -435,26 +288,9 @@ export default function AdminPage() {
 
     try {
       setStatsLoading(true);
-      const response = await fetch(`http://localhost:8080/api/admin/stats/${modelKey}/run?season=${selectedSeason}`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1] || ''}`,
-          'Content-Type': 'application/json'
-        }
-      });
+      const response = await apiClient.post(`/admin/stats/${modelKey}/run?season=${selectedSeason}`);
       
-      if (!response.ok) {
-        const contentType = response.headers.get('content-type');
-        if (contentType && contentType.includes('application/json')) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || `Server error (${response.status})`);
-        } else {
-          const errorText = await response.text();
-          throw new Error(`Server error (${response.status}): ${errorText || response.statusText}`);
-        }
-      }
-      
-      const statsData: StatsData = await response.json();
+      const statsData: StatsData = response.data;
       setStatsData(statsData);
       
       addToast('success', `Successfully ran ${modelKey} for season ${selectedSeason}`);

@@ -37,6 +37,17 @@ apiClient.interceptors.response.use(
       response.config.url || '',
       response.status
     );
+    
+    // Check if the response has a server-level error (result: "error")
+    if (response.data && response.data.result === 'error') {
+      logger.error('Server returned error:', response.data.message);
+      // Create a new error with the server's message
+      const serverError = new Error(response.data.message || 'Server error');
+      (serverError as any).status = response.status;
+      (serverError as any).response = response;
+      throw serverError;
+    }
+    
     return response;
   },
   (error) => {
@@ -46,6 +57,16 @@ apiClient.interceptors.response.use(
     logger.api.error(method, url, error.response?.status || 'Network Error');
     
     if (error.response) {
+      // Check if the error response has server-level error info
+      if (error.response.data && error.response.data.result === 'error') {
+        logger.error('Server error message:', error.response.data.message);
+        // Use the server's error message
+        const serverError = new Error(error.response.data.message || 'Server error');
+        (serverError as any).status = error.response.status;
+        (serverError as any).response = error.response;
+        return Promise.reject(serverError);
+      }
+      
       switch (error.response.status) {
         case 401:
           logger.warn('Unauthorized - Clearing token and redirecting');
@@ -73,7 +94,14 @@ apiClient.interceptors.response.use(
   }
 );
 
-// API response type
+// Server's standard API response type
+export interface ServerApiResponse<T> {
+  result: string;
+  message: string;
+  data: T | null;
+}
+
+// API response type (Axios response wrapper)
 export interface ApiResponse<T> {
   data: T;
   status: number;
