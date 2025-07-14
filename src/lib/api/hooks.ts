@@ -13,11 +13,11 @@ export function useApiQuery<T>(
   return useQuery<T, ApiError>({
     queryKey: key,
     queryFn: async () => {
-      const response = await apiClient.get<T>(url);
+      const response = await apiClient.get<{data: T}>(url);
       if (schema) {
-        return validateApiResponse(schema, response.data, url);
+        return validateApiResponse(schema, response.data.data, url);
       }
-      return response.data;
+      return response.data.data;
     },
     ...options,
   });
@@ -30,8 +30,8 @@ export function useApiMutation<T, V = unknown>(
 ) {
   return useMutation<T, ApiError, V>({
     mutationFn: async (data) => {
-      const response = await apiClient.post<T>(url, data);
-      return response.data;
+      const response = await apiClient.post<{data: T}>(url, data);
+      return response.data.data;
     },
     ...options,
   });
@@ -44,8 +44,8 @@ export function useApiPut<T, V = unknown>(
 ) {
   return useMutation<T, ApiError, V>({
     mutationFn: async (data) => {
-      const response = await apiClient.put<T>(url, data);
-      return response.data;
+      const response = await apiClient.put<{data: T}>(url, data);
+      return response.data.data;
     },
     ...options,
   });
@@ -58,8 +58,8 @@ export function useApiDelete<T>(
 ) {
   return useMutation<T, ApiError, void>({
     mutationFn: async () => {
-      const response = await apiClient.delete<T>(url);
-      return response.data;
+      const response = await apiClient.delete<{data: T}>(url);
+      return response.data.data;
     },
     ...options,
   });

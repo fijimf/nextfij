@@ -20,14 +20,14 @@ export const teamSchema = z.object({
   name: z.string(),
   longName: z.string(),
   nickname: z.string(),
-  logoUrl: z.string().url(),
-  primaryColor: z.string(),
-  secondaryColor: z.string(),
+  logoUrl: z.string().url().nullable(),
+  primaryColor: z.string().nullable(),
+  secondaryColor: z.string().nullable(),
   slug: z.string(),
 });
 
 export const recordSchema = z.object({
-  name: z.string(),
+  name: z.string().nullable(),
   wins: z.number(),
   losses: z.number(),
 });
@@ -47,7 +47,7 @@ export const conferenceSchema = z.object({
   id: z.number(),
   name: z.string(),
   shortName: z.string(),
-  logoUrl: z.string().url(),
+  logoUrl: z.string().url().nullable(),
   standings: z.array(standingSchema),
 });
 
@@ -60,15 +60,15 @@ export const gameSchema = z.object({
   score: z.number(),
   oppScore: z.number(),
   wOrL: z.string(),
-  spread: z.number(),
-  spreadDescription: z.string(),
-  spreadCovered: z.boolean(),
-  overUnder: z.number(),
-  overOrUnder: z.string(),
-  moneyLine: z.number(),
-  moneyLinePaid: z.boolean(),
-  oppMoneyLine: z.number(),
-  oppMoneyLinePaid: z.boolean(),
+  spread: z.number().nullable(),
+  spreadDescription: z.string().nullable(),
+  spreadCovered: z.boolean().nullable(),
+  overUnder: z.number().nullable(),
+  overOrUnder: z.string().nullable(),
+  moneyLine: z.number().nullable(),
+  moneyLinePaid: z.boolean().nullable(),
+  oppMoneyLine: z.number().nullable(),
+  oppMoneyLinePaid: z.boolean().nullable(),
 });
 
 export const teamPageSchema = z.object({
@@ -84,8 +84,8 @@ export const teamsResponseSchema = z.object({
     id: z.number(),
     name: z.string(),
     nickname: z.string(),
-    logoUrl: z.string().url(),
-    conference: z.string(),
+    logoUrl: z.string().url().nullable(),
+    conference: z.string().nullable(),
     conferenceLogoUrl: z.string().url().nullable(),
     conferenceId: z.number(),
     record: z.object({

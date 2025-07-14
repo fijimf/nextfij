@@ -19,7 +19,7 @@ interface Team {
 interface StatSummary {
   name: string;
   description: string;
-  higherIsBetter: boolean;
+  isHigherBetter: boolean;
   decimalPlaces: number;
   season: number;
   statistics: {
@@ -49,7 +49,7 @@ export default function StatSummaryPage({ params }: { params: { statName: string
     const fetchStatSummary = async () => {
       try {
         const response = await apiClient.get(`/stats/${params.statName}/summary`);
-        setStatSummary(response.data);
+        setStatSummary(response.data.data);
       } catch (error) {
         console.error('Failed to fetch stat summary:', error);
       } finally {

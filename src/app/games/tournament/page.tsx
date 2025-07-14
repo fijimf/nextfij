@@ -59,7 +59,7 @@ export default function TournamentPage() {
     const fetchTournamentData = async () => {
       try {
         const response = await apiClient.get('/tournament');
-        setTournamentData(response.data);
+        setTournamentData(response.data.data);
       } catch (error) {
         console.error('Failed to fetch tournament data:', error);
       } finally {

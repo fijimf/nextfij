@@ -13,7 +13,7 @@ function validateEnv(): EnvConfig {
 
   // Check for missing required environment variables
   const missing = Object.entries(requiredEnvVars)
-    .filter(([_, value]) => !value)
+    .filter(([, value]) => !value)
     .map(([key]) => key);
 
   if (missing.length > 0) {

@@ -43,8 +43,8 @@ apiClient.interceptors.response.use(
       logger.error('Server returned error:', response.data.message);
       // Create a new error with the server's message
       const serverError = new Error(response.data.message || 'Server error');
-      (serverError as any).status = response.status;
-      (serverError as any).response = response;
+      (serverError as ServerError).status = response.status;
+      (serverError as ServerError).response = response;
       throw serverError;
     }
     
@@ -62,8 +62,8 @@ apiClient.interceptors.response.use(
         logger.error('Server error message:', error.response.data.message);
         // Use the server's error message
         const serverError = new Error(error.response.data.message || 'Server error');
-        (serverError as any).status = error.response.status;
-        (serverError as any).response = error.response;
+        (serverError as ServerError).status = error.response.status;
+        (serverError as ServerError).response = error.response;
         return Promise.reject(serverError);
       }
       
@@ -113,4 +113,10 @@ export interface ApiError {
   message: string;
   status: number;
   errors?: Record<string, string[]>;
+}
+
+// Extended Error type for server errors
+interface ServerError extends Error {
+  status?: number;
+  response?: unknown;
 } 

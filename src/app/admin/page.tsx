@@ -1,14 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { apiClient } from '@/lib/api/client';
 import { 
   CalendarIcon, 
   UsersIcon, 
-  ChartBarIcon, 
   BellIcon,
   CogIcon,
-  UserGroupIcon,
   DocumentTextIcon,
   PresentationChartLineIcon,
   ArrowPathIcon,
@@ -89,7 +87,7 @@ export default function AdminPage() {
   useEffect(() => {
     fetchScheduleData();
     fetchStatsData();
-  }, []);
+  }, [fetchScheduleData, fetchStatsData]);
 
   const addToast = (type: 'success' | 'error', message: string) => {
     const id = Date.now().toString();
@@ -103,36 +101,36 @@ export default function AdminPage() {
     setToasts(prev => prev.filter(toast => toast.id !== id));
   };
 
-  const fetchScheduleData = async () => {
+  const fetchScheduleData = useCallback(async () => {
     try {
       setLoading(true);
       const response = await apiClient.get('/admin/schedule/');
-      setScheduleData(response.data);
+      setScheduleData(response.data.data);
     } catch (err) {
       addToast('error', err instanceof Error ? err.message : 'An error occurred');
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const fetchStatsData = async () => {
+  const fetchStatsData = useCallback(async () => {
     try {
       setStatsLoading(true);
       const response = await apiClient.get('/admin/stats/');
-      setStatsData(response.data);
+      setStatsData(response.data.data);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to fetch statistics';
       addToast('error', errorMessage);
     } finally {
       setStatsLoading(false);
     }
-  };
+  }, []);
 
   const handleLoadTeams = async () => {
     try {
       setLoading(true);
       const response = await apiClient.post('/admin/schedule/team/load');
-      const teamStatus: TeamStatus = response.data;
+      const teamStatus: TeamStatus = response.data.data;
       
       // Update the schedule data with the new team status
       setScheduleData(prev => prev ? {
@@ -153,7 +151,7 @@ export default function AdminPage() {
     try {
       setLoading(true);
       const response = await apiClient.post('/admin/schedule/team/drop');
-      const teamStatus: TeamStatus = response.data;
+      const teamStatus: TeamStatus = response.data.data;
       
       // Update the schedule data with the new team status
       setScheduleData(prev => prev ? {
@@ -175,7 +173,7 @@ export default function AdminPage() {
     try {
       setLoading(true);
       const response = await apiClient.post('/admin/schedule/conference/load');
-      const conferenceStatus: ConferenceStatus = response.data;
+      const conferenceStatus: ConferenceStatus = response.data.data;
       
       // Update the schedule data with the new conference status
       setScheduleData(prev => prev ? {
@@ -196,7 +194,7 @@ export default function AdminPage() {
     try {
       setLoading(true);
       const response = await apiClient.post('/admin/schedule/conference/drop');
-      const conferenceStatus: ConferenceStatus = response.data;
+      const conferenceStatus: ConferenceStatus = response.data.data;
       
       // Update the schedule data with the new conference status
       setScheduleData(prev => prev ? {
@@ -220,7 +218,7 @@ export default function AdminPage() {
         setLoading(true);
         const response = await apiClient.post(`/admin/schedule/season/new?seasonYear=${newSeasonYear}`);
         
-        const scheduleData: ScheduleData = response.data;
+        const scheduleData: ScheduleData = response.data.data;
         setScheduleData(scheduleData);
         
         addToast('success', `Successfully created season ${newSeasonYear}`);
@@ -244,9 +242,9 @@ export default function AdminPage() {
 
     try {
       setLoading(true);
-      const response = await apiClient.post(`/admin/schedule/season/refresh/${year}`);
+      const response = await apiClient.get(`/admin/schedule/season/refresh/${year}`);
       
-      const scheduleData: ScheduleData = response.data;
+      const scheduleData: ScheduleData = response.data.data;
       setScheduleData(scheduleData);
       
       addToast('success', `Successfully refreshed season ${year}`);
@@ -265,7 +263,7 @@ export default function AdminPage() {
       setLoading(true);
       const response = await apiClient.post(`/admin/schedule/season/drop/${dropSeasonYear}`);
       
-      const scheduleData: ScheduleData = response.data;
+      const scheduleData: ScheduleData = response.data.data;
       setScheduleData(scheduleData);
       
       addToast('success', `Successfully dropped season ${dropSeasonYear}`);
@@ -290,7 +288,7 @@ export default function AdminPage() {
       setStatsLoading(true);
       const response = await apiClient.post(`/admin/stats/${modelKey}/run?season=${selectedSeason}`);
       
-      const statsData: StatsData = response.data;
+      const statsData: StatsData = response.data.data;
       setStatsData(statsData);
       
       addToast('success', `Successfully ran ${modelKey} for season ${selectedSeason}`);
