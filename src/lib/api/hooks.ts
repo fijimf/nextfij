@@ -1,16 +1,22 @@
 import { useQuery, useMutation, UseQueryOptions, UseMutationOptions } from '@tanstack/react-query';
 import { apiClient, ApiError } from './client';
+import { validateApiResponse } from '@/lib/validation/validator';
+import { z } from 'zod';
 
-// Generic GET hook
+// Generic GET hook with validation
 export function useApiQuery<T>(
   key: string[],
   url: string,
+  schema?: z.ZodSchema<T>,
   options?: Omit<UseQueryOptions<T, ApiError>, 'queryKey' | 'queryFn'>
 ) {
   return useQuery<T, ApiError>({
     queryKey: key,
     queryFn: async () => {
       const response = await apiClient.get<T>(url);
+      if (schema) {
+        return validateApiResponse(schema, response.data, url);
+      }
       return response.data;
     },
     ...options,

@@ -4,9 +4,11 @@ import { useParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useApiQuery } from '@/lib/api/hooks';
 import type { TeamPage } from '@/lib/api/types/team';
+import { teamPageSchema } from '@/lib/validation/schemas';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { TeamPageSkeleton } from '@/components/ui/loading-states';
 import { format } from 'date-fns';
 import { useEffect } from 'react';
 import Link from 'next/link';
@@ -18,7 +20,8 @@ export default function TeamPage() {
 
   const { data: teamPage, isLoading, error } = useApiQuery<TeamPage>(
     ['team', teamId],
-    `/team/${teamId}`
+    `/team/${teamId}`,
+    teamPageSchema
   );
  
 
@@ -35,13 +38,7 @@ export default function TeamPage() {
   }, [error, router]);
 
   if (isLoading) {
-    return (
-      <div className="container mx-auto p-4">
-        <Skeleton className="h-8 w-1/3 mb-4" />
-        <Skeleton className="h-32 w-full mb-4" />
-        <Skeleton className="h-64 w-full" />
-      </div>
-    );
+    return <TeamPageSkeleton />;
   }
 
   if (error) {

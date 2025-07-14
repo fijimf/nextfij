@@ -5,7 +5,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { apiClient } from '@/lib/api/client';
+import { useApiQuery } from '@/lib/api/hooks';
+import { teamsResponseSchema } from '@/lib/validation/schemas';
+import { TeamsPageSkeleton } from '@/components/ui/loading-states';
 
 interface TeamRecord {
   name: string | null;
@@ -31,25 +33,14 @@ interface TeamsResponse {
 export default function TeamsPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedConference, setSelectedConference] = useState('all');
-  const [teams, setTeams] = useState<Team[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  
+  const { data: teamsResponse, isLoading, error } = useApiQuery<TeamsResponse>(
+    ['teams'],
+    '/teams',
+    teamsResponseSchema
+  );
 
-  useEffect(() => {
-    const fetchTeams = async () => {
-      try {
-        const response = await apiClient.get<TeamsResponse>('/teams');
-        setTeams(response.data.teams);
-        setIsLoading(false);
-      } catch (err) {
-        setError('Failed to load teams. Please try again later.');
-        setIsLoading(false);
-        console.error('Error fetching teams:', err);
-      }
-    };
-
-    fetchTeams();
-  }, []);
+  const teams = teamsResponse?.teams || [];
 
   // Filter teams based on search term and conference
   const filteredTeams = teams.filter(team => {
@@ -62,20 +53,14 @@ export default function TeamsPage() {
   const conferences = ['all', ...Array.from(new Set(teams.map(team => team.conference))).sort()];
 
   if (isLoading) {
-    return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-center min-h-[400px]">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-        </div>
-      </div>
-    );
+    return <TeamsPageSkeleton />;
   }
 
   if (error) {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="text-center text-red-500">
-          <p>{error}</p>
+          <p>{error.message || 'Failed to load teams. Please try again later.'}</p>
         </div>
       </div>
     );

@@ -1,14 +1,15 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
+import { logger } from '@/lib/logger';
 
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ teamId: string } >}
 ) {
-  console.log('GET You piece of fucking shit');
+  logger.info('GET /api/team/[teamId] - Processing team data request');
   const cookieStore = await cookies();
   const token = cookieStore.get('token')?.value;
-  console.log(token);
+  logger.debug('Token retrieved from cookies:', token ? 'Present' : 'Missing');
   if (!token) {
     return NextResponse.json(
       { message: 'Unauthorized - No token found' },

@@ -1,9 +1,11 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { logger } from '@/lib/logger';
+import { env } from '@/lib/env';
 
 // Create an axios instance with default config
 export const apiClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api',
+  baseURL: env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -12,20 +14,17 @@ export const apiClient = axios.create({
 // Request interceptor to add auth token
 apiClient.interceptors.request.use(
   (config) => {
-    console.log('🔵 API Client Request Interceptor');
-    console.log('🔵 Request URL:', config.url);
-    console.log('🔵 Environment:', process.env.NODE_ENV);
-    console.log('🔵 API URL:', process.env.NEXT_PUBLIC_API_URL);
+    logger.api.request(config.method?.toUpperCase() || 'GET', config.url || '');
     const token = Cookies.get('token');
-    console.log('🔵 Token from cookies:', token ? '✅ Present' : '❌ Missing');
+    logger.debug('Token from cookies:', token ? 'Present' : 'Missing');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
-      console.log('🔵 Authorization header set:', config.headers.Authorization);
+      logger.debug('Authorization header set');
     }
     return config;
   },
   (error) => {
-    console.error('🔴 Request Interceptor Error:', error);
+    logger.error('Request Interceptor Error:', error);
     return Promise.reject(error);
   }
 );
@@ -33,34 +32,42 @@ apiClient.interceptors.request.use(
 // Response interceptor for handling errors
 apiClient.interceptors.response.use(
   (response) => {
-    console.log('🟢 API Client Response:', response.status, response.config.url);
+    logger.api.response(
+      response.config.method?.toUpperCase() || 'GET',
+      response.config.url || '',
+      response.status
+    );
     return response;
   },
   (error) => {
-    console.error('🔴 API Client Error:', error.response?.status, error.config?.url);
+    const method = error.config?.method?.toUpperCase() || 'GET';
+    const url = error.config?.url || '';
+    
+    logger.api.error(method, url, error.response?.status || 'Network Error');
+    
     if (error.response) {
       switch (error.response.status) {
         case 401:
-          console.log('🔴 Unauthorized - Clearing token and redirecting');
+          logger.warn('Unauthorized - Clearing token and redirecting');
           Cookies.remove('token');
           window.location.href = '/login';
           break;
         case 403:
-          console.error('🔴 Forbidden access');
+          logger.error('Forbidden access');
           break;
         case 404:
-          console.error('🔴 Resource not found');
+          logger.error('Resource not found');
           break;
         case 500:
-          console.error('🔴 Server error');
+          logger.error('Server error');
           break;
         default:
-          console.error('🔴 API error:', error.response.status);
+          logger.error('API error:', error.response.status);
       }
     } else if (error.request) {
-      console.error('🔴 No response received:', error.request);
+      logger.error('No response received:', error.request);
     } else {
-      console.error('🔴 Error setting up request:', error.message);
+      logger.error('Error setting up request:', error.message);
     }
     return Promise.reject(error);
   }
