@@ -3,9 +3,9 @@ export interface TeamDTO {
   name: string;
   longName: string;
   nickname: string;
-  logoUrl: string;
-  primaryColor: string;
-  secondaryColor: string;
+  logoUrl: string | null;
+  primaryColor: string | null;
+  secondaryColor: string | null;
   slug: string;
 }
 
@@ -21,7 +21,7 @@ export interface StandingDTO {
 }
 
 export interface Record {
-  name: string;
+  name: string | null;
   wins: number;
   losses: number;
 }
@@ -30,7 +30,7 @@ export interface ConferenceDTO {
   id: number;
   name: string;
   shortName: string;
-  logoUrl: string;
+  logoUrl: string | null;
   standings: StandingDTO[];
 }
 
@@ -43,15 +43,15 @@ export interface GameDTO {
   score: number;
   oppScore: number;
   wOrL: string;
-  spread: number;
-  spreadDescription: string;
-  spreadCovered: boolean;
-  overUnder: number;
-  overOrUnder: string;
-  moneyLine: number;
-  moneyLinePaid: boolean;
-  oppMoneyLine: number;
-  oppMoneyLinePaid: boolean;
+  spread: number | null;
+  spreadDescription: string | null;
+  spreadCovered: boolean | null;
+  overUnder: number | null;
+  overOrUnder: string | null;
+  moneyLine: number | null;
+  moneyLinePaid: boolean | null;
+  oppMoneyLine: number | null;
+  oppMoneyLinePaid: boolean | null;
 }
 
 export interface TeamPage {

@@ -19,8 +19,8 @@ interface Team {
   id: number;
   name: string;
   nickname: string;
-  logoUrl: string;
-  conference: string;
+  logoUrl: string | null;
+  conference: string | null;
   conferenceLogoUrl: string | null;
   conferenceId: number;
   record: TeamRecord;
@@ -50,7 +50,7 @@ export default function TeamsPage() {
   });
 
   // Get unique conferences and ensure 'all' is first
-  const conferences = ['all', ...Array.from(new Set(teams.map(team => team.conference))).sort()];
+  const conferences = ['all', ...Array.from(new Set(teams.map(team => team.conference).filter(conf => conf !== null))).sort()];
 
   if (isLoading) {
     return <TeamsPageSkeleton />;
@@ -104,13 +104,19 @@ export default function TeamsPage() {
           >
             <div className="flex items-center p-4 bg-card rounded-lg shadow-sm hover:shadow-md transition-shadow">
               <div className="flex-shrink-0 w-12 h-12 mr-4  rounded-full flex items-center justify-center">
-                <Image
-                  src={team.logoUrl}
-                  alt={`${team.name} ${team.nickname}`}
-                  width={32}
-                  height={32}
-                  className=""
-                />
+                {team.logoUrl ? (
+                  <Image
+                    src={team.logoUrl}
+                    alt={`${team.name} ${team.nickname}`}
+                    width={32}
+                    height={32}
+                    className=""
+                  />
+                ) : (
+                  <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
+                    <span className="text-gray-500 text-xs">{team.name.charAt(0)}</span>
+                  </div>
+                )}
               </div>
               <div className="flex-1 min-w-0">
                 <h3 className="text-sm font-medium truncate">{team.name}</h3>
@@ -121,14 +127,14 @@ export default function TeamsPage() {
                   {team.conferenceLogoUrl && (
                     <Image
                       src={team.conferenceLogoUrl}
-                      alt={team.conference}
+                      alt={team.conference || 'Conference'}
                       width={16}
                       height={16}
                       className="rounded-sm"
                     />
                   )}
                   <span className="text-xs text-muted-foreground truncate">
-                    {team.conference}
+                    {team.conference || 'No Conference'}
                   </span>
                 </div>
               </div>

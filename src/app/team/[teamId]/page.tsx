@@ -53,14 +53,15 @@ export default function TeamPage() {
   if (!teamPage) return null;
 
   // Create a CSS variable for the team's primary color with reduced opacity
+  const primaryColor = teamPage.team.primaryColor || '#ccc';
   const primaryColorStyle = {
-    '--team-primary-color': teamPage.team.primaryColor,
+    '--team-primary-color': primaryColor,
   } as React.CSSProperties;
 
   return (
     <div className="container mx-auto p-4" style={primaryColorStyle}>
       {/* Team Header */}
-      <Card className="mb-6 border-l-4" style={{ borderLeftColor: teamPage.team.primaryColor }}>
+      <Card className="mb-6 border-l-4" style={{ borderLeftColor: primaryColor }}>
         <CardHeader>
           <div className="flex items-center gap-4">
             {teamPage.team.logoUrl && (
@@ -109,14 +110,14 @@ export default function TeamPage() {
 
       {/* Schedule */}
       <Card className="mb-6">
-        <CardHeader className="border-b" style={{ borderColor: `${teamPage.team.primaryColor}20` }}>
+        <CardHeader className="border-b" style={{ borderColor: `${primaryColor}20` }}>
           <CardTitle>Schedule</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b" style={{ borderColor: `${teamPage.team.primaryColor}20` }}>
+                <tr className="border-b" style={{ borderColor: `${primaryColor}20` }}>
                   <th className="text-left py-2 px-2">Date</th>
                   <th className="text-center py-2 px-2">Result</th>
                   <th className="text-left py-2 px-2">Opponent</th>
@@ -132,7 +133,7 @@ export default function TeamPage() {
                   <tr 
                     key={game.id}
                     className="border-b hover:bg-muted/50 transition-colors"
-                    style={{ borderColor: `${teamPage.team.primaryColor}20` }}
+                    style={{ borderColor: `${primaryColor}20` }}
                   >
                     <td className="py-2 px-2 text-muted-foreground">
                       {format(new Date(game.date), 'MMM d')}
@@ -229,7 +230,7 @@ export default function TeamPage() {
 
       {/* Conference Standings */}
       <Card>
-        <CardHeader className="border-b" style={{ borderColor: `${teamPage.team.primaryColor}20` }}>
+        <CardHeader className="border-b" style={{ borderColor: `${primaryColor}20` }}>
           <div className="flex items-center gap-2">
             {teamPage.conference.logoUrl && (
               <Image
@@ -247,7 +248,7 @@ export default function TeamPage() {
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b" style={{ borderColor: `${teamPage.team.primaryColor}20` }}>
+                <tr className="border-b" style={{ borderColor: `${primaryColor}20` }}>
                   <th className="text-left py-2 px-4">Team</th>
                   <th className="text-center py-2 px-4">Conference</th>
                   <th className="text-center py-2 px-4">Overall</th>
@@ -258,7 +259,7 @@ export default function TeamPage() {
                   <tr 
                     key={standing.team.id} 
                     className={`border-b ${standing.team.id === teamPage.team.id ? 'bg-muted/50' : ''}`}
-                    style={{ borderColor: `${teamPage.team.primaryColor}20` }}
+                    style={{ borderColor: `${primaryColor}20` }}
                   >
                     <td className="py-2 px-4">
                       <Link 
