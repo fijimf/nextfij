@@ -100,7 +100,7 @@ export const teamsResponseSchema = z.object({
 export const apiErrorSchema = z.object({
   message: z.string(),
   status: z.number(),
-  errors: z.record(z.array(z.string())).optional(),
+  errors: z.record(z.string(), z.array(z.string())).optional(),
 });
 
 // Server's standard response schema

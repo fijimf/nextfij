@@ -84,11 +84,6 @@ export default function AdminPage() {
   const [toasts, setToasts] = useState<Toast[]>([]);
   const [selectedSeasons, setSelectedSeasons] = useState<Record<string, number>>({});
 
-  useEffect(() => {
-    fetchScheduleData();
-    fetchStatsData();
-  }, [fetchScheduleData, fetchStatsData]);
-
   const addToast = (type: 'success' | 'error', message: string) => {
     const id = Date.now().toString();
     setToasts(prev => [...prev, { id, type, message }]);
@@ -125,6 +120,11 @@ export default function AdminPage() {
       setStatsLoading(false);
     }
   }, []);
+
+  useEffect(() => {
+    fetchScheduleData();
+    fetchStatsData();
+  }, [fetchScheduleData, fetchStatsData]);
 
   const handleLoadTeams = async () => {
     try {
