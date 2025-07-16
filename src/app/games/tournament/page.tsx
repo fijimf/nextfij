@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef, ReactElement } from 'react';
+import Image from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { apiClient } from '@/lib/api/client';
 
@@ -83,10 +84,12 @@ export default function TournamentPage() {
         <div className="flex flex-col gap-1 p-2 rounded-lg border bg-card">
           {/* Home Team */}
           <div className={`flex items-center gap-2 p-1 rounded ${isHomeWinner ? 'bg-primary/10' : ''}`}>
-            <img 
+            <Image 
               src={game.homeTeam.logoUrl} 
               alt={game.homeTeam.name}
-              className="w-6 h-6 object-contain"
+              width={24}
+              height={24}
+              className="object-contain"
             />
             <div className="flex-1">
               <div className="font-medium">{game.homeTeam.name}</div>
@@ -96,10 +99,12 @@ export default function TournamentPage() {
           
           {/* Away Team */}
           <div className={`flex items-center gap-2 p-1 rounded ${!isHomeWinner ? 'bg-primary/10' : ''}`}>
-            <img 
+            <Image 
               src={game.awayTeam.logoUrl} 
               alt={game.awayTeam.name}
-              className="w-6 h-6 object-contain"
+              width={24}
+              height={24}
+              className="object-contain"
             />
             <div className="flex-1">
               <div className="font-medium">{game.awayTeam.name}</div>

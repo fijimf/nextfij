@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { apiClient } from '@/lib/api/client';
 import * as d3 from 'd3';
@@ -41,14 +42,15 @@ interface StatSummary {
   }[];
 }
 
-export default function StatSummaryPage({ params }: { params: { statName: string } }) {
+export default function StatSummaryPage({ params }: { params: Promise<{ statName: string }> }) {
   const [statSummary, setStatSummary] = useState<StatSummary | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchStatSummary = async () => {
       try {
-        const response = await apiClient.get(`/stats/${params.statName}/summary`);
+        const resolvedParams = await params;
+        const response = await apiClient.get(`/stats/${resolvedParams.statName}/summary`);
         setStatSummary(response.data.data);
       } catch (error) {
         console.error('Failed to fetch stat summary:', error);
@@ -58,7 +60,7 @@ export default function StatSummaryPage({ params }: { params: { statName: string
     };
 
     fetchStatSummary();
-  }, [params.statName]);
+  }, [params]);
 
   // D3 graph initialization
   useEffect(() => {
@@ -259,10 +261,12 @@ export default function StatSummaryPage({ params }: { params: { statName: string
                 <div key={stat.team.id} className="flex justify-between items-center">
                   <div className="flex items-center gap-2">
                     <span className="text-sm font-medium">{stat.rank}.</span>
-                    <img 
+                    <Image 
                       src={stat.team.logoUrl} 
                       alt={stat.team.name}
-                      className="w-6 h-6 object-contain"
+                      width={24}
+                      height={24}
+                      className="object-contain"
                     />
                     <span className="text-sm">{stat.team.name}</span>
                   </div>
