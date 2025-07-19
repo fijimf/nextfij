@@ -7,7 +7,7 @@ import Link from "next/link";
 export default function Home() {
   return (
     <div className="container mx-auto px-4 py-8">
-      <section className="py-20 text-center animate-fade-in">
+      <section className="py-12 text-center animate-fade-in">
         <div className="mb-8 flex justify-center">
           <Image
             src="/tedmorgan2.jpg"
@@ -20,15 +20,12 @@ export default function Home() {
         <TypographyH1 className="mb-6">
           Welcome to DeepFij
         </TypographyH1>
-        <TypographyLead className="mb-10 max-w-2xl mx-auto">
+        <TypographyLead className="mb-6 max-w-2xl mx-auto">
           Your one stop shop for naïve and primitive college basketball statistical analysis.
         </TypographyLead>
-        <div className="flex items-center justify-center gap-x-6">
-          <Button size="lg" className="animate-pulse-slow">Get Started</Button>
-        </div>
       </section>
 
-      <section className="py-12">
+      <section className="py-8">
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           <Card className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
             <CardHeader>
