@@ -2,6 +2,7 @@ import { useQuery, useMutation, UseQueryOptions, UseMutationOptions } from '@tan
 import { apiClient, ApiError } from './client';
 import { validateApiResponse } from '@/lib/validation/validator';
 import { z } from 'zod';
+import { Quote } from './types/quote';
 
 // Generic GET hook with validation
 export function useApiQuery<T>(
@@ -62,5 +63,21 @@ export function useApiDelete<T>(
       return response.data.data;
     },
     ...options,
+  });
+}
+
+// Random quote hook
+export function useRandomQuote(tag?: string) {
+  const url = tag ? `/quotes/random?tag=${tag}` : '/quotes/random';
+
+  return useQuery<Quote, ApiError>({
+    queryKey: ['quotes', 'random', tag],
+    queryFn: async () => {
+      const response = await apiClient.get<{data: Quote}>(url);
+      return response.data.data;
+    },
+    staleTime: 0, // Always fetch fresh quote
+    refetchOnWindowFocus: false,
+    retry: 1,
   });
 } 

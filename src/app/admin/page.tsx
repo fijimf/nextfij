@@ -3,19 +3,19 @@
 import { useState, useEffect, useCallback } from 'react';
 import { apiClient } from '@/lib/api/client';
 import { 
-  CalendarIcon, 
-  UsersIcon, 
-  BellIcon,
-  CogIcon,
-  DocumentTextIcon,
-  PresentationChartLineIcon,
-  ArrowPathIcon,
-  TrashIcon,
-  PlusIcon,
-  XMarkIcon,
-  CheckCircleIcon,
-  ExclamationTriangleIcon
-} from '@heroicons/react/24/outline';
+  Calendar, 
+  Users, 
+  Bell,
+  Settings,
+  FileText,
+  TrendingUp,
+  RotateCcw,
+  Trash2,
+  Plus,
+  X,
+  CheckCircle,
+  AlertTriangle
+} from 'lucide-react';
 
 interface TeamStatus {
   numberOfTeams: number;
@@ -315,10 +315,10 @@ export default function AdminPage() {
   };
 
   const stats = [
-    { name: 'Total Users', value: '2,543', icon: UsersIcon, change: '+12%' },
-    { name: 'Active Models', value: '156', icon: DocumentTextIcon, change: '+8%' },
-    { name: 'Scheduled Events', value: '89', icon: CalendarIcon, change: '+23%' },
-    { name: 'Model Accuracy', value: '94.2%', icon: PresentationChartLineIcon, change: '+4%' },
+    { name: 'Total Users', value: '2,543', icon: Users, change: '+12%' },
+    { name: 'Active Models', value: '156', icon: FileText, change: '+8%' },
+    { name: 'Scheduled Events', value: '89', icon: Calendar, change: '+23%' },
+    { name: 'Model Accuracy', value: '94.2%', icon: TrendingUp, change: '+4%' },
   ];
 
   const renderTabContent = () => {
@@ -339,9 +339,9 @@ export default function AdminPage() {
                 >
                   <div className="flex-shrink-0">
                     {toast.type === 'success' ? (
-                      <CheckCircleIcon className="h-5 w-5 text-green-400" />
+                      <CheckCircle className="h-5 w-5 text-green-400" />
                     ) : (
-                      <ExclamationTriangleIcon className="h-5 w-5 text-red-400" />
+                      <AlertTriangle className="h-5 w-5 text-red-400" />
                     )}
                   </div>
                   <div className="ml-3">
@@ -360,7 +360,7 @@ export default function AdminPage() {
                           : 'bg-red-50 text-red-500 hover:bg-red-100'
                       }`}
                     >
-                      <XMarkIcon className="h-4 w-4" />
+                      <X className="h-4 w-4" />
                     </button>
                   </div>
                 </div>
@@ -387,7 +387,7 @@ export default function AdminPage() {
                     disabled={loading}
                     className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 disabled:opacity-50"
                   >
-                    <ArrowPathIcon className="mr-2 h-4 w-4" />
+                    <RotateCcw className="mr-2 h-4 w-4" />
                     {scheduleData?.teamStatus.numberOfTeams === 0 ? 'Load' : 'Reload'}
                   </button>
                   <button
@@ -398,7 +398,7 @@ export default function AdminPage() {
                     disabled={loading}
                     className="inline-flex items-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 disabled:opacity-50"
                   >
-                    <TrashIcon className="mr-2 h-4 w-4" />
+                    <Trash2 className="mr-2 h-4 w-4" />
                     Drop
                   </button>
                 </div>
@@ -411,7 +411,7 @@ export default function AdminPage() {
                 <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
                   <div className="mt-3 text-center">
                     <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100">
-                      <ExclamationTriangleIcon className="h-6 w-6 text-red-600" />
+                      <AlertTriangle className="h-6 w-6 text-red-600" />
                     </div>
                     <h3 className="text-lg font-medium text-gray-900 mt-4">
                       Confirm Drop {dropConfirmationType === 'teams' ? 'Teams' : dropConfirmationType === 'conferences' ? 'Conferences' : `Season ${dropSeasonYear}`}
@@ -462,7 +462,7 @@ export default function AdminPage() {
                     disabled={loading}
                     className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 disabled:opacity-50"
                   >
-                    <ArrowPathIcon className="mr-2 h-4 w-4" />
+                    <RotateCcw className="mr-2 h-4 w-4" />
                     {scheduleData?.conferenceStatus.numberOfConferences === 0 ? 'Load' : 'Reload'}
                   </button>
                   <button
@@ -473,7 +473,7 @@ export default function AdminPage() {
                     disabled={loading}
                     className="inline-flex items-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 disabled:opacity-50"
                   >
-                    <TrashIcon className="mr-2 h-4 w-4" />
+                    <Trash2 className="mr-2 h-4 w-4" />
                     Drop
                   </button>
                 </div>
@@ -497,7 +497,7 @@ export default function AdminPage() {
                     disabled={loading}
                     className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 disabled:opacity-50"
                   >
-                    <PlusIcon className="mr-2 h-4 w-4" />
+                    <Plus className="mr-2 h-4 w-4" />
                     Create New Season
                   </button>
                 </div>
@@ -539,7 +539,7 @@ export default function AdminPage() {
                                     disabled={loading}
                                     className="inline-flex items-center rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 disabled:opacity-50"
                                   >
-                                    <ArrowPathIcon className="mr-1 h-4 w-4" />
+                                    <RotateCcw className="mr-1 h-4 w-4" />
                                     Reload
                                   </button>
                                   <button
@@ -547,7 +547,7 @@ export default function AdminPage() {
                                     disabled={loading}
                                     className="inline-flex items-center rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 disabled:opacity-50"
                                   >
-                                    <ArrowPathIcon className="mr-1 h-4 w-4" />
+                                    <RotateCcw className="mr-1 h-4 w-4" />
                                     Refresh
                                   </button>
                                   <button
@@ -555,7 +555,7 @@ export default function AdminPage() {
                                     disabled={loading}
                                     className="inline-flex items-center rounded-md bg-red-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-red-500 disabled:opacity-50"
                                   >
-                                    <TrashIcon className="mr-1 h-4 w-4" />
+                                    <Trash2 className="mr-1 h-4 w-4" />
                                     Drop
                                   </button>
                                 </div>
@@ -587,9 +587,9 @@ export default function AdminPage() {
                 >
                   <div className="flex-shrink-0">
                     {toast.type === 'success' ? (
-                      <CheckCircleIcon className="h-5 w-5 text-green-400" />
+                      <CheckCircle className="h-5 w-5 text-green-400" />
                     ) : (
-                      <ExclamationTriangleIcon className="h-5 w-5 text-red-400" />
+                      <AlertTriangle className="h-5 w-5 text-red-400" />
                     )}
                   </div>
                   <div className="ml-3">
@@ -608,7 +608,7 @@ export default function AdminPage() {
                           : 'bg-red-50 text-red-500 hover:bg-red-100'
                       }`}
                     >
-                      <XMarkIcon className="h-4 w-4" />
+                      <X className="h-4 w-4" />
                     </button>
                   </div>
                 </div>
@@ -631,7 +631,7 @@ export default function AdminPage() {
                       disabled={statsLoading}
                       className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 disabled:opacity-50"
                     >
-                      <ArrowPathIcon className="mr-2 h-4 w-4" />
+                      <RotateCcw className="mr-2 h-4 w-4" />
                       Run
                     </button>
                     <select
@@ -736,10 +736,10 @@ export default function AdminPage() {
             <h1 className="text-3xl font-bold tracking-tight text-gray-900">Admin Dashboard</h1>
             <div className="flex items-center space-x-4">
               <button className="rounded-full bg-white p-1 text-gray-400 hover:text-gray-500">
-                <BellIcon className="h-6 w-6" />
+                <Bell className="h-6 w-6" />
               </button>
               <button className="rounded-full bg-white p-1 text-gray-400 hover:text-gray-500">
-                <CogIcon className="h-6 w-6" />
+                <Settings className="h-6 w-6" />
               </button>
             </div>
           </div>
