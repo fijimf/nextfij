@@ -9,10 +9,12 @@ export function middleware(request: NextRequest) {
   
   const isLoginPage = request.nextUrl.pathname === '/login';
   const isApiRoute = request.nextUrl.pathname.startsWith('/api');
+  const isAdminRoute = request.nextUrl.pathname.startsWith('/admin');
 
   console.log('🟡 Token status:', token ? '✅ Present' : '❌ Missing');
   console.log('🟡 Is login page:', isLoginPage);
   console.log('🟡 Is API route:', isApiRoute);
+  console.log('🟡 Is admin route:', isAdminRoute);
 
   // Always allow access to login page and API routes
   if (isLoginPage || isApiRoute) {
@@ -20,19 +22,24 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // For all other routes, require authentication
-  if (!token) {
-    console.log('🟡 No token found, redirecting to login');
-    return NextResponse.redirect(new URL('/login', request.url));
+  // Only require authentication for admin routes
+  if (isAdminRoute) {
+    if (!token) {
+      console.log('🟡 Admin route accessed without token, redirecting to login');
+      return NextResponse.redirect(new URL('/login', request.url));
+    }
+
+    // Check if token is expired
+    if (isTokenExpired(token.value)) {
+      console.log('🟡 Admin route accessed with expired token, redirecting to login');
+      return NextResponse.redirect(new URL('/login', request.url));
+    }
+
+    console.log('🟡 Admin route accessed with valid token, allowing access');
+  } else {
+    console.log('🟡 Non-admin route, allowing access without authentication');
   }
 
-  // Check if token is expired
-  if (isTokenExpired(token.value)) {
-    console.log('🟡 Token expired, redirecting to login');
-    return NextResponse.redirect(new URL('/login', request.url));
-  }
-
-  console.log('🟡 Token present and valid, allowing access');
   return NextResponse.next();
 }
 
