@@ -1,0 +1,24 @@
+# Production override for SSL-enabled deployment
+version: "3.8"
+
+services:
+  certbot:
+    # Remove staging flag for production
+    command: certonly --webroot --webroot-path=/var/www/html --email ${LETSENCRYPT_EMAIL} --agree-tos --no-eff-email -d ${DOMAIN_NAME}
+    
+  # Add a certbot renewal service
+  certbot-renewal:
+    image: certbot/certbot:latest
+    volumes:
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+      - web-root:/var/www/html
+    depends_on:
+      - nginx
+    networks:
+      - fijnet
+    command: renew --quiet
+    restart: "no"
+    labels:
+      - "service.name=certbot-renewal"
+      - "service.description=Let's Encrypt certificate renewal"
