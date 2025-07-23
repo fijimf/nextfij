@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, ReactElement } from 'react';
 import Image from 'next/image';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { apiClient } from '@/lib/api/client';
 
 interface Team {
