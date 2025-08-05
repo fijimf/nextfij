@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { Circle } from "lucide-react"
+import Image from "next/image"
 import { cn } from "@/lib/utils"
 
 interface LogoProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -14,17 +14,17 @@ interface LogoProps extends React.HTMLAttributes<HTMLDivElement> {
 const sizeVariants = {
   sm: {
     container: "w-6 h-6",
-    icon: "w-4 h-4",
+    image: "w-6 h-6",
     text: "text-sm font-bold"
   },
   md: {
     container: "w-8 h-8", 
-    icon: "w-5 h-5",
+    image: "w-8 h-8",
     text: "text-xl font-bold"
   },
   lg: {
     container: "w-12 h-12",
-    icon: "w-8 h-8", 
+    image: "w-12 h-12", 
     text: "text-3xl font-bold"
   }
 }
@@ -40,19 +40,15 @@ export function Logo({
   
   const logoContent = (
     <div className={cn("flex items-center gap-3", className)} {...props}>
-      <div className={cn(
-        "relative rounded-full bg-gradient-to-br from-brand-orange to-brand-orange-dark flex items-center justify-center shadow-md transition-all hover:shadow-lg hover:scale-105",
-        sizes.container
-      )}>
-        <div className="relative">
-          <Circle className={cn("text-white fill-current", sizes.icon)} />
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-0.5 h-full bg-white/30 rounded-full"></div>
-          </div>
-          <div className="absolute inset-0 flex items-center justify-center rotate-90">
-            <div className="w-0.5 h-full bg-white/30 rounded-full"></div>
-          </div>
-        </div>
+      <div className={cn("relative transition-all hover:scale-105", sizes.container)}>
+        <Image
+          src="/deepfij.png"
+          alt="DeepFij Logo"
+          width={48}
+          height={48}
+          className={cn("object-contain", sizes.image)}
+          priority
+        />
       </div>
       {showText && (
         <span className={cn(

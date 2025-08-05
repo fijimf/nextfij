@@ -12,9 +12,14 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "NextFij - Modern Next.js Application",
-  description: "A modern Next.js application built with Tailwind CSS and shadcn/ui",
-  keywords: ["Next.js", "React", "Tailwind CSS", "shadcn/ui"],
+  title: "DeepFij - College Basketball Statistical Analysis",
+  description: "Modern web application for college basketball statistics, team information, and data analysis",
+  keywords: ["Basketball", "Statistics", "College Basketball", "Sports Analytics", "Next.js"],
+  icons: {
+    icon: "/deepfij.png",
+    shortcut: "/deepfij.png",
+    apple: "/deepfij.png",
+  },
 };
 
 export default function RootLayout({
