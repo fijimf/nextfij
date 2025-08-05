@@ -77,6 +77,7 @@ export const teamPageSchema = z.object({
   records: recordsSchema,
   conference: conferenceSchema,
   games: z.array(gameSchema),
+  seasons: z.array(z.number()),
 });
 
 export const teamsResponseSchema = z.object({

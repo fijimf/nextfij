@@ -12,17 +12,17 @@ import { format } from 'date-fns';
 import { useEffect } from 'react';
 import Link from 'next/link';
 
-export default function TeamPage() {
+export default function TeamSeasonPage() {
   const params = useParams();
   const router = useRouter();
   const teamId = params.teamId as string;
+  const season = params.season as string;
 
   const { data: teamPage, isLoading, error } = useApiQuery<TeamPage>(
-    ['team', teamId],
-    `/team/${teamId}`,
+    ['team', teamId, season],
+    `/team/${teamId}?year=${season}`,
     teamPageSchema
   );
- 
 
   useEffect(() => {
     console.log('Team data:', teamPage);
@@ -167,7 +167,7 @@ export default function TeamPage() {
                     </td>
                     <td className="py-2 px-2">
                       <Link 
-                        href={`/team/${game.opponent.id}/${teamPage.season}`}
+                        href={`/team/${game.opponent.id}/${season}`}
                         className="flex items-center gap-2 hover:underline"
                       >
                          <span className="text-muted-foreground text-sm">{game.atVs}</span>
@@ -286,7 +286,7 @@ export default function TeamPage() {
                   >
                     <td className="py-2 px-4">
                       <Link 
-                        href={`/team/${standing.team.id}/${teamPage.season}`}
+                        href={`/team/${standing.team.id}/${season}`}
                         className="flex items-center gap-2 hover:underline"
                       >
                         {standing.team.logoUrl && (
@@ -316,4 +316,4 @@ export default function TeamPage() {
       </Card>
     </div>
   );
-} 
+}

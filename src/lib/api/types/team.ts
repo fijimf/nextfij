@@ -60,4 +60,5 @@ export interface TeamPage {
   records: Records;
   conference: ConferenceDTO;
   games: GameDTO[];
+  seasons: number[];
 } 
