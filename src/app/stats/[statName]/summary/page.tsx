@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { apiClient } from '@/lib/api/client';
 
@@ -140,12 +141,68 @@ export default function StatSummaryPage({ params }: { params: Promise<{ statName
         </CardContent>
       </Card>
 
-      {/* Placeholder for future content */}
-      <Card>
-        <CardContent className="flex items-center justify-center p-12">
-          <p className="text-muted-foreground">Additional content will be added here</p>
-        </CardContent>
-      </Card>
+      {/* Main Content Area */}
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        {/* Team Rankings List - Left Side (1/4) */}
+        <Card className="lg:col-span-1">
+          <CardHeader>
+            <CardTitle>Team Rankings</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-1 max-h-[600px] overflow-y-auto pr-2">
+              {statSummary.statistics.map((stat) => (
+                <div key={stat.team.id} className="flex items-center justify-between py-1 px-2 hover:bg-muted/50 rounded-sm">
+                  <div className="flex items-center gap-3 min-w-0 flex-1">
+                    <span className="text-sm font-medium min-w-[2rem]">
+                      {stat.rankTieBest}.
+                    </span>
+                    <Image 
+                      src={stat.team.logoUrl} 
+                      alt={stat.team.name}
+                      width={24}
+                      height={24}
+                      className="object-contain flex-shrink-0"
+                    />
+                    <span className="text-sm truncate">
+                      {stat.team.name}
+                    </span>
+                  </div>
+                  <span className="text-sm font-medium ml-2">
+                    {stat.statisticValue.toFixed(statSummary.decimalPlaces)}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Charts Area - Right Side (3/4) */}
+        <div className="lg:col-span-3 space-y-6">
+          {/* Chart 1 Placeholder */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Chart 1</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-center justify-center h-64 bg-muted/20 rounded">
+                <p className="text-muted-foreground">Chart 1 will be added here</p>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Chart 2 Placeholder */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Chart 2</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-center justify-center h-64 bg-muted/20 rounded">
+                <p className="text-muted-foreground">Chart 2 will be added here</p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     </div>
   );
 }
