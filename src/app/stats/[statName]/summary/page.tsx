@@ -179,12 +179,14 @@ export default function StatSummaryPage({ params }: { params: Promise<{ statName
       tooltip: {
         trigger: 'axis',
         axisPointer: { type: 'cross' },
-        formatter: (params: unknown) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        formatter: (params: any) => {
           const date = new Date(params[0].axisValue).toLocaleDateString('en-US', { 
             month: 'short', day: 'numeric', year: 'numeric' 
           });
           let tooltip = `<strong>${date}</strong><br/>`;
-          (params as Array<unknown>).forEach((param: unknown) => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          params.forEach((param: any) => {
             if (param.seriesName && param.value !== undefined && !param.seriesName.includes('Range')) {
               const value = Array.isArray(param.value) ? param.value[1] : param.value;
               if (typeof value === 'number') {
@@ -357,7 +359,8 @@ export default function StatSummaryPage({ params }: { params: Promise<{ statName
       tooltip: {
         trigger: 'axis',
         axisPointer: { type: 'shadow' },
-        formatter: (params: unknown) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        formatter: (params: any) => {
           const data = params[0];
           return `${data.name}<br/>Teams: ${data.value}`;
         }
@@ -427,7 +430,8 @@ export default function StatSummaryPage({ params }: { params: Promise<{ statName
       },
       tooltip: {
         trigger: 'item',
-        formatter: (params: unknown) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        formatter: (params: any) => {
           const data = params.data;
           return `<strong>${data.team.name}</strong><br/>
                   ${statSummary.name}: ${data.stat1Value.toFixed(statSummary.decimalPlaces)}<br/>
@@ -496,7 +500,8 @@ export default function StatSummaryPage({ params }: { params: Promise<{ statName
       },
       tooltip: {
         trigger: 'item',
-        formatter: (params: unknown) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        formatter: (params: any) => {
           const data = params.data;
           return `<strong>${data.team.name}</strong><br/>
                   ${statSummary.name} Rank: ${data.stat1Rank}<br/>
