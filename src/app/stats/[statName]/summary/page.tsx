@@ -179,12 +179,12 @@ export default function StatSummaryPage({ params }: { params: Promise<{ statName
       tooltip: {
         trigger: 'axis',
         axisPointer: { type: 'cross' },
-        formatter: (params: any) => {
+        formatter: (params: unknown) => {
           const date = new Date(params[0].axisValue).toLocaleDateString('en-US', { 
             month: 'short', day: 'numeric', year: 'numeric' 
           });
           let tooltip = `<strong>${date}</strong><br/>`;
-          params.forEach((param: any) => {
+          (params as Array<unknown>).forEach((param: unknown) => {
             if (param.seriesName && param.value !== undefined && !param.seriesName.includes('Range')) {
               const value = Array.isArray(param.value) ? param.value[1] : param.value;
               if (typeof value === 'number') {
@@ -357,7 +357,7 @@ export default function StatSummaryPage({ params }: { params: Promise<{ statName
       tooltip: {
         trigger: 'axis',
         axisPointer: { type: 'shadow' },
-        formatter: (params: any) => {
+        formatter: (params: unknown) => {
           const data = params[0];
           return `${data.name}<br/>Teams: ${data.value}`;
         }
@@ -427,7 +427,7 @@ export default function StatSummaryPage({ params }: { params: Promise<{ statName
       },
       tooltip: {
         trigger: 'item',
-        formatter: (params: any) => {
+        formatter: (params: unknown) => {
           const data = params.data;
           return `<strong>${data.team.name}</strong><br/>
                   ${statSummary.name}: ${data.stat1Value.toFixed(statSummary.decimalPlaces)}<br/>
@@ -496,7 +496,7 @@ export default function StatSummaryPage({ params }: { params: Promise<{ statName
       },
       tooltip: {
         trigger: 'item',
-        formatter: (params: any) => {
+        formatter: (params: unknown) => {
           const data = params.data;
           return `<strong>${data.team.name}</strong><br/>
                   ${statSummary.name} Rank: ${data.stat1Rank}<br/>
