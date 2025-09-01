@@ -170,6 +170,16 @@ export default function StatSummaryPage({ params }: { params: Promise<{ statName
     const historicalData = statSummary.summaryStubs.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
     const dates = historicalData.map(d => d.date);
 
+    // Calculate the actual data range across all series
+    const allValues = historicalData.flatMap(d => [
+      d.min, d.max, d.med, d.mean, d.q1, d.q3, 
+      d.mean - d.stdDev, d.mean + d.stdDev
+    ]);
+    const dataMin = Math.min(...allValues);
+    const dataMax = Math.max(...allValues);
+    const range = dataMax - dataMin;
+    const padding = range * 0.05; // 5% padding
+
     return {
       title: {
         text: `${statSummary.name} Over Time`,
@@ -187,7 +197,7 @@ export default function StatSummaryPage({ params }: { params: Promise<{ statName
           let tooltip = `<strong>${date}</strong><br/>`;
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           params.forEach((param: any) => {
-            if (param.seriesName && param.value !== undefined && !param.seriesName.includes('Range')) {
+            if (param.seriesName && param.value !== undefined && !param.seriesName.includes('IQR') && !param.seriesName.includes('±1 Std Dev')) {
               const value = Array.isArray(param.value) ? param.value[1] : param.value;
               if (typeof value === 'number') {
                 // Match formatting from summary panel
@@ -209,7 +219,7 @@ export default function StatSummaryPage({ params }: { params: Promise<{ statName
       legend: {
         data: [
           timeSeriesMode === 'median' ? 'Median' : 'Mean',
-          timeSeriesMode === 'median' ? 'IQR Range' : '±1 Std Dev',
+          timeSeriesMode === 'median' ? 'IQR' : '±1 Std Dev',
           'Minimum',
           'Maximum'
         ],
@@ -232,7 +242,12 @@ export default function StatSummaryPage({ params }: { params: Promise<{ statName
       },
       yAxis: {
         type: 'value',
-        name: statSummary.name
+        name: statSummary.name,
+        min: dataMin - padding,
+        max: dataMax + padding,
+        axisLabel: {
+          formatter: (value: number) => value.toFixed(Math.max(2, statSummary.decimalPlaces))
+        }
       },
       dataZoom: [
         { type: 'inside', start: 0, end: 100 },
@@ -240,28 +255,70 @@ export default function StatSummaryPage({ params }: { params: Promise<{ statName
       ],
       series: [
         {
-          name: timeSeriesMode === 'median' ? 'IQR Range' : 'Std Dev Range',
-          type: 'line',
-          data: historicalData.map(d => [d.date, timeSeriesMode === 'median' ? d.q1 : d.mean - d.stdDev]),
-          stack: 'range',
-          areaStyle: { color: 'rgba(255,255,255, 0.0)' },
-          lineStyle: { opacity: 0 },
-          symbol: 'none',
-          silent: true
-        },
-        {
-          name: timeSeriesMode === 'median' ? 'IQR Range' : 'Std Dev Range',
-          type: 'line',
-          data: historicalData.map(d => {
-            const lower = timeSeriesMode === 'median' ? d.q1 : d.mean - d.stdDev;
-            const upper = timeSeriesMode === 'median' ? d.q3 : d.mean + d.stdDev;
-            return [d.date, upper - lower];
-          }),
-          stack: 'range',
-          areaStyle: { color: 'rgba(37, 99, 235, 0.2)' },
-          lineStyle: { opacity: 0 },
-          symbol: 'none',
-          silent: true
+          name: timeSeriesMode === 'median' ? 'IQR' : '±1 Std Dev',
+          type: 'custom',
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          renderItem: (params: any, api: any) => {
+            const categoryIndex = params.dataIndex;
+            const dateValue = historicalData[categoryIndex].date;
+            const lower = timeSeriesMode === 'median' 
+              ? historicalData[categoryIndex].q1 
+              : historicalData[categoryIndex].mean - historicalData[categoryIndex].stdDev;
+            const upper = timeSeriesMode === 'median' 
+              ? historicalData[categoryIndex].q3 
+              : historicalData[categoryIndex].mean + historicalData[categoryIndex].stdDev;
+            
+            const currentPoint = api.coord([dateValue, lower]);
+            const upperPoint = api.coord([dateValue, upper]);
+            
+            if (categoryIndex === 0) {
+              return {
+                type: 'rect',
+                shape: {
+                  x: currentPoint[0] - 10,
+                  y: upperPoint[1],
+                  width: 20,
+                  height: currentPoint[1] - upperPoint[1]
+                },
+                style: {
+                  fill: 'rgba(37, 99, 235, 0.2)',
+                  stroke: 'transparent'
+                },
+                silent: true
+              };
+            }
+            
+            // Connect to previous point to create continuous band
+            const prevDateValue = historicalData[categoryIndex - 1].date;
+            const prevLower = timeSeriesMode === 'median' 
+              ? historicalData[categoryIndex - 1].q1 
+              : historicalData[categoryIndex - 1].mean - historicalData[categoryIndex - 1].stdDev;
+            const prevUpper = timeSeriesMode === 'median' 
+              ? historicalData[categoryIndex - 1].q3 
+              : historicalData[categoryIndex - 1].mean + historicalData[categoryIndex - 1].stdDev;
+            
+            const prevLowerPoint = api.coord([prevDateValue, prevLower]);
+            const prevUpperPoint = api.coord([prevDateValue, prevUpper]);
+            
+            return {
+              type: 'polygon',
+              shape: {
+                points: [
+                  [prevLowerPoint[0], prevLowerPoint[1]],
+                  [prevUpperPoint[0], prevUpperPoint[1]],
+                  [upperPoint[0], upperPoint[1]],
+                  [currentPoint[0], currentPoint[1]]
+                ]
+              },
+              style: {
+                fill: 'rgba(37, 99, 235, 0.2)',
+                stroke: 'transparent'
+              },
+              silent: true
+            };
+          },
+          data: historicalData.map((_, index) => index),
+          z: 1
         },
         {
           name: timeSeriesMode === 'median' ? 'Median' : 'Mean',
@@ -269,7 +326,8 @@ export default function StatSummaryPage({ params }: { params: Promise<{ statName
           data: historicalData.map(d => [d.date, timeSeriesMode === 'median' ? d.med : d.mean]),
           lineStyle: { color: '#2563eb', width: 2 },
           symbol: 'circle',
-          symbolSize: 4
+          symbolSize: 4,
+          z: 3
         },
         ...(timeSeriesMode === 'median' ? [
           {
@@ -279,7 +337,8 @@ export default function StatSummaryPage({ params }: { params: Promise<{ statName
             lineStyle: { opacity: 0 },
             symbol: 'none',
             silent: true,
-            showInLegend: false
+            showInLegend: false,
+            z: 2
           },
           {
             name: 'Q3',
@@ -288,7 +347,8 @@ export default function StatSummaryPage({ params }: { params: Promise<{ statName
             lineStyle: { opacity: 0 },
             symbol: 'none',
             silent: true,
-            showInLegend: false
+            showInLegend: false,
+            z: 2
           }
         ] : [
           {
@@ -298,7 +358,8 @@ export default function StatSummaryPage({ params }: { params: Promise<{ statName
             lineStyle: { opacity: 0 },
             symbol: 'none',
             silent: true,
-            showInLegend: false
+            showInLegend: false,
+            z: 2
           },
           {
             name: 'Mean + 1σ',
@@ -307,7 +368,8 @@ export default function StatSummaryPage({ params }: { params: Promise<{ statName
             lineStyle: { opacity: 0 },
             symbol: 'none',
             silent: true,
-            showInLegend: false
+            showInLegend: false,
+            z: 2
           }
         ]),
         {
