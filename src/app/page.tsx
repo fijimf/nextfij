@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { TypographyH1, TypographyLead } from "@/components/ui/typography";
-import {SortAsc, Shield, ArrowUpAZ, Calendar, Network, SquareSigma, ChartNetwork} from "lucide-react";
+import {Shield, ArrowUpAZ, Calendar, Network, SquareSigma, ChartNetwork} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
