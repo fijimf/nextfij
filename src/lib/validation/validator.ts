@@ -40,6 +40,8 @@ export function validateApiResponse<T>(schema: z.ZodSchema<T>, response: unknown
     return schema.parse(response);
   } catch (error) {
     if (error instanceof z.ZodError) {
+      // Enhanced logging for debugging
+      console.error(`API response validation failed for ${endpoint}:`, JSON.stringify(error.issues, null, 2));
       logger.error(`API response validation failed for ${endpoint}:`, error.issues);
       throw new ValidationError(`Invalid response format from ${endpoint}`, error.issues);
     }

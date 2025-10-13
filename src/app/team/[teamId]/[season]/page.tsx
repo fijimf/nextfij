@@ -162,8 +162,14 @@ export default function TeamSeasonPage() {
                       {format(new Date(game.date), 'MMM d')}
                     </td>
                     <td className="py-2 px-2 text-center">
-                      <span className={game.wOrL === 'W' ? 'text-green-600' : 'text-red-600'}>{game.wOrL}&nbsp;</span>
-                       {game.score} - {game.oppScore}
+                      {game.score !== null && game.oppScore !== null ? (
+                        <>
+                          <span className={game.wOrL === 'W' ? 'text-green-600' : 'text-red-600'}>{game.wOrL}&nbsp;</span>
+                          {game.score} - {game.oppScore}
+                        </>
+                      ) : (
+                        <span className="text-muted-foreground">-</span>
+                      )}
                     </td>
                     <td className="py-2 px-2">
                       <Link 
@@ -186,7 +192,7 @@ export default function TeamSeasonPage() {
                     </td>
                    
                     <td className="py-2 px-2 text-right">
-                      {game.spreadDescription && (
+                      {game.spreadDescription && game.spreadDescription.trim() !== '' ? (
                         <span className='text-blue-600 flex items-center justify-end gap-1'>
                          {game.spreadDescription}
                          {game.spreadCovered ? (
@@ -199,20 +205,20 @@ export default function TeamSeasonPage() {
                            </svg>
                          )}
                         </span>
-                      )}
+                      ) : null}
                     </td>
                     <td className="py-2 px-2 text-right">
-                      {game.overUnder && (
+                      {game.overUnder !== null && (
                         <span className="text-blue-600">{game.overUnder}</span>
                       )}
                     </td>
                     <td className="py-2 px-2 text-left">
-                      {game.overOrUnder && (
+                      {game.overOrUnder !== null && (
                         <span className="text-blue-600">{game.overOrUnder}</span>
                       )}
                     </td>
                     <td className="py-2 px-2 text-right">
-                      {game.moneyLine && (
+                      {game.moneyLine !== null && (
                         <span className='text-blue-600 flex items-center justify-end gap-1'>
                           {game.moneyLine > 0 ? '+' : ''}{game.moneyLine}
                           {game.wOrL === 'W' ? (
@@ -228,7 +234,7 @@ export default function TeamSeasonPage() {
                       )}
                     </td>
                     <td className="py-2 px-2 text-right">
-                      {game.oppMoneyLine && (
+                      {game.oppMoneyLine !== null && (
                         <span className='text-blue-600 flex items-center justify-end gap-1'>
                           {game.oppMoneyLine > 0 ? '+' : ''}{game.oppMoneyLine}
                           {game.wOrL === 'L' ? (
