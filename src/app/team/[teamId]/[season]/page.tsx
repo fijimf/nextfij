@@ -109,7 +109,7 @@ export default function TeamSeasonPage() {
               <div className="flex items-center gap-2">
                 <h3 className="font-semibold">Seasons:</h3>
                 <div className="flex flex-wrap gap-1">
-                  {teamPage.seasons.map((availableSeason, index) => (
+                  {[...teamPage.seasons].sort((a, b) => b - a).map((availableSeason, index) => (
                     <span key={availableSeason}>
                       {availableSeason === teamPage.season ? (
                         <span className="text-muted-foreground">{availableSeason}</span>
