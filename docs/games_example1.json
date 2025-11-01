@@ -1,0 +1,1117 @@
+{
+  "result": "success",
+  "message": "success",
+  "data": {
+    "season": 2025,
+    "date": "20250303",
+    "games": [
+      {
+        "id": 5143,
+        "season": 2025,
+        "date": "2025-03-03",
+        "homeTeam": {
+          "id": 72,
+          "name": "Duke",
+          "longName": "Duke",
+          "nickname": "Blue Devils",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/150.png",
+          "primaryColor": "#013088",
+          "secondaryColor": "#ffffff",
+          "slug": "duke-blue-devils"
+        },
+        "awayTeam": {
+          "id": 343,
+          "name": "Wake Forest",
+          "longName": "Wake Forest",
+          "nickname": "Demon Deacons",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/154.png",
+          "primaryColor": "#000000",
+          "secondaryColor": "#ceb888",
+          "slug": "wake-forest-demon-deacons"
+        },
+        "homeTeamSeed": null,
+        "awayTeamSeed": null,
+        "homeScore": 93,
+        "awayScore": 60,
+        "isNeutral": false,
+        "conferenceDTO": {
+          "id": 3,
+          "name": "Atlantic Coast Conference",
+          "shortName": "ACC",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa_conf/sml/trans/acc.gif",
+          "standings": null
+        },
+        "spread": "DUKE-19.5",
+        "overUnder": 146.5,
+        "homeMoneyLine": -6000,
+        "awayMoneyLine": 1800
+      },
+      {
+        "id": 5144,
+        "season": 2025,
+        "date": "2025-03-03",
+        "homeTeam": {
+          "id": 113,
+          "name": "Houston",
+          "longName": "Houston",
+          "nickname": "Cougars",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/248.png",
+          "primaryColor": "#c92a39",
+          "secondaryColor": "#ffffff",
+          "slug": "houston-cougars"
+        },
+        "awayTeam": {
+          "id": 131,
+          "name": "Kansas",
+          "longName": "Kansas",
+          "nickname": "Jayhawks",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/2305.png",
+          "primaryColor": "#0051ba",
+          "secondaryColor": "#e8000d",
+          "slug": "kansas-jayhawks"
+        },
+        "homeTeamSeed": null,
+        "awayTeamSeed": null,
+        "homeScore": 65,
+        "awayScore": 59,
+        "isNeutral": false,
+        "conferenceDTO": {
+          "id": 7,
+          "name": "Big 12 Conference",
+          "shortName": "Big 12",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa_conf/sml/trans/big_12.gif",
+          "standings": null
+        },
+        "spread": "HOU-9.5",
+        "overUnder": 132.5,
+        "homeMoneyLine": -500,
+        "awayMoneyLine": 360
+      },
+      {
+        "id": 5145,
+        "season": 2025,
+        "date": "2025-03-03",
+        "homeTeam": {
+          "id": 198,
+          "name": "North Alabama",
+          "longName": "North Alabama",
+          "nickname": "Lions",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/2453.png",
+          "primaryColor": "#663399",
+          "secondaryColor": null,
+          "slug": "north-alabama-lions"
+        },
+        "awayTeam": {
+          "id": 17,
+          "name": "Austin Peay",
+          "longName": "Austin Peay",
+          "nickname": "Governors",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/2046.png",
+          "primaryColor": "#8e0b0b",
+          "secondaryColor": null,
+          "slug": "austin-peay-governors"
+        },
+        "homeTeamSeed": null,
+        "awayTeamSeed": null,
+        "homeScore": 90,
+        "awayScore": 64,
+        "isNeutral": false,
+        "conferenceDTO": {
+          "id": 6,
+          "name": "ASUN Conference",
+          "shortName": "ASUN",
+          "logoUrl": null,
+          "standings": null
+        },
+        "spread": "UNA-11.5",
+        "overUnder": 145.5,
+        "homeMoneyLine": -1000,
+        "awayMoneyLine": 600
+      },
+      {
+        "id": 5146,
+        "season": 2025,
+        "date": "2025-03-03",
+        "homeTeam": {
+          "id": 88,
+          "name": "FGCU",
+          "longName": "Florida Gulf Coast",
+          "nickname": "Eagles",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/526.png",
+          "primaryColor": "#00885a",
+          "secondaryColor": "#076c3b",
+          "slug": "florida-gulf-coast-eagles"
+        },
+        "awayTeam": {
+          "id": 363,
+          "name": "Queens",
+          "longName": "Queens University",
+          "nickname": "Royals",
+          "logoUrl": "https://a.espncdn.com/guid/10eb4a96-fa7c-3c91-b51c-2e4d961e80af/logos/primary_logo_on_white_color.png",
+          "primaryColor": null,
+          "secondaryColor": null,
+          "slug": "queens-university-royals"
+        },
+        "homeTeamSeed": null,
+        "awayTeamSeed": null,
+        "homeScore": 65,
+        "awayScore": 71,
+        "isNeutral": false,
+        "conferenceDTO": {
+          "id": 6,
+          "name": "ASUN Conference",
+          "shortName": "ASUN",
+          "logoUrl": null,
+          "standings": null
+        },
+        "spread": "FGCU-4.5",
+        "overUnder": 145.5,
+        "homeMoneyLine": -200,
+        "awayMoneyLine": 170
+      },
+      {
+        "id": 5147,
+        "season": 2025,
+        "date": "2025-03-03",
+        "homeTeam": {
+          "id": 127,
+          "name": "Jacksonville",
+          "longName": "Jacksonville",
+          "nickname": "Dolphins",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/294.png",
+          "primaryColor": "#00523e",
+          "secondaryColor": null,
+          "slug": "jacksonville-dolphins"
+        },
+        "awayTeam": {
+          "id": 78,
+          "name": "E Kentucky",
+          "longName": "Eastern Kentucky",
+          "nickname": "Colonels",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/2198.png",
+          "primaryColor": "#660819",
+          "secondaryColor": "#f0f0f0",
+          "slug": "eastern-kentucky-colonels"
+        },
+        "homeTeamSeed": null,
+        "awayTeamSeed": null,
+        "homeScore": 78,
+        "awayScore": 67,
+        "isNeutral": false,
+        "conferenceDTO": {
+          "id": 6,
+          "name": "ASUN Conference",
+          "shortName": "ASUN",
+          "logoUrl": null,
+          "standings": null
+        },
+        "spread": "JAX-2.5",
+        "overUnder": 142.5,
+        "homeMoneyLine": -150,
+        "awayMoneyLine": 130
+      },
+      {
+        "id": 5148,
+        "season": 2025,
+        "date": "2025-03-03",
+        "homeTeam": {
+          "id": 85,
+          "name": "Florida A&M",
+          "longName": "Florida A&M",
+          "nickname": "Rattlers",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/50.png",
+          "primaryColor": "#F89728",
+          "secondaryColor": "#00843d",
+          "slug": "florida-am-rattlers"
+        },
+        "awayTeam": {
+          "id": 276,
+          "name": "Southern",
+          "longName": "Southern",
+          "nickname": "Jaguars",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/2582.png",
+          "primaryColor": "#004B97",
+          "secondaryColor": "#ffc82d",
+          "slug": "southern-jaguars"
+        },
+        "homeTeamSeed": null,
+        "awayTeamSeed": null,
+        "homeScore": 70,
+        "awayScore": 73,
+        "isNeutral": false,
+        "conferenceDTO": {
+          "id": 31,
+          "name": "Southwestern Athletic Conference",
+          "shortName": "SWAC",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa_conf/sml/trans/swac.gif",
+          "standings": null
+        },
+        "spread": "FAMU+5.5",
+        "overUnder": 142.5,
+        "homeMoneyLine": 190,
+        "awayMoneyLine": -225
+      },
+      {
+        "id": 5149,
+        "season": 2025,
+        "date": "2025-03-03",
+        "homeTeam": {
+          "id": 23,
+          "name": "Bethune",
+          "longName": "Bethune-Cookman",
+          "nickname": "Wildcats",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/2065.png",
+          "primaryColor": "#7b1831",
+          "secondaryColor": "#e9aa12",
+          "slug": "bethune-cookman-wildcats"
+        },
+        "awayTeam": {
+          "id": 103,
+          "name": "Grambling",
+          "longName": "Grambling",
+          "nickname": "Tigers",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/2755.png",
+          "primaryColor": "#ee8601",
+          "secondaryColor": "#ffd10a",
+          "slug": "grambling-tigers"
+        },
+        "homeTeamSeed": null,
+        "awayTeamSeed": null,
+        "homeScore": 78,
+        "awayScore": 71,
+        "isNeutral": false,
+        "conferenceDTO": {
+          "id": 31,
+          "name": "Southwestern Athletic Conference",
+          "shortName": "SWAC",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa_conf/sml/trans/swac.gif",
+          "standings": null
+        },
+        "spread": "BCU-5.5",
+        "overUnder": 136.5,
+        "homeMoneyLine": -230,
+        "awayMoneyLine": 195
+      },
+      {
+        "id": 5150,
+        "season": 2025,
+        "date": "2025-03-03",
+        "homeTeam": {
+          "id": 7,
+          "name": "Alcorn St",
+          "longName": "Alcorn State",
+          "nickname": "Braves",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/2016.png",
+          "primaryColor": "#4b0058",
+          "secondaryColor": "#46166a",
+          "slug": "alcorn-state-braves"
+        },
+        "awayTeam": {
+          "id": 297,
+          "name": "Texas Southern",
+          "longName": "Texas Southern",
+          "nickname": "Tigers",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/2640.png",
+          "primaryColor": "#860038",
+          "secondaryColor": "#ffffff",
+          "slug": "texas-southern-tigers"
+        },
+        "homeTeamSeed": null,
+        "awayTeamSeed": null,
+        "homeScore": 59,
+        "awayScore": 75,
+        "isNeutral": false,
+        "conferenceDTO": {
+          "id": 31,
+          "name": "Southwestern Athletic Conference",
+          "shortName": "SWAC",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa_conf/sml/trans/swac.gif",
+          "standings": null
+        },
+        "spread": "ALCN-0.5",
+        "overUnder": 133.5,
+        "homeMoneyLine": -115,
+        "awayMoneyLine": -105
+      },
+      {
+        "id": 5151,
+        "season": 2025,
+        "date": "2025-03-03",
+        "homeTeam": {
+          "id": 283,
+          "name": "SF Austin",
+          "longName": "Stephen F. Austin",
+          "nickname": "Lumberjacks",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/2617.png",
+          "primaryColor": "#393996",
+          "secondaryColor": "#bec0c2",
+          "slug": "stephen-f-austin-lumberjacks"
+        },
+        "awayTeam": {
+          "id": 162,
+          "name": "McNeese",
+          "longName": "McNeese",
+          "nickname": "Cowboys",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/2377.png",
+          "primaryColor": "#00529C",
+          "secondaryColor": "#ffd204",
+          "slug": "mcneese-cowboys"
+        },
+        "homeTeamSeed": null,
+        "awayTeamSeed": null,
+        "homeScore": 64,
+        "awayScore": 95,
+        "isNeutral": false,
+        "conferenceDTO": {
+          "id": 28,
+          "name": "Southland Conference",
+          "shortName": "Southland",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa_conf/sml/trans/southland.gif",
+          "standings": null
+        },
+        "spread": "SFA+12.5",
+        "overUnder": 137.5,
+        "homeMoneyLine": 700,
+        "awayMoneyLine": -1200
+      },
+      {
+        "id": 5152,
+        "season": 2025,
+        "date": "2025-03-03",
+        "homeTeam": {
+          "id": 269,
+          "name": "SC State",
+          "longName": "South Carolina State",
+          "nickname": "Bulldogs",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/2569.png",
+          "primaryColor": "#7d1315",
+          "secondaryColor": "#104897",
+          "slug": "south-carolina-state-bulldogs"
+        },
+        "awayTeam": {
+          "id": 114,
+          "name": "Howard",
+          "longName": "Howard",
+          "nickname": "Bison",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/47.png",
+          "primaryColor": "#003a63",
+          "secondaryColor": "#e51937",
+          "slug": "howard-bison"
+        },
+        "homeTeamSeed": null,
+        "awayTeamSeed": null,
+        "homeScore": 79,
+        "awayScore": 69,
+        "isNeutral": false,
+        "conferenceDTO": {
+          "id": 20,
+          "name": "Mid-Eastern Athletic Conference",
+          "shortName": "MEAC",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa_conf/sml/trans/meac.gif",
+          "standings": null
+        },
+        "spread": "SCST-9.5",
+        "overUnder": 156.5,
+        "homeMoneyLine": -500,
+        "awayMoneyLine": 360
+      },
+      {
+        "id": 5153,
+        "season": 2025,
+        "date": "2025-03-03",
+        "homeTeam": {
+          "id": 200,
+          "name": "NC Central",
+          "longName": "North Carolina Central",
+          "nickname": "Eagles",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/2428.png",
+          "primaryColor": "#880023",
+          "secondaryColor": "#c2c3c0",
+          "slug": "north-carolina-central-eagles"
+        },
+        "awayTeam": {
+          "id": 197,
+          "name": "Norfolk St",
+          "longName": "Norfolk State",
+          "nickname": "Spartans",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/2450.png",
+          "primaryColor": "#0c8968",
+          "secondaryColor": "#fdb813",
+          "slug": "norfolk-state-spartans"
+        },
+        "homeTeamSeed": null,
+        "awayTeamSeed": null,
+        "homeScore": 91,
+        "awayScore": 87,
+        "isNeutral": false,
+        "conferenceDTO": {
+          "id": 20,
+          "name": "Mid-Eastern Athletic Conference",
+          "shortName": "MEAC",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa_conf/sml/trans/meac.gif",
+          "standings": null
+        },
+        "spread": "NCCU+5.5",
+        "overUnder": 151.5,
+        "homeMoneyLine": 210,
+        "awayMoneyLine": -250
+      },
+      {
+        "id": 5154,
+        "season": 2025,
+        "date": "2025-03-03",
+        "homeTeam": {
+          "id": 182,
+          "name": "Morgan St",
+          "longName": "Morgan State",
+          "nickname": "Bears",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/2415.png",
+          "primaryColor": "#014786",
+          "secondaryColor": "#f47937",
+          "slug": "morgan-state-bears"
+        },
+        "awayTeam": {
+          "id": 67,
+          "name": "Delaware St",
+          "longName": "Delaware State",
+          "nickname": "Hornets",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/2169.png",
+          "primaryColor": "#FF3630",
+          "secondaryColor": "#009cdd",
+          "slug": "delaware-state-hornets"
+        },
+        "homeTeamSeed": null,
+        "awayTeamSeed": null,
+        "homeScore": 87,
+        "awayScore": 81,
+        "isNeutral": false,
+        "conferenceDTO": {
+          "id": 20,
+          "name": "Mid-Eastern Athletic Conference",
+          "shortName": "MEAC",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa_conf/sml/trans/meac.gif",
+          "standings": null
+        },
+        "spread": "MORG+1.5",
+        "overUnder": 165.5,
+        "homeMoneyLine": 100,
+        "awayMoneyLine": -120
+      },
+      {
+        "id": 5155,
+        "season": 2025,
+        "date": "2025-03-03",
+        "homeTeam": {
+          "id": 212,
+          "name": "N'Western St",
+          "longName": "Northwestern State",
+          "nickname": "Demons",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/2466.png",
+          "primaryColor": "#492F91",
+          "secondaryColor": "#ed6118",
+          "slug": "northwestern-state-demons"
+        },
+        "awayTeam": {
+          "id": 120,
+          "name": "Incarnate Word",
+          "longName": "Incarnate Word",
+          "nickname": "Cardinals",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/2916.png",
+          "primaryColor": "#000000",
+          "secondaryColor": "#080808",
+          "slug": "incarnate-word-cardinals"
+        },
+        "homeTeamSeed": null,
+        "awayTeamSeed": null,
+        "homeScore": 73,
+        "awayScore": 57,
+        "isNeutral": false,
+        "conferenceDTO": {
+          "id": 28,
+          "name": "Southland Conference",
+          "shortName": "Southland",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa_conf/sml/trans/southland.gif",
+          "standings": null
+        },
+        "spread": "NWST-2.5",
+        "overUnder": 132.5,
+        "homeMoneyLine": -145,
+        "awayMoneyLine": 125
+      },
+      {
+        "id": 5156,
+        "season": 2025,
+        "date": "2025-03-03",
+        "homeTeam": {
+          "id": 327,
+          "name": "UT Rio Grande",
+          "longName": "UT Rio Grande Valley",
+          "nickname": "Vaqueros",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/292.png",
+          "primaryColor": "#dc6000",
+          "secondaryColor": "#e1732d",
+          "slug": "ut-rio-grande-valley-vaqueros"
+        },
+        "awayTeam": {
+          "id": 247,
+          "name": "SE Louisiana",
+          "longName": "SE Louisiana",
+          "nickname": "Lions",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/2545.png",
+          "primaryColor": "#215732",
+          "secondaryColor": "#ffc72c",
+          "slug": "se-louisiana-lions"
+        },
+        "homeTeamSeed": null,
+        "awayTeamSeed": null,
+        "homeScore": 77,
+        "awayScore": 76,
+        "isNeutral": false,
+        "conferenceDTO": {
+          "id": 28,
+          "name": "Southland Conference",
+          "shortName": "Southland",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa_conf/sml/trans/southland.gif",
+          "standings": null
+        },
+        "spread": "RGV-0.5",
+        "overUnder": 153.5,
+        "homeMoneyLine": 100,
+        "awayMoneyLine": -120
+      },
+      {
+        "id": 5157,
+        "season": 2025,
+        "date": "2025-03-03",
+        "homeTeam": {
+          "id": 76,
+          "name": "E Texas A&M",
+          "longName": "East Texas A&M",
+          "nickname": "Lions",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/2837.png",
+          "primaryColor": "#000000",
+          "secondaryColor": null,
+          "slug": "east-texas-am-lions"
+        },
+        "awayTeam": {
+          "id": 112,
+          "name": "Hou Christian",
+          "longName": "Houston Christian",
+          "nickname": "Huskies",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/2277.png",
+          "primaryColor": "#00539c",
+          "secondaryColor": null,
+          "slug": "houston-christian-huskies"
+        },
+        "homeTeamSeed": null,
+        "awayTeamSeed": null,
+        "homeScore": 63,
+        "awayScore": 59,
+        "isNeutral": false,
+        "conferenceDTO": {
+          "id": 28,
+          "name": "Southland Conference",
+          "shortName": "Southland",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa_conf/sml/trans/southland.gif",
+          "standings": null
+        },
+        "spread": "ETAM+1.5",
+        "overUnder": 133.5,
+        "homeMoneyLine": 115,
+        "awayMoneyLine": -135
+      },
+      {
+        "id": 5158,
+        "season": 2025,
+        "date": "2025-03-03",
+        "homeTeam": {
+          "id": 143,
+          "name": "Lipscomb",
+          "longName": "Lipscomb",
+          "nickname": "Bisons",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/288.png",
+          "primaryColor": "#20366C",
+          "secondaryColor": "#f6b734",
+          "slug": "lipscomb-bisons"
+        },
+        "awayTeam": {
+          "id": 43,
+          "name": "C Arkansas",
+          "longName": "Central Arkansas",
+          "nickname": "Bears",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/2110.png",
+          "primaryColor": "#a7a9ac",
+          "secondaryColor": "#8e959a",
+          "slug": "central-arkansas-bears"
+        },
+        "homeTeamSeed": null,
+        "awayTeamSeed": null,
+        "homeScore": 84,
+        "awayScore": 66,
+        "isNeutral": false,
+        "conferenceDTO": {
+          "id": 6,
+          "name": "ASUN Conference",
+          "shortName": "ASUN",
+          "logoUrl": null,
+          "standings": null
+        },
+        "spread": "LIP-19.5",
+        "overUnder": 141.5,
+        "homeMoneyLine": -7500,
+        "awayMoneyLine": 2000
+      },
+      {
+        "id": 5159,
+        "season": 2025,
+        "date": "2025-03-03",
+        "homeTeam": {
+          "id": 59,
+          "name": "Coppin St",
+          "longName": "Coppin State",
+          "nickname": "Eagles",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/2154.png",
+          "primaryColor": "#2e3192",
+          "secondaryColor": "#ffd204",
+          "slug": "coppin-state-eagles"
+        },
+        "awayTeam": {
+          "id": 159,
+          "name": "MD Eastern",
+          "longName": "Maryland Eastern Shore",
+          "nickname": "Hawks",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/2379.png",
+          "primaryColor": "#5c2301",
+          "secondaryColor": "#b5b7ba",
+          "slug": "maryland-eastern-shore-hawks"
+        },
+        "homeTeamSeed": null,
+        "awayTeamSeed": null,
+        "homeScore": 59,
+        "awayScore": 72,
+        "isNeutral": false,
+        "conferenceDTO": {
+          "id": 20,
+          "name": "Mid-Eastern Athletic Conference",
+          "shortName": "MEAC",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa_conf/sml/trans/meac.gif",
+          "standings": null
+        },
+        "spread": "COPP-3.5",
+        "overUnder": 136.5,
+        "homeMoneyLine": -170,
+        "awayMoneyLine": 145
+      },
+      {
+        "id": 5160,
+        "season": 2025,
+        "date": "2025-03-03",
+        "homeTeam": {
+          "id": 295,
+          "name": "Texas A&M-CC",
+          "longName": "Texas A&M-Corpus Christi",
+          "nickname": "Islanders",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/357.png",
+          "primaryColor": "#0067c5",
+          "secondaryColor": "#007f3e",
+          "slug": "texas-am-corpus-christi-islanders"
+        },
+        "awayTeam": {
+          "id": 194,
+          "name": "New Orleans",
+          "longName": "New Orleans",
+          "nickname": "Privateers",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/2443.png",
+          "primaryColor": "#005da6",
+          "secondaryColor": "#a2a9ae",
+          "slug": "new-orleans-privateers"
+        },
+        "homeTeamSeed": null,
+        "awayTeamSeed": null,
+        "homeScore": 95,
+        "awayScore": 62,
+        "isNeutral": false,
+        "conferenceDTO": {
+          "id": 28,
+          "name": "Southland Conference",
+          "shortName": "Southland",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa_conf/sml/trans/southland.gif",
+          "standings": null
+        },
+        "spread": "AMCC-14.5",
+        "overUnder": 143.5,
+        "homeMoneyLine": -2000,
+        "awayMoneyLine": 1000
+      },
+      {
+        "id": 5161,
+        "season": 2025,
+        "date": "2025-03-03",
+        "homeTeam": {
+          "id": 139,
+          "name": "Lamar",
+          "longName": "Lamar",
+          "nickname": "Cardinals",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/2320.png",
+          "primaryColor": "#000000",
+          "secondaryColor": "#ebebeb",
+          "slug": "lamar-cardinals"
+        },
+        "awayTeam": {
+          "id": 196,
+          "name": "Nicholls",
+          "longName": "Nicholls",
+          "nickname": "Colonels",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/2447.png",
+          "primaryColor": "#C41230",
+          "secondaryColor": "#f0f0f0",
+          "slug": "nicholls-colonels"
+        },
+        "homeTeamSeed": null,
+        "awayTeamSeed": null,
+        "homeScore": 65,
+        "awayScore": 53,
+        "isNeutral": false,
+        "conferenceDTO": {
+          "id": 28,
+          "name": "Southland Conference",
+          "shortName": "Southland",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa_conf/sml/trans/southland.gif",
+          "standings": null
+        },
+        "spread": "LAM-2.5",
+        "overUnder": 142.5,
+        "homeMoneyLine": -145,
+        "awayMoneyLine": 125
+      },
+      {
+        "id": 5162,
+        "season": 2025,
+        "date": "2025-03-03",
+        "homeTeam": {
+          "id": 205,
+          "name": "North Texas",
+          "longName": "North Texas",
+          "nickname": "Mean Green",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/249.png",
+          "primaryColor": "#ffffff",
+          "secondaryColor": "#000000",
+          "slug": "north-texas-mean-green"
+        },
+        "awayTeam": {
+          "id": 353,
+          "name": "Wichita St",
+          "longName": "Wichita State",
+          "nickname": "Shockers",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/2724.png",
+          "primaryColor": "#0d0a03",
+          "secondaryColor": "#ffc41e",
+          "slug": "wichita-state-shockers"
+        },
+        "homeTeamSeed": null,
+        "awayTeamSeed": null,
+        "homeScore": 68,
+        "awayScore": 66,
+        "isNeutral": false,
+        "conferenceDTO": {
+          "id": 5,
+          "name": "American Conference",
+          "shortName": "American",
+          "logoUrl": null,
+          "standings": null
+        },
+        "spread": "UNT-6.5",
+        "overUnder": 130.5,
+        "homeMoneyLine": -300,
+        "awayMoneyLine": 250
+      },
+      {
+        "id": 5163,
+        "season": 2025,
+        "date": "2025-03-03",
+        "homeTeam": {
+          "id": 126,
+          "name": "Jackson St",
+          "longName": "Jackson State",
+          "nickname": "Tigers",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/2296.png",
+          "primaryColor": "#123297",
+          "secondaryColor": "#b5b7ba",
+          "slug": "jackson-state-tigers"
+        },
+        "awayTeam": {
+          "id": 233,
+          "name": "Prairie View",
+          "longName": "Prairie View A&M",
+          "nickname": "Panthers",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/2504.png",
+          "primaryColor": "#4d0960",
+          "secondaryColor": null,
+          "slug": "prairie-view-am-panthers"
+        },
+        "homeTeamSeed": null,
+        "awayTeamSeed": null,
+        "homeScore": 88,
+        "awayScore": 74,
+        "isNeutral": false,
+        "conferenceDTO": {
+          "id": 31,
+          "name": "Southwestern Athletic Conference",
+          "shortName": "SWAC",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa_conf/sml/trans/swac.gif",
+          "standings": null
+        },
+        "spread": "JKST-14.5",
+        "overUnder": 145.5,
+        "homeMoneyLine": -2000,
+        "awayMoneyLine": 1000
+      },
+      {
+        "id": 5164,
+        "season": 2025,
+        "date": "2025-03-03",
+        "homeTeam": {
+          "id": 213,
+          "name": "Northwestern",
+          "longName": "Northwestern",
+          "nickname": "Wildcats",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/77.png",
+          "primaryColor": "#582c83",
+          "secondaryColor": "#ffffff",
+          "slug": "northwestern-wildcats"
+        },
+        "awayTeam": {
+          "id": 314,
+          "name": "UCLA",
+          "longName": "UCLA",
+          "nickname": "Bruins",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/26.png",
+          "primaryColor": "#2774ae",
+          "secondaryColor": "#f2a900",
+          "slug": "ucla-bruins"
+        },
+        "homeTeamSeed": null,
+        "awayTeamSeed": null,
+        "homeScore": 69,
+        "awayScore": 73,
+        "isNeutral": false,
+        "conferenceDTO": {
+          "id": 11,
+          "name": "Big Ten Conference",
+          "shortName": "Big Ten",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa_conf/sml/trans/big_ten.gif",
+          "standings": null
+        },
+        "spread": "NU+2.5",
+        "overUnder": 131.5,
+        "homeMoneyLine": 120,
+        "awayMoneyLine": -140
+      },
+      {
+        "id": 5165,
+        "season": 2025,
+        "date": "2025-03-03",
+        "homeTeam": {
+          "id": 116,
+          "name": "Idaho St",
+          "longName": "Idaho State",
+          "nickname": "Bengals",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/304.png",
+          "primaryColor": "#ef8c00",
+          "secondaryColor": "#e9a126",
+          "slug": "idaho-state-bengals"
+        },
+        "awayTeam": {
+          "id": 207,
+          "name": "N Arizona",
+          "longName": "Northern Arizona",
+          "nickname": "Lumberjacks",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/2464.png",
+          "primaryColor": "#003976",
+          "secondaryColor": "#1b3069",
+          "slug": "northern-arizona-lumberjacks"
+        },
+        "homeTeamSeed": null,
+        "awayTeamSeed": null,
+        "homeScore": 79,
+        "awayScore": 82,
+        "isNeutral": false,
+        "conferenceDTO": {
+          "id": 9,
+          "name": "Big Sky Conference",
+          "shortName": "Big Sky",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa_conf/sml/trans/big_sky.gif",
+          "standings": null
+        },
+        "spread": "IDST-6.5",
+        "overUnder": 143.5,
+        "homeMoneyLine": -280,
+        "awayMoneyLine": 230
+      },
+      {
+        "id": 5166,
+        "season": 2025,
+        "date": "2025-03-03",
+        "homeTeam": {
+          "id": 180,
+          "name": "Montana St",
+          "longName": "Montana State",
+          "nickname": "Bobcats",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/147.png",
+          "primaryColor": "#00205c",
+          "secondaryColor": "#bc955c",
+          "slug": "montana-state-bobcats"
+        },
+        "awayTeam": {
+          "id": 117,
+          "name": "Idaho",
+          "longName": "Idaho",
+          "nickname": "Vandals",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/70.png",
+          "primaryColor": "#000000",
+          "secondaryColor": "#8c6e4a",
+          "slug": "idaho-vandals"
+        },
+        "homeTeamSeed": null,
+        "awayTeamSeed": null,
+        "homeScore": 75,
+        "awayScore": 60,
+        "isNeutral": false,
+        "conferenceDTO": {
+          "id": 9,
+          "name": "Big Sky Conference",
+          "shortName": "Big Sky",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa_conf/sml/trans/big_sky.gif",
+          "standings": null
+        },
+        "spread": "MTST-5.5",
+        "overUnder": 146.5,
+        "homeMoneyLine": -240,
+        "awayMoneyLine": 200
+      },
+      {
+        "id": 5167,
+        "season": 2025,
+        "date": "2025-03-03",
+        "homeTeam": {
+          "id": 346,
+          "name": "Weber St",
+          "longName": "Weber State",
+          "nickname": "Wildcats",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/2692.png",
+          "primaryColor": "#18005a",
+          "secondaryColor": "#ebebeb",
+          "slug": "weber-state-wildcats"
+        },
+        "awayTeam": {
+          "id": 208,
+          "name": "N Colorado",
+          "longName": "Northern Colorado",
+          "nickname": "Bears",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/2458.png",
+          "primaryColor": "#13558D",
+          "secondaryColor": "#ffc533",
+          "slug": "northern-colorado-bears"
+        },
+        "homeTeamSeed": null,
+        "awayTeamSeed": null,
+        "homeScore": 63,
+        "awayScore": 68,
+        "isNeutral": false,
+        "conferenceDTO": {
+          "id": 9,
+          "name": "Big Sky Conference",
+          "shortName": "Big Sky",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa_conf/sml/trans/big_sky.gif",
+          "standings": null
+        },
+        "spread": "WEB+6.5",
+        "overUnder": 150.5,
+        "homeMoneyLine": 225,
+        "awayMoneyLine": -275
+      },
+      {
+        "id": 5168,
+        "season": 2025,
+        "date": "2025-03-03",
+        "homeTeam": {
+          "id": 232,
+          "name": "Portland St",
+          "longName": "Portland State",
+          "nickname": "Vikings",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/2502.png",
+          "primaryColor": "#00311e",
+          "secondaryColor": "#ebebeb",
+          "slug": "portland-state-vikings"
+        },
+        "awayTeam": {
+          "id": 250,
+          "name": "Sacramento St",
+          "longName": "Sacramento State",
+          "nickname": "Hornets",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/16.png",
+          "primaryColor": "#00573C",
+          "secondaryColor": "#cdb97d",
+          "slug": "sacramento-state-hornets"
+        },
+        "homeTeamSeed": null,
+        "awayTeamSeed": null,
+        "homeScore": 59,
+        "awayScore": 56,
+        "isNeutral": false,
+        "conferenceDTO": {
+          "id": 9,
+          "name": "Big Sky Conference",
+          "shortName": "Big Sky",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa_conf/sml/trans/big_sky.gif",
+          "standings": null
+        },
+        "spread": "PRST-12.5",
+        "overUnder": 135.5,
+        "homeMoneyLine": -1200,
+        "awayMoneyLine": 700
+      },
+      {
+        "id": 5169,
+        "season": 2025,
+        "date": "2025-03-03",
+        "homeTeam": {
+          "id": 179,
+          "name": "Montana",
+          "longName": "Montana",
+          "nickname": "Grizzlies",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/149.png",
+          "primaryColor": "#751D4A",
+          "secondaryColor": "#666666",
+          "slug": "montana-grizzlies"
+        },
+        "awayTeam": {
+          "id": 80,
+          "name": "E Washington",
+          "longName": "Eastern Washington",
+          "nickname": "Eagles",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/331.png",
+          "primaryColor": "#a10022",
+          "secondaryColor": "#abb4bc",
+          "slug": "eastern-washington-eagles"
+        },
+        "homeTeamSeed": null,
+        "awayTeamSeed": null,
+        "homeScore": 83,
+        "awayScore": 72,
+        "isNeutral": false,
+        "conferenceDTO": {
+          "id": 9,
+          "name": "Big Sky Conference",
+          "shortName": "Big Sky",
+          "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa_conf/sml/trans/big_sky.gif",
+          "standings": null
+        },
+        "spread": "MONT-9.5",
+        "overUnder": 146.5,
+        "homeMoneyLine": -550,
+        "awayMoneyLine": 380
+      }
+    ]
+  }
+}
