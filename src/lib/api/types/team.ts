@@ -40,8 +40,8 @@ export interface GameDTO {
   atVs: string;
   isNeutralSite: boolean;
   date: string;
-  score: number;
-  oppScore: number;
+  score: number | null;
+  oppScore: number | null;
   wOrL: string;
   spread: number | null;
   spreadDescription: string | null;
