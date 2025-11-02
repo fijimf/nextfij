@@ -97,7 +97,7 @@ export function GamesTable({ games }: GamesTableProps) {
                     {/* Away Team */}
                     <TableCell>
                       <Link
-                        href={`/team/${game.awayTeam.id}`}
+                        href={`/team/${game.awayTeam.id}/${game.season}`}
                         className="flex items-center gap-2 hover:text-primary transition-colors"
                       >
                         {game.awayTeam.logoUrl && (
@@ -131,7 +131,7 @@ export function GamesTable({ games }: GamesTableProps) {
                     {/* Home Team */}
                     <TableCell>
                       <Link
-                        href={`/team/${game.homeTeam.id}`}
+                        href={`/team/${game.homeTeam.id}/${game.season}`}
                         className="flex items-center gap-2 hover:text-primary transition-colors"
                       >
                         {game.homeTeam.logoUrl && (
@@ -303,7 +303,7 @@ export function GamesTable({ games }: GamesTableProps) {
 
                   {/* Away Team */}
                   <Link
-                    href={`/team/${game.awayTeam.id}`}
+                    href={`/team/${game.awayTeam.id}/${game.season}`}
                     className="flex items-center justify-between hover:text-primary transition-colors"
                   >
                     <div className="flex items-center gap-2">
@@ -333,7 +333,7 @@ export function GamesTable({ games }: GamesTableProps) {
 
                   {/* Home Team */}
                   <Link
-                    href={`/team/${game.homeTeam.id}`}
+                    href={`/team/${game.homeTeam.id}/${game.season}`}
                     className="flex items-center justify-between hover:text-primary transition-colors"
                   >
                     <div className="flex items-center gap-2">
